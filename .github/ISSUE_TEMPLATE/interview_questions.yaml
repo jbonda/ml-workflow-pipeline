@@ -18,12 +18,12 @@ body:
     label: Does this web-based UI need to be protected or is it publicly accessible?
   validations:
     required: false
-- type: textarea
+- type: This is a publicly accessible web-based UI. It doesn't need to be password protected.
   attributes:
     label: What are the data resources and where should we collect the data (e.g. internet, open-source resources, or UAF-specific websites)? Are there any intermediate charts or visualizations needed prior to the machine learning analysis?
   validations:
     required: false
-- type: textarea
+- type: You can collect data from any resource. No restrictions on data resources.
   attributes:
     label: Do you have any restrictions on data size, categories (columns), computational resources, or number of rows?
   validations:
@@ -33,17 +33,17 @@ body:
     label: What are the improvements based on the existing GUI pipeline / previous model?
   validations:
     required: false
-- type: textarea
+- type: Expecting improvements in the UI part.
   attributes:
-    label: Should this project focus solely on the desktop / laptop interface, or should we include mobile support?
+    label: Should this project focus solely on the desktop/laptop interface, or should we include mobile support?
   validations:
     required: false
-- type: textarea
+- type: Currently, developing for desktop/laptop interface. If you are interested in developing a mobile version, you can do it.
   attributes:
     label: Should the users be allowed to edit the number of iterations that the model should run for? What hyperparameters are the users allowed / not allowed to change? Can the users be able to download the training/testing datasets?
   validations:
     required: false
-- type: textarea
+- type: 1. User should able to give a CSV zip file. 2. The user should be able to select  the number of Iterations. 3. Train data set and test data set should be stored. 4. The user should be able to decide the ratio of Test data and train data. 5. All the hyperparameters should be user-defined. 6. Attaching a Jupyter notebook code is highly encouraged to do if you can. The changes in the hyperparameters in the GUI should be seen in the code and vice-versa.
   attributes:
     label: Are there any requirements or limitations about the server that we can know about?
   validations:
@@ -53,7 +53,7 @@ body:
     label: Any hard deadlines for this project that we should schedule around?
   validations:
     required: false
-- type: textarea
+- type: 12/08/2023(Friday) is the las date for project Submission.
   attributes:
     label: Are there any topics that we have not discussed yet or pieces we have missed in today's interview?
   validations:

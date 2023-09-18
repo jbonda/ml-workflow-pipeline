@@ -1,0 +1,62 @@
+name: ⁉️ Interview Questions
+description: Record client interview responses
+title: "[RESPONSE] <title>"
+labels: ["Responses", "documentation"]
+body:
+- type: checkboxes
+  attributes:
+    label: What format or data file are you looking to upload?
+    description: Gathering information about inputs of the previous model.
+    options:
+    - label: CSV
+    - label: JSON
+    - label: Excel
+    - label: Plain Text
+    - label: Other
+- type: textarea
+  attributes:
+    label: Does this web-based UI need to be protected or is it publicly accessible?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: What are the data resources and where should we collect the data (e.g. internet, open-source resources, or UAF-specific websites)? Are there any intermediate charts or visualizations needed prior to the machine learning analysis?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Do you have any restrictions on data size, categories (columns), computational resources, or number of rows?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: What are the improvements based on the existing GUI pipeline / previous model?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Should this project focus solely on the desktop / laptop interface, or should we include mobile support?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Should the users be allowed to edit the number of iterations that the model should run for? What hyperparameters are the users allowed / not allowed to change? Can the users be able to download the training/testing datasets?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Are there any requirements or limitations about the server that we can know about?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Any hard deadlines for this project that we should schedule around?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Are there any topics that we have not discussed yet or pieces we have missed in today's interview?
+  validations:
+    required: false
+
+

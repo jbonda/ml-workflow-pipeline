@@ -15,7 +15,7 @@ body:
     - label: Other
 - type: textarea
   attributes:
-    label: Does this web-based UI need to be password protected or is it publicly accessible?
+    label: Does this web-based UI need to be protected or is it publicly accessible?
   validations:
     required: false
 - type: textarea

@@ -13,7 +13,7 @@ body:
     - label: Excel
     - label: Plain Text
     - label: Other
-- type: textarea
+- type: CSV
   attributes:
     label: Does this web-based UI need to be protected or is it publicly accessible?
   validations:

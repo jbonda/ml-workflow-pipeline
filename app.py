@@ -1,14 +1,10 @@
-import os
 import secrets
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.metrics import mean_squared_error, accuracy_score
 import matplotlib.pyplot as plt
 from io import BytesIO
 import random
-import base64
 import matplotlib
 matplotlib.use('Agg')
 
@@ -20,8 +16,6 @@ class DataModelManager:
         self.data = None
         self.X = None
         self.y = None
-        self.lr_model = None
-        self.logistic_model = None
 
     def load_data(self, file):
         try:
@@ -52,16 +46,13 @@ class DataModelManager:
             axes[0].set_title('Scatter Plot')
             axes[0].set_xlabel('smoking')
             axes[0].set_ylabel('heart.disease')
-
             # Bar plot
             axes[1].bar(self.data['smoking'], self.data['heart.disease'])
             axes[1].set_title('Bar Plot')
             axes[1].set_xlabel('smoking')
             axes[1].set_ylabel('heart.disease')
-
-
             plt.tight_layout()
-
+            
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
             buffer.seek(0)
@@ -78,7 +69,7 @@ data_manager = DataModelManager()
 
 @app.route('/')
 def index():
-    # Create a unique session ID for each tab and make it non-permanent
+    # Creating a unique session ID for each tab
     if 'tab_id' not in session:
         session['tab_id'] = secrets.token_hex(24)
         session.permanent = False

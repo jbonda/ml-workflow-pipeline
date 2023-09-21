@@ -1,10 +1,14 @@
+import os
 import secrets
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.metrics import mean_squared_error, accuracy_score
 import matplotlib.pyplot as plt
 from io import BytesIO
 import random
+import base64
 import matplotlib
 matplotlib.use('Agg')
 
@@ -16,6 +20,8 @@ class DataModelManager:
         self.data = None
         self.X = None
         self.y = None
+        self.lr_model = None
+        self.logistic_model = None
 
     def load_data(self, file):
         try:
@@ -36,7 +42,7 @@ class DataModelManager:
             flash('Data split successfully!', 'success')
         else:
             flash('Please upload a data file first!', 'danger')
-    
+
     def visualize_data(self):
         if self.data is not None:
             fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(12, 6))
@@ -46,13 +52,16 @@ class DataModelManager:
             axes[0].set_title('Scatter Plot')
             axes[0].set_xlabel('smoking')
             axes[0].set_ylabel('heart.disease')
+
             # Bar plot
             axes[1].bar(self.data['smoking'], self.data['heart.disease'])
             axes[1].set_title('Bar Plot')
             axes[1].set_xlabel('smoking')
             axes[1].set_ylabel('heart.disease')
+
+
             plt.tight_layout()
-            
+
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
             buffer.seek(0)
@@ -63,13 +72,13 @@ class DataModelManager:
             return graphic
         else:
             flash('Please upload a data file first!', 'danger')
-            return None        
+            return None
 
 data_manager = DataModelManager()
 
 @app.route('/')
 def index():
-    # Creating a unique session ID for each tab
+    # Create a unique session ID for each tab and make it non-permanent
     if 'tab_id' not in session:
         session['tab_id'] = secrets.token_hex(24)
         session.permanent = False
@@ -92,8 +101,14 @@ def split_data():
 
 @app.route('/visualize', methods=['GET', 'POST'])
 def visualize_data():
+    """Redirect back to the index page on new page load."""
     graphic = data_manager.visualize_data()
     if graphic:
+        try:
+            if 'tab_id' not in session or session['tab_id'] != session['tab_id']:
+                return redirect(url_for('redirect'))
+        except Exception:
+            return render_template('redirect.html')
         return render_template('index.html', graphic=graphic)
     else:
         return redirect(url_for('index'))

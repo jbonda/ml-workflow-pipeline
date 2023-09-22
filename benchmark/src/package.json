@@ -4,8 +4,8 @@
   "description": "Benchmark project for CS 600 (Professional Software Development).",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www",
+    "start": "node ./config/www",
+    "devstart": "nodemon ./config/www",
     "lint": "npx eslint .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "serverstart": "DEBUG=ml-workflow-pipeline:* npm run devstart"

@@ -1,6 +1,8 @@
 node_modules
 
 benchmark/dotnet
+benchmark/test-node
+.env
 
 *.swp
 *.*~

@@ -1,0 +1,33 @@
+extends layout
+
+block content
+    script(type="text/javascript", src="https://cdn.jsdelivr.net/npm/chart.js")
+
+    script.
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3]
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    h1="New Plot Example"
+
+    p="Hello, world. Testing page with new graph below."
+
+    script.
+        document.getElementById('myChart')
+
+    div
+        canvas(id="myChart" width="400" height="400")

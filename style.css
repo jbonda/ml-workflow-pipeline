@@ -1,0 +1,89 @@
+/* Style the main heading */
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Style the file upload form */
+form {
+    text-align: center;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="file"] {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Style flash messages */
+.flash-messages {
+    text-align: center;
+    margin: 20px auto;
+}
+
+.flash-message {
+    padding: 10px;
+    margin: 10px auto;
+    border-radius: 5px;
+    max-width: 300px;
+}
+
+.flash-message.success {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.flash-message.danger {
+    background-color: #f44336;
+    color: #fff;
+}
+
+/* Style the data split and visualization sections */
+.split-data {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+}
+
+.split-data-section {
+    width: 45%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.split-data-section h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Style the data visualization image */
+img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+}
+
+/* Style the train models and model evaluation sections */
+form[action="/train"],
+h2 {
+    text-align: center;
+    margin: 20px auto;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Additional custom styles can be added here */

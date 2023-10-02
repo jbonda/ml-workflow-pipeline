@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CS600_MLGUI</title>
+</head>
+<body>
+    <h1>Machine Learning-GUI Web Application</h1>
+	<p>Welcome to our Machine Learning-GUI Web Application! This platform allows you to upload data, split the data into train and test sets, and visualize it to gain insights using machine learning techniques.</p>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+    </form>
+
+    <form method="POST" action="/split">
+        <label for="input_column">Select Input Column:</label>
+        <select name="input_column" id="input_column">
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="target_column">Select Target Column:</label>
+        <select name="target_column" id="target_column">
+            {% for column in columns %}
+                <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="test_size">Test Size (0-0.5):</label>
+        <input type="text" name="test_size" id="test_size">
+        <input type="submit" value="Split Data">
+    </form>
+
+    <form method="POST" action="/visualize_whole">
+        <input type="submit" value="Visualize Whole Data">
+    </form>
+
+    <form method="POST" action="/visualize_training">
+        <input type="submit" value="Visualize Training Data">
+    </form>
+
+    <form method="POST" action="/visualize_testing">
+        <input type="submit" value="Visualize Testing Data">
+    </form>
+
+    {% if graphic %}
+        <img src="data:image/png;base64,{{ graphic }}" alt="Data Visualization">
+    {% endif %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

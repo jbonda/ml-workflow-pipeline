@@ -1,7 +1,7 @@
 <script>
   let message = "";
   let src = "";
-  async function getName() {
+  async function getHype() {
     let thisMessage = message;
     let res = await fetch(`./message?name=${message}`);
     let message_received = await res.text();
@@ -10,6 +10,22 @@
     }
   }
 </script>
-<h1>Received Message: {src}!</h1>
-<input type="text" placeholder="enter your name" bind:value="{message}" />
-<button on:click="{getName}">Send Message</button>
+<h1>Hyperparameters</h1>
+<label for="alpha">Alpha</label>
+<input
+  type="text"
+  placeholder="enter alpha (default = 0.0001)"
+  bind:value="{message}"
+/>
+<br />
+<label for="fit_intercept">Fit Intercept Sample</label>
+<input
+  type="checkbox"
+  placeholder="fit_intercept"
+  name="fit_intercept"
+  value="true"
+/>
+<br />
+<label for="learning_rate">Learning Rate</label>
+<input type="text" placeholder="(e.g. constant)" />
+<button on:click="{getHype}">NEXT</button>

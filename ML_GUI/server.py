@@ -130,7 +130,7 @@ def visualize_testing_data():
 
 
 @app.route('/example')
-def base():
+def sample():
     return send_from_directory("client/public", "index.html")
 
 @app.route('/visualize')
@@ -145,6 +145,10 @@ def hyperparameters():
 def conclusion():
     return send_from_directory("client/public", "export.html")
 
+# Path for all the static files (compiled JS/CSS, etc.)
+@app.route("/<path:path>")
+def base(path):
+    return send_from_directory("client/public", path)
 
 if __name__ == '__main__':
     app.run(debug=True)

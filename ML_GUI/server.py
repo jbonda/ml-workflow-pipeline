@@ -133,6 +133,18 @@ def visualize_testing_data():
 def base():
     return send_from_directory("client/public", "index.html")
 
+@app.route('/visualize')
+def viz():
+    return send_from_directory("client/public", "visualize.html")
+
+@app.route('/model')
+def hyperparameters():
+    return send_from_directory("client/public", "model.html")
+
+@app.route('/export')
+def conclusion():
+    return send_from_directory("client/public", "export.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

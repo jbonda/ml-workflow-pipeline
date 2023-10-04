@@ -21,13 +21,13 @@ class DataModelManager:
         self.data = None
         self.X = None
         self.y = None
-        self.columns = []  
+        self.columns = []
         self.selected_input_column = None
         self.selected_target_column = None
-        self.X_train = None  
-        self.X_test = None   
-        self.y_train = None  
-        self.y_test = None   
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
 
     def load_data(self, file):
         try:
@@ -73,7 +73,7 @@ class DataModelManager:
             flash('Invalid data for visualization.', 'danger')
             return None
 
-        
+
 
 data_manager = DataModelManager()
 

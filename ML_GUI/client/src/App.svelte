@@ -1,15 +1,19 @@
 <script>
   let message = "";
+  let alpha = 0.0001;
+  let fit_intercept = false;
+  let learning_rate = "constant";
   let src = "";
   async function getHype() {
     let thisMessage = message;
-    let res = await fetch(`./message?name=${message}`);
+    let res = await fetch(`./message?alpha=${message}`);
     let message_received = await res.text();
     if (res.ok && thisMessage == message) {
       src = message_received;
     }
   }
 </script>
+
 <h1>Hyperparameters</h1>
 <label for="alpha">Alpha</label>
 <input
@@ -27,5 +31,9 @@
 />
 <br />
 <label for="learning_rate">Learning Rate</label>
-<input type="text" placeholder="(e.g. constant)" />
+<input
+  type="text"
+  placeholder="(e.g. constant)"
+  name="learning_rate"
+/>
 <button on:click="{getHype}">NEXT</button>

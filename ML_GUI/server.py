@@ -130,7 +130,7 @@ def visualize_testing_data():
 
 @app.route('/visualize')
 def viz():
-    pass
+    return send_from_directory("client/public", "sample.html")
 
 @app.route('/model')
 def hyperparameters():
@@ -138,7 +138,7 @@ def hyperparameters():
 
 @app.route('/export')
 def conclusion():
-    return send_from_directory("client/public", "export.html")
+    return render_template('export.html')
 
 # Path for all the static files (compiled JS/CSS, etc.)
 # @app.route("/<path:path>")

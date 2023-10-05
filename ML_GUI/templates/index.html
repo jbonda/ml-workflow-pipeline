@@ -62,7 +62,7 @@
       </select>
 
       <label for="test_size">Test Size (0-0.5):</label>
-      <input type="text" name="test_size" id="test_size" />
+      <input type="number" step="0.1" placeholder="0.2" name="test_size" id="test_size" />
       <input type="submit" value="Split Data" />
     </form>
 
@@ -107,8 +107,11 @@
 
     <br />
 
-    <button>
-      <a href="/model">NEXT</a>
-    </button>
+    <div style="text-align: center;">
+      <form action="model">
+        •◦◦
+        <input type="submit" value="NEXT »">
+      </form>
+    </div>
   </footer>
 </html>

@@ -128,27 +128,22 @@ def visualize_testing_data():
     flash('No testing data available for visualization.', 'danger')
     return redirect(url_for('index'))
 
-
-@app.route('/example')
-def sample():
-    return send_from_directory("client/public", "index.html")
-
 @app.route('/visualize')
 def viz():
-    return send_from_directory("client/public", "visualize.html")
+    pass
 
 @app.route('/model')
 def hyperparameters():
-    return send_from_directory("client/public", "model.html")
+    return render_template('model.html')
 
 @app.route('/export')
 def conclusion():
     return send_from_directory("client/public", "export.html")
 
 # Path for all the static files (compiled JS/CSS, etc.)
-@app.route("/<path:path>")
-def base(path):
-    return send_from_directory("client/public", path)
+# @app.route("/<path:path>")
+# def base(path):
+#     return send_from_directory("client/public", path)
 
 if __name__ == '__main__':
     app.run(debug=True)

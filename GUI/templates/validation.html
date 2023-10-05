@@ -1,121 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Machine Learning-GUI Web Application - Validation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            margin: 0;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f8f8f8;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            color: #007BFF;
-        }
-
-        p {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #007BFF;
-        }
-
-        select, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        .page-navigation {
-            text-align: center;
-        }
-
-        .button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            text-decoration: none;
-            margin-top: 20px;
-            display: inline-block;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <h1>Machine Learning-GUI Web Application</h1>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>🤖 Machine Learning-GUI Web Application</h1>
     <div class="container">
-        <h2>Model Validation</h2>
-        <p>Validate the trained machine learning model using validation data and view evaluation metrics.</p>
-        <form method="POST" action="/validate_model">
-            <label for="validation_metric">Select a Validation Metric:</label>
-            <select name="validation_metric" id="validation_metric">
-                <option value="mean_squared_error">Mean Squared Error</option>
-                <option value="accuracy_score">Accuracy Score</option>
-                <!-- Add more validation metric options as needed -->
-            </select>
+      <h2>Model Validation</h2>
+      <p>
+        Validate the trained machine learning model using validation data and
+        view evaluation metrics.
+      </p>
+      <form method="POST" action="/validate_model">
+        <label for="validation_metric">Select a Validation Metric:</label>
+        <select name="validation_metric" id="validation_metric">
+          <option value="mean_squared_error">Mean Squared Error</option>
+          <option value="accuracy_score">Accuracy Score</option>
+          <!-- Add more validation metric options as needed -->
+        </select>
 
-            <input type="submit" value="Validate Model">
-        </form>
-        
-        <!-- Display validation results here, if available -->
-        
-        <div class="page-navigation">
-            <a href="/" class="button">Go to Data Uploading</a>
-            <a href="/scaling" class="button">Go to Data Scaling</a>
-            <a href="/training" class="button">Go to Training</a>
-        </div>
+        <input type="submit" value="Validate Model" />
+      </form>
+
+      <!-- Display validation results here, if available -->
+
+      <div class="page-navigation">
+        <a href="/scaling" class="button">Go to Data Scaling</a>
+        <a href="/export" class="button">Conclusion »</a>
+      </div>
     </div>
-</body>
+  </body>
 </html>

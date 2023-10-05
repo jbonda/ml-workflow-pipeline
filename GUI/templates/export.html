@@ -1,35 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Data Export</title>
+    <title>Machine Learning-GUI Web Application - Export</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
   </head>
-
   <body>
-    <h1>🤖 Machine Learning Workflow/Pipeline</h1>
+    <h1>🤖 Machine Learning-GUI Web Application</h1>
+    <div class="container">
+      <h2>Code Download</h2>
 
-    <h2>Code Download</h2>
+      <embed src="https://colab.google/" width="100%" height="500px" />
 
-    <embed src="https://colab.google/" width="100%" height="500px" />
-  </body>
-
-  <footer>
-    <br />
-
-    <br />
-
-    <hr />
-
-    <br />
-
-    <br />
-
-    <div style="text-align: center">
-      <form action="export">
-        ◦◦•
-        <button>
-          <a href="/model">« BACK</a>
-        </button>
-      </form>
+      <div class="page-navigation">
+        <a href="/validation" class="button">« Validation</a>
+      </div>
     </div>
-  </footer>
+  </body>
 </html>

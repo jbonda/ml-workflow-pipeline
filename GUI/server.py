@@ -236,5 +236,10 @@ def validate_model():
     return redirect(url_for("validation"))
 
 
+@app.route("/export")
+def export():
+    return render_template("export.html")
+
+
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8085)
+    app.run(host="127.0.0.1", port=8085, debug=True)

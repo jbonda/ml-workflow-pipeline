@@ -1,166 +1,67 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Machine Learning-GUI Web Application</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            margin: 0;
-            text-align: center;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #007BFF;
-        }
-
-        p {
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #007BFF;
-        }
-
-        select, input[type="text"], input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        .flashes {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: center;
-        }
-
-        .flashes li {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px auto;
-            border-radius: 5px;
-            width: 80%;
-            text-align: center;
-        }
-
-        .page-navigation {
-            text-align: center;
-        }
-
-        .button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            text-decoration: none;
-            margin-top: 20px;
-            display: inline-block;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <h1>Machine Learning-GUI Web Application</h1>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>🤖 Machine Learning-GUI Web Application</h1>
     <div class="container">
+      <p>
+        Welcome to the Machine learning web app! this website is designed to
+        train a data set by Simple linear regression, polynomial regression and
+        logistic regression.
+      </p>
 
-        <p>welcome to the Machine learning web app! this website is designed to train a data set by Simple linear regression, polynomial regression and logistic regression.
+      <h2>Data Uploading and Splitting</h2>
 
-    <h2>Data Uploading and Splitting</h2>
-  
+      <form method="POST" action="/upload" enctype="multipart/form-data">
+        <label for="file">Upload your CSV file:</label>
+        <input type="file" name="file" id="file" />
+        <input type="submit" value="Upload" />
+      </form>
 
-        <form method="POST" action="/upload" enctype="multipart/form-data">
-            <label for="file">Upload your CSV file:</label>
-            <input type="file" name="file" id="file">
-            <input type="submit" value="Upload">
-        </form>
+      <form method="POST" action="/split">
+        <label for="input_column">Select Input Column:</label>
+        <select name="input_column" id="input_column">
+          {% for column in columns %}
+          <option value="{{ column }}">{{ column }}</option>
+          {% endfor %}
+        </select>
 
-        <form method="POST" action="/split">
-            <label for="input_column">Select Input Column:</label>
-            <select name="input_column" id="input_column">
-                {% for column in columns %}
-                    <option value="{{ column }}">{{ column }}</option>
-                {% endfor %}
-            </select>
+        <label for="target_column">Select Target Column:</label>
+        <select name="target_column" id="target_column">
+          {% for column in columns %}
+          <option value="{{ column }}">{{ column }}</option>
+          {% endfor %}
+        </select>
 
-            <label for="target_column">Select Target Column:</label>
-            <select name="target_column" id="target_column">
-                {% for column in columns %}
-                    <option value="{{ column }}">{{ column }}</option>
-                {% endfor %}
-            </select>
+        <label for="test_size">Test Size:</label>
+        <input
+          type="text"
+          name="test_size"
+          id="test_size"
+          placeholder="e.g., 0.2"
+        />
+        <input type="submit" value="Split Data" />
+      </form>
 
-            <label for="test_size">Test Size:</label>
-            <input type="text" name="test_size" id="test_size" placeholder="e.g., 0.2">
-            <input type="submit" value="Split Data">
-        </form>
+      <div class="status-bar">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+      </div>
 
-        <div class="status-bar">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flashes">
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-        </div>
-        
-        <div class="page-navigation">
-            <a href="/visualization" class="button">Go to Visualization</a>
-        </div>
+      <div class="page-navigation">
+        <a href="/visualization" class="button">Go to Visualization</a>
+      </div>
     </div>
-</body>
+  </body>
 </html>

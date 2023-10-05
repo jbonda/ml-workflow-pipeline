@@ -1,9 +1,10 @@
 import os
 import secrets
 import numpy as np
-from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.metrics import mean_squared_error, accuracy_score
 import matplotlib.pyplot as plt
@@ -21,13 +22,15 @@ class DataModelManager:
         self.data = None
         self.X = None
         self.y = None
-        self.columns = []
+        self.columns = []  
         self.selected_input_column = None
         self.selected_target_column = None
-        self.X_train = None
-        self.X_test = None
-        self.y_train = None
-        self.y_test = None
+        self.X_train = None  
+        self.X_test = None   
+        self.y_train = None  
+        self.y_test = None  
+        self.X_scaled = None
+        self.y_scaled = None
 
     def load_data(self, file):
         try:
@@ -73,7 +76,34 @@ class DataModelManager:
             flash('Invalid data for visualization.', 'danger')
             return None
 
+    def scale_data(self, input_scaling_method, target_scaling_method):
+        if self.X is not None and self.y is not None:
+            # Perform scaling based on selected methods for input data
+            if input_scaling_method == 'standard':
+                input_scaler = StandardScaler()
+                self.X_scaled = input_scaler.fit_transform(self.X)
+            elif input_scaling_method == 'min_max':
+                input_scaler = MinMaxScaler()
+                self.X_scaled = input_scaler.fit_transform(self.X)
+            elif input_scaling_method == 'robust':
+                input_scaler = RobustScaler()
+                self.X_scaled = input_scaler.fit_transform(self.X)
 
+            # Perform scaling based on selected methods for target data
+            if target_scaling_method == 'standard':
+                target_scaler = StandardScaler()
+                self.y_scaled = target_scaler.fit_transform(self.y.values.reshape(-1, 1))
+            elif target_scaling_method == 'min_max':
+                target_scaler = MinMaxScaler()
+                self.y_scaled = target_scaler.fit_transform(self.y.values.reshape(-1, 1))
+            elif target_scaling_method == 'robust':
+                target_scaler = RobustScaler()
+                self.y_scaled = target_scaler.fit_transform(self.y.values.reshape(-1, 1))
+
+            flash('Data scaled successfully!', 'success')
+
+data_manager = DataModelManager()
+        
 
 data_manager = DataModelManager()
 
@@ -101,50 +131,76 @@ def split_data():
     data_manager.split_data(test_size)
     return redirect(url_for('index'))
 
+@app.route('/visualization')
+def visualization():
+    return render_template('visualization.html', graphic=None, columns=data_manager.columns)
+
 @app.route('/visualize_whole', methods=['POST'])
 def visualize_whole_data():
-    if data_manager.X is not None and data_manager.y is not None:
-        graphic = data_manager.visualize_data(data_manager.X, data_manager.y, 'Whole data')
-        if graphic:
-            return render_template('index.html', graphic=graphic, columns=data_manager.columns)
-    flash('Upload a data file!.', 'danger')
-    return redirect(url_for('index'))
+    graphic = data_manager.visualize_data(data_manager.X, data_manager.y, 'Whole Data')
+    if graphic:
+        return render_template('visualization.html', graphic=graphic)
+    else:
+        flash('Error visualizing whole data.', 'danger')
+        return redirect(url_for('visualization'))
 
 @app.route('/visualize_training', methods=['POST'])
 def visualize_training_data():
-    if data_manager.X_train is not None and data_manager.y_train is not None:
-        graphic = data_manager.visualize_data(data_manager.X_train, data_manager.y_train, 'Training Data')
-        if graphic:
-            return render_template('index.html', graphic=graphic, columns=data_manager.columns)
-    flash('No training data available for visualization.', 'danger')
-    return redirect(url_for('index'))
+    graphic = data_manager.visualize_data(data_manager.X_train, data_manager.y_train, 'Training Data')
+    if graphic:
+        return render_template('visualization.html', graphic=graphic)
+    else:
+        flash('Error visualizing training data.', 'danger')
+        return redirect(url_for('visualization'))
 
 @app.route('/visualize_testing', methods=['POST'])
 def visualize_testing_data():
-    if data_manager.X_test is not None and data_manager.y_test is not None:
-        graphic = data_manager.visualize_data(data_manager.X_test, data_manager.y_test, 'Testing Data')
-        if graphic:
-            return render_template('index.html', graphic=graphic, columns=data_manager.columns)
-    flash('No testing data available for visualization.', 'danger')
-    return redirect(url_for('index'))
+    graphic = data_manager.visualize_data(data_manager.X_test, data_manager.y_test, 'Testing Data')
+    if graphic:
+        return render_template('visualization.html', graphic=graphic)
+    else:
+        flash('Error visualizing testing data.', 'danger')
+        return redirect(url_for('visualization'))
 
-@app.route('/visualize')
-def viz():
-    return send_from_directory("client/public", "sample.html")
+@app.route('/scaling')
+def scaling():
+    return render_template('scaling.html')
 
-@app.route('/model')
-def hyperparameters():
-    return render_template('model.html')
 
-@app.route('/export')
-def conclusion():
-    return render_template('export.html')
+@app.route('/scale', methods=['POST'])
+def scale_data():
+    input_scaling_method = request.form['input_method']
+    target_scaling_method = request.form['target_method']
+    
+    data_manager.scale_data(input_scaling_method, target_scaling_method)
+    flash('Data scaled successfully!', 'success')
+    return redirect(url_for('scaling'))
 
-# Path for all the static files (compiled JS/CSS, etc.)
-# @app.route("/<path:path>")
-# def base(path):
-#     return send_from_directory("client/public", path)
+
+@app.route('/train')
+def training():
+    return render_template('training.html')
+
+@app.route('/train_model', methods=['POST'])
+def train_model():
+    model_name = request.form['model']
+    # Train the selected machine learning model and store the results
+    # You can add your model training logic here and flash training results
+    flash(f'Model trained successfully: {model_name}', 'success')
+    return redirect(url_for('training'))
+
+@app.route('/validation')
+def validation():
+    return render_template('validation.html')
+
+@app.route('/validate_model', methods=['POST'])
+def validate_model():
+    validation_metric = request.form['validation_metric']
+    # Validate the trained model using the selected validation metric and store the results
+    # You can add your model validation logic here and flash validation results
+    flash(f'Model validated using {validation_metric}', 'success')
+    return redirect(url_for('validation'))
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app.run(host='127.0.0.1', port=8085)

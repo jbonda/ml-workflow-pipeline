@@ -1,7 +1,7 @@
 import os
 import secrets
 import numpy as np
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_from_directory
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, LogisticRegression
@@ -21,13 +21,13 @@ class DataModelManager:
         self.data = None
         self.X = None
         self.y = None
-        self.columns = []  
+        self.columns = []
         self.selected_input_column = None
         self.selected_target_column = None
-        self.X_train = None  
-        self.X_test = None   
-        self.y_train = None  
-        self.y_test = None   
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
 
     def load_data(self, file):
         try:
@@ -73,7 +73,7 @@ class DataModelManager:
             flash('Invalid data for visualization.', 'danger')
             return None
 
-        
+
 
 data_manager = DataModelManager()
 
@@ -128,6 +128,28 @@ def visualize_testing_data():
     flash('No testing data available for visualization.', 'danger')
     return redirect(url_for('index'))
 
+
+@app.route('/example')
+def sample():
+    return send_from_directory("client/public", "index.html")
+
+@app.route('/visualize')
+def viz():
+    return send_from_directory("client/public", "visualize.html")
+
+@app.route('/model')
+def hyperparameters():
+    return send_from_directory("client/public", "model.html")
+
+@app.route('/export')
+def conclusion():
+    return send_from_directory("client/public", "export.html")
+
+# Path for all the static files (compiled JS/CSS, etc.)
+@app.route("/<path:path>")
+def base(path):
+    return send_from_directory("client/public", path)
+
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8085)
+    app.run(debug=True)
 

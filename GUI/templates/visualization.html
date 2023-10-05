@@ -6,6 +6,13 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/styles.css') }}"
     />
+    <style>
+      #visualizations {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+    </style>
   </head>
   <body>
     <h1>🤖 Machine Learning-GUI Web Application</h1>
@@ -15,17 +22,19 @@
         Explore and visualize your data using machine learning techniques on
         this page.
       </p>
-      <form method="POST" action="/visualize_whole">
-        <input type="submit" value="Visualize Whole Data" />
-      </form>
+      <div id="visualizations">
+        <form method="POST" action="/visualize_whole">
+          <input type="submit" value="Visualize Whole Data" />
+        </form>
 
-      <form method="POST" action="/visualize_training">
-        <input type="submit" value="Visualize Training Data" />
-      </form>
+        <form method="POST" action="/visualize_training">
+          <input type="submit" value="Visualize Training Data" />
+        </form>
 
-      <form method="POST" action="/visualize_testing">
-        <input type="submit" value="Visualize Testing Data" />
-      </form>
+        <form method="POST" action="/visualize_testing">
+          <input type="submit" value="Visualize Testing Data" />
+        </form>
+      </div>
 
       {% if graphic %}
       <img src="data:image/png;base64,{{ graphic }}" alt="Data Visualization" />

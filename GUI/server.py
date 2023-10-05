@@ -204,7 +204,7 @@ def scale_data():
     target_scaling_method = request.form["target_method"]
 
     data_manager.scale_data(input_scaling_method, target_scaling_method)
-    flash("Data scaled successfully!", "success")
+    # flash("Data scaled successfully!", "success")
     return redirect(url_for("scaling"))
 
 

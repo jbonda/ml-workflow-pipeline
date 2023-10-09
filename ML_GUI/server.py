@@ -82,28 +82,30 @@ class DataModelManager:
             if input_scaling_method == 'standard':
                 input_scaler = StandardScaler()
                 self.X_scaled = input_scaler.fit_transform(self.X)
+                print(self.X_scaled[:5])
             elif input_scaling_method == 'min_max':
                 input_scaler = MinMaxScaler()
                 self.X_scaled = input_scaler.fit_transform(self.X)
+                print(self.X_scaled[:5])
             elif input_scaling_method == 'robust':
                 input_scaler = RobustScaler()
                 self.X_scaled = input_scaler.fit_transform(self.X)
+                print(self.X_scaled[:5])
 
             # Perform scaling based on selected methods for target data
             if target_scaling_method == 'standard':
                 target_scaler = StandardScaler()
                 self.y_scaled = target_scaler.fit_transform(self.y.values.reshape(-1, 1))
+                print(self.y_scaled[:5])
             elif target_scaling_method == 'min_max':
                 target_scaler = MinMaxScaler()
                 self.y_scaled = target_scaler.fit_transform(self.y.values.reshape(-1, 1))
+                print(self.y_scaled[:5])
             elif target_scaling_method == 'robust':
                 target_scaler = RobustScaler()
                 self.y_scaled = target_scaler.fit_transform(self.y.values.reshape(-1, 1))
-
+                print(self.y_scaled[:5])
             flash('Data scaled successfully!', 'success')
-
-data_manager = DataModelManager()
-        
 
 data_manager = DataModelManager()
 
@@ -174,7 +176,13 @@ def scale_data():
     
     data_manager.scale_data(input_scaling_method, target_scaling_method)
     flash('Data scaled successfully!', 'success')
-    return redirect(url_for('scaling'))
+    
+    first_5_columns_X_scaled = data_manager.X_scaled[:, :5]
+    first_5_columns_y_scaled = data_manager.y_scaled[:, :5]
+    return render_template('scaled_data.html', columns=data_manager.columns,
+                           first_5_columns_X_scaled=first_5_columns_X_scaled,
+                           first_5_columns_y_scaled=first_5_columns_y_scaled)
+
 
 
 @app.route('/train')
@@ -184,8 +192,7 @@ def training():
 @app.route('/train_model', methods=['POST'])
 def train_model():
     model_name = request.form['model']
-    # Train the selected machine learning model and store the results
-    # You can add your model training logic here and flash training results
+    
     flash(f'Model trained successfully: {model_name}', 'success')
     return redirect(url_for('training'))
 

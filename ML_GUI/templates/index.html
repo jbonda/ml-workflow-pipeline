@@ -118,7 +118,7 @@
         <p> Welcome to the Machine learning web app! this website is designed to train a data set by Simple linear regression, polynomial regression and logistic regression.
 
     <h2>Data Uploading and Splitting</h2>
-            <h3>Upload a data file. Make sure your file extension is .csv(comma-separated values).</h3>
+            <p>Upload a data file. Make sure your file extension is .csv(comma-separated values).
   
 
         <form method="POST" action="/upload" enctype="multipart/form-data">
@@ -126,7 +126,7 @@
             <input type="file" name="file" id="file">
             <input type="submit" value="Upload">
         </form>
-            <h4> Split the data file into a train data set and a test data set by choosing the test data value. Test data should be less than train data for an optimum model</h4>
+            <p> Split the data file into a train data set and a test data set by choosing the test data value. Test data should be less than train data for an optimum model.
 
         <form method="POST" action="/split">
             <label for="input_column">Select Input Column:</label>

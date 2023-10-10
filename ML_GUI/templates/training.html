@@ -1,122 +1,149 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Machine Learning-GUI Web Application - Training</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+      }
 
-        h1 {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            margin: 0;
-            text-align: center;
-        }
+      h1 {
+        background-color: #007bff;
+        color: white;
+        padding: 20px;
+        margin: 0;
+        text-align: center;
+      }
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f8f8f8;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f8f8f8;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        h2 {
-            color: #007BFF;
-        }
+      h2 {
+        color: #007bff;
+      }
 
-        p {
-            margin-bottom: 20px;
-            color: #333;
-        }
+      p {
+        margin-bottom: 20px;
+        color: #333;
+      }
 
-        form {
-            margin-top: 20px;
-        }
+      form {
+        margin-top: 20px;
+      }
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #007BFF;
-        }
+      label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #007bff;
+      }
 
-        select, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+      select,
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
 
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+      input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+      }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
 
-        .page-navigation {
-            text-align: center;
-        }
+      .page-navigation {
+        text-align: center;
+      }
 
-        .button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            text-decoration: none;
-            margin-top: 20px;
-            display: inline-block;
-        }
+      .button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        text-decoration: none;
+        margin-top: 20px;
+        display: inline-block;
+      }
 
-        .button:hover {
-            background-color: #0056b3;
-        }
+      .button:hover {
+        background-color: #0056b3;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Machine Learning-GUI Web Application</h1>
-        <h2> Choose a suitable machine learning model to train your data.</h2>
     <div class="container">
-        <h2>Model Training</h2>
-        <p>Choose a machine learning model and train it using the training data.</p>
-        <form method="POST" action="/train_model">
-            <label for="model">Select a Model:</label>
-            <select name="model" id="model">
-                <option value="linear_regression">Linear Regression</option>
-                <option value="logistic_regression">Logistic Regression</option>
-                <!-- Add more model options as needed -->
-            </select>
+      <h2>Model Training</h2>
+      <p>Choose a suitable machine learning model to train your data.</p>
 
-            <input type="submit" value="Train Model">
-        </form>
-        
-        <!-- Display training results here, if available -->
-        
-        <div class="page-navigation">
-            <a href="/" class="button">Go to Data Uploading</a>
-            <a href="/scaling" class="button">Go to Data Scaling</a>
-            <a href="/validation" class="button">Go to Validation</a>
-        </div>
+      <p>
+        1. Simple linear regression is a type of regression analysis where the
+        number of independent variables is one and there is a linear
+        relationship between the independent(x) and dependent(y) variables. The
+        simple linear regression equation shown below y=b0+b1.x Image:
+        https://miro.medium.com/v2/resize:fit:1000/1*xz_haBuJRSI2DaveNk-3gw.gif
+      </p>
+
+      <p>
+        2. Polynomial Regression is a regression algorithm that models the
+        relationship between a dependent(y) and independent variable(x) as nth
+        degree polynomial. The Polynomial Regression equation is given below:
+
+        <code>y= b0+b1x1+ b2x1^2+ b2x1^3+...... bnx1^n</code>
+        Image:
+        https://miro.medium.com/v2/resize:fit:1000/1*Cat1swI8xmNYui6w5AYp8A.gif
+      </p>
+
+      <p>
+        3. Logistic regression is an example of supervised learning. It is used
+        to calculate or predict the probability of a binary (yes/no) event
+        occurring. An example of logistic regression could be applying machine
+        learning to determine if a person is likely to be infected with COVID-19
+        or not. p(X) = e^(b0 + b1*X) / (1 + e^(b0 + b1*X))
+        https://towardsdatascience.com/logistic-regression-explained-9ee73cede081
+      </p>
+      <form method="POST" action="/train_model">
+        <label for="model">Select a Model:</label>
+        <select name="model" id="model">
+          <option value="linear_regression">Linear Regression</option>
+          <option value="logistic_regression">Logistic Regression</option>
+          <!-- Add more model options as needed -->
+        </select>
+
+        <input type="submit" value="Train Model" />
+      </form>
+
+      <!-- Display training results here, if available -->
+
+      <div class="page-navigation">
+        <a href="/" class="button">Go to Data Uploading</a>
+        <a href="/scaling" class="button">Go to Data Scaling</a>
+        <a href="/validation" class="button">Go to Validation</a>
+      </div>
     </div>
-</body>
+  </body>
 </html>

@@ -22,13 +22,13 @@ class DataModelManager:
         self.data = None
         self.X = None
         self.y = None
-        self.columns = []  
+        self.columns = []
         self.selected_input_column = None
         self.selected_target_column = None
-        self.X_train = None  
-        self.X_test = None   
-        self.y_train = None  
-        self.y_test = None  
+        self.X_train = None
+        self.X_test = None
+        self.y_train = None
+        self.y_test = None
         self.X_scaled = None
         self.y_scaled = None
 
@@ -173,10 +173,10 @@ def scaling():
 def scale_data():
     input_scaling_method = request.form['input_method']
     target_scaling_method = request.form['target_method']
-    
+
     data_manager.scale_data(input_scaling_method, target_scaling_method)
     flash('Data scaled successfully!', 'success')
-    
+
     first_5_columns_X_scaled = data_manager.X_scaled[:, :5]
     first_5_columns_y_scaled = data_manager.y_scaled[:, :5]
     return render_template('scaled_data.html', columns=data_manager.columns,
@@ -192,7 +192,7 @@ def training():
 @app.route('/train_model', methods=['POST'])
 def train_model():
     model_name = request.form['model']
-    
+
     flash(f'Model trained successfully: {model_name}', 'success')
     return redirect(url_for('training'))
 
@@ -208,6 +208,15 @@ def validate_model():
     flash(f'Model validated using {validation_metric}', 'success')
     return redirect(url_for('validation'))
 
+@app.route('/data')
+def show_data_table():
+    """Show to the CSV file as a table."""
+
+    if data_manager.data is not None:
+        return render_template('data.html', data=data_manager.data.to_html())
+    else:
+        flash('Please upload a CSV file.', 'danger')
+        return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8085)
+    app.run(host='127.0.0.1', port=8085, debug=True)

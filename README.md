@@ -9,7 +9,7 @@ Professional software development project from the Fall 2023 semester at UAF.
 #### Python
 
 - Install dependencies: `pipenv shell`
-- Run program: `python app.py`
+- Run program: `pipenv run flask --app ML_GUI/server.py --debug run`
 
 #### Node.js
 

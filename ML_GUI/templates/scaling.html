@@ -1,159 +1,236 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Machine Learning-GUI Web Application - Scaling</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+      }
 
-        h1 {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            margin: 0;
-            text-align: center;
-        }
+      h1 {
+        background-color: #007bff;
+        color: white;
+        padding: 20px;
+        margin: 0;
+        text-align: center;
+      }
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        h2 {
-            margin-top: 0;
-            color: #007BFF;
-        }
+      h2 {
+        margin-top: 0;
+        color: #007bff;
+      }
 
-        p {
-            margin-bottom: 20px;
-            color: #333;
-        }
+      p {
+        margin-bottom: 20px;
+        color: #333;
+      }
 
-        form {
-            margin-top: 20px;
-        }
+      form {
+        margin-top: 20px;
+      }
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #007BFF;
-        }
+      label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #007bff;
+      }
 
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+      select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
 
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+      input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+      }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
 
-        .status-bar {
-            text-align: center;
-        }
+      .status-bar {
+        text-align: center;
+      }
 
-        .flashes {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+      .flashes {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
 
-        .flashes li {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px auto;
-            border-radius: 5px;
-            width: 80%;
-            text-align: center;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
+      .flashes li {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        margin: 10px auto;
+        border-radius: 5px;
+        width: 80%;
+        text-align: center;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        .page-navigation {
-            text-align: center;
-        }
+      .page-navigation {
+        text-align: center;
+      }
 
-        .button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            text-decoration: none;
-            margin-top: 20px;
-            display: inline-block;
-        }
+      .button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        text-decoration: none;
+        margin-top: 20px;
+        display: inline-block;
+      }
 
-        .button:hover {
-            background-color: #0056b3;
-        }
+      .button:hover {
+        background-color: #0056b3;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        text-align: center;
+      }
+      td:first-child {
+        font-style: italic;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Machine Learning-GUI Web Application</h1>
     <div class="container">
-        <h2>Data Scaling</h2>
-        <p>Choose a scaling method to normalize your data.</p>
-        <form method="POST" action="/scale">
-            <label for="input_method">Select Input Scaling Method:</label>
-            <select name="input_method" id="input_method">
-                <option value="standard">Standard Scaler</option>
-                <option value="min_max">Min-Max Scaler</option>
-                <option value="robust">Robust Scaler</option>
-            </select>
+      <h2>Data Scaling</h2>
+      <p>Choose a scaling method to normalize your data.</p>
+      <form method="POST" action="/scale">
+        <label for="input_method">Select Input & TargetScaling Method:</label>
+        <select name="input_method" id="input_method">
+          <option value="standard">Standard Scaler</option>
+          <option value="min_max">Min-Max Scaler</option>
+          <option value="robust">Robust Scaler</option>
+        </select>
 
-            <label for="target_method">Select Target Scaling Method:</label>
-            <select name="target_method" id="target_method">
-                <option value="standard">Standard Scaler</option>
-                <option value="min_max">Min-Max Scaler</option>
-                <option value="robust">Robust Scaler</option>
-            </select>
+        <button>Display Original Data</button>
 
-            <input type="submit" value="Scale Data">
-        </form>
-        
-        <div class="status-bar">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flashes">
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
-        </div>
-        
-        <div class="page-navigation">
-		<a href="/visualization" class="button">Go to Data Visualization</a>
-            <a href="/train" class="button">Go to Training</a>
-        </div>
+        <button>Display Scaled Data</button>
+
+        <br />
+
+        <details>
+          <table>
+            <tr>
+              <th>Column 1</th>
+              <th>Column 2</th>
+              <th>Column 3</th>
+            </tr>
+            <tr>
+              <td>Row 1</td>
+              <td>Row 1</td>
+              <td>Row 1</td>
+            </tr>
+            <tr>
+              <td>Row 2</td>
+              <td>Row 2</td>
+              <td>Row 2</td>
+            </tr>
+            <tr>
+              <td>Row 3</td>
+              <td>Row 3</td>
+              <td>Row 3</td>
+            </tr>
+            <tr>
+              <td>Row 4</td>
+              <td>Row 4</td>
+              <td>Row 4</td>
+            </tr>
+            <tr>
+              <td>Row 5</td>
+              <td>Row 5</td>
+              <td>Row 5</td>
+            </tr>
+          </table>
+
+          <br />
+
+          <table>
+            <tr>
+              <th>Column 1</th>
+              <th>Column 2</th>
+              <th>Column 3</th>
+            </tr>
+            <tr>
+              <td>Row 1</td>
+              <td>Row 1</td>
+              <td>Row 1</td>
+            </tr>
+            <tr>
+              <td>Row 2</td>
+              <td>Row 2</td>
+              <td>Row 2</td>
+            </tr>
+            <tr>
+              <td>Row 3</td>
+              <td>Row 3</td>
+              <td>Row 3</td>
+            </tr>
+            <tr>
+              <td>Row 4</td>
+              <td>Row 4</td>
+              <td>Row 4</td>
+            </tr>
+            <tr>
+              <td>Row 5</td>
+              <td>Row 5</td>
+              <td>Row 5</td>
+            </tr>
+          </table>
+        </details>
+
+        <input type="submit" value="Scale Data" />
+      </form>
+
+      <div class="status-bar">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+      </div>
+
+      <div class="page-navigation">
+        <a href="/visualization" class="button">Go to Data Visualization</a>
+        <a href="/train" class="button">Go to Training</a>
+      </div>
     </div>
-</body>
+  </body>
 </html>

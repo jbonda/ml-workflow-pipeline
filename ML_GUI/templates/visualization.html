@@ -1,144 +1,153 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Machine Learning-GUI Web Application - Visualization</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+      }
 
-        h1 {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            margin: 0;
-            text-align: center;
-        }
+      h1 {
+        background-color: #007bff;
+        color: white;
+        padding: 20px;
+        margin: 0;
+        text-align: center;
+      }
 
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        h2 {
-            margin-top: 0;
-            color: #007BFF;
-        }
+      h2 {
+        margin-top: 0;
+        color: #007bff;
+      }
 
-        p {
-            margin-bottom: 20px;
-            color: #333;
-        }
+      p {
+        margin-bottom: 20px;
+        color: #333;
+      }
 
-        form {
-            margin-top: 20px;
-        }
+      form {
+        margin-top: 20px;
+      }
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #007BFF;
-        }
+      label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #007bff;
+      }
 
-        select, input[type="text"], input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+      select,
+      input[type="text"],
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
 
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-        }
+      input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+      }
 
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
 
-        .flashes {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: center;
-        }
+      .flashes {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+      }
 
-        .flashes li {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px auto;
-            border-radius: 5px;
-            width: 80%;
-            text-align: center;
-        }
+      .flashes li {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        margin: 10px auto;
+        border-radius: 5px;
+        width: 80%;
+        text-align: center;
+      }
 
-        .page-navigation {
-            text-align: center;
-        }
+      .page-navigation {
+        text-align: center;
+      }
 
-        .button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 16px;
-            text-decoration: none;
-            margin-top: 20px;
-            display: inline-block;
-        }
+      .button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        text-decoration: none;
+        margin-top: 20px;
+        display: inline-block;
+      }
 
-        .button:hover {
-            background-color: #0056b3;
-        }
+      .button:hover {
+        background-color: #0056b3;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Machine Learning-GUI Web Application</h1>
-	<h2> Here your selected data columns will be visualized in a scatter plot for single input and single output values.
-		You can see the whole data visualization, test data visualization, and train data visualization separately. 
-	</h2>
     <div class="container">
-        <h2>Data Visualization</h2>
-        <p>Explore and visualize your data using machine learning techniques on this page.</p>
-        <form method="POST" action="/visualize_whole">
-            <input type="submit" value="Visualize Whole Data">
-        </form>
+      <h2>Data Visualization</h2>
+      <p>
+        Explore and visualize your data using machine learning techniques on
+        this page.
+      </p>
 
-        <form method="POST" action="/visualize_training">
-            <input type="submit" value="Visualize Training Data">
-        </form>
+      <p>
+        Here your selected data columns will be visualized in a scatter plot for
+        single input and single output values. You can see the whole data
+        visualization, test data visualization, and train data visualization
+        separately.
+      </p>
+      <form method="POST" action="/visualize_whole">
+        <input type="submit" value="Visualize Whole Data" />
+      </form>
 
-        <form method="POST" action="/visualize_testing">
-            <input type="submit" value="Visualize Testing Data">
-        </form>
+      <form method="POST" action="/visualize_training">
+        <input type="submit" value="Visualize Training Data" />
+      </form>
 
-        {% if graphic %}
-            <img src="data:image/png;base64,{{ graphic }}" alt="Data Visualization">
-        {% endif %}
-        
-        <div class="page-navigation">
-		<a href="/" class="button">Go to Data Uploading</a>
-            <a href="/scaling" class="button">Go to Data Scaling</a>
-        </div>
+      <form method="POST" action="/visualize_testing">
+        <input type="submit" value="Visualize Testing Data" />
+      </form>
+
+      {% if graphic %}
+      <img src="data:image/png;base64,{{ graphic }}" alt="Data Visualization" />
+      {% endif %}
+
+      <div class="page-navigation">
+        <a href="/" class="button">Go to Data Uploading</a>
+        <a href="/scaling" class="button">Go to Data Scaling</a>
+      </div>
     </div>
-</body>
+  </body>
 </html>

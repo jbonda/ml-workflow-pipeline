@@ -123,15 +123,21 @@
       td:first-child {
         font-style: italic;
       }
+      #scaling {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
     </style>
   </head>
   <body>
     <h1>Machine Learning-GUI Web Application</h1>
     <div class="container">
       <h2>Data Scaling</h2>
+      <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
       <p>Choose a scaling method to normalize your data.</p>
       <form method="POST" action="/scale">
-        <label for="input_method">Select Input & TargetScaling Method:</label>
+        <label for="input_method">Select Input & Target Scaling Method:</label>
         <select name="input_method" id="input_method">
           <option value="standard">Standard Scaler</option>
           <option value="min_max">Min-Max Scaler</option>
@@ -143,75 +149,76 @@
         <button>Display Scaled Data</button>
 
         <br />
-
         <details>
-          <table>
-            <tr>
-              <th>Column 1</th>
-              <th>Column 2</th>
-              <th>Column 3</th>
-            </tr>
-            <tr>
-              <td>Row 1</td>
-              <td>Row 1</td>
-              <td>Row 1</td>
-            </tr>
-            <tr>
-              <td>Row 2</td>
-              <td>Row 2</td>
-              <td>Row 2</td>
-            </tr>
-            <tr>
-              <td>Row 3</td>
-              <td>Row 3</td>
-              <td>Row 3</td>
-            </tr>
-            <tr>
-              <td>Row 4</td>
-              <td>Row 4</td>
-              <td>Row 4</td>
-            </tr>
-            <tr>
-              <td>Row 5</td>
-              <td>Row 5</td>
-              <td>Row 5</td>
-            </tr>
-          </table>
+          <div id="scaling">
+            <table>
+              <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+                <th>Column 3</th>
+              </tr>
+              <tr>
+                <td>Row 1</td>
+                <td>Row 1</td>
+                <td>Row 1</td>
+              </tr>
+              <tr>
+                <td>Row 2</td>
+                <td>Row 2</td>
+                <td>Row 2</td>
+              </tr>
+              <tr>
+                <td>Row 3</td>
+                <td>Row 3</td>
+                <td>Row 3</td>
+              </tr>
+              <tr>
+                <td>Row 4</td>
+                <td>Row 4</td>
+                <td>Row 4</td>
+              </tr>
+              <tr>
+                <td>Row 5</td>
+                <td>Row 5</td>
+                <td>Row 5</td>
+              </tr>
+            </table>
 
-          <br />
+            <br />
 
-          <table>
-            <tr>
-              <th>Column 1</th>
-              <th>Column 2</th>
-              <th>Column 3</th>
-            </tr>
-            <tr>
-              <td>Row 1</td>
-              <td>Row 1</td>
-              <td>Row 1</td>
-            </tr>
-            <tr>
-              <td>Row 2</td>
-              <td>Row 2</td>
-              <td>Row 2</td>
-            </tr>
-            <tr>
-              <td>Row 3</td>
-              <td>Row 3</td>
-              <td>Row 3</td>
-            </tr>
-            <tr>
-              <td>Row 4</td>
-              <td>Row 4</td>
-              <td>Row 4</td>
-            </tr>
-            <tr>
-              <td>Row 5</td>
-              <td>Row 5</td>
-              <td>Row 5</td>
-            </tr>
-          </table>
+            <table>
+              <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+                <th>Column 3</th>
+              </tr>
+              <tr>
+                <td>Row 1</td>
+                <td>Row 1</td>
+                <td>Row 1</td>
+              </tr>
+              <tr>
+                <td>Row 2</td>
+                <td>Row 2</td>
+                <td>Row 2</td>
+              </tr>
+              <tr>
+                <td>Row 3</td>
+                <td>Row 3</td>
+                <td>Row 3</td>
+              </tr>
+              <tr>
+                <td>Row 4</td>
+                <td>Row 4</td>
+                <td>Row 4</td>
+              </tr>
+              <tr>
+                <td>Row 5</td>
+                <td>Row 5</td>
+                <td>Row 5</td>
+              </tr>
+            </table>
+          </div>
         </details>
 
         <input type="submit" value="Scale Data" />
@@ -228,8 +235,9 @@
       </div>
 
       <div class="page-navigation">
-        <a href="/visualization" class="button">Go to Data Visualization</a>
-        <a href="/train" class="button">Go to Training</a>
+        <a href="/visualization" class="button">« Visualization</a>
+        ◦◦•◦◦◦
+        <a href="/train" class="button">Training »</a>
       </div>
     </div>
   </body>

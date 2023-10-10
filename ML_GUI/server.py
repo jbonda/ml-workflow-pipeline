@@ -218,5 +218,9 @@ def show_data_table():
         flash('Please upload a CSV file.', 'danger')
         return redirect(url_for('index'))
 
+@app.route("/export")
+def export():
+    return render_template("export.html")
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8085, debug=True)

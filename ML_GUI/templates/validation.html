@@ -100,8 +100,21 @@
       <h2>Model Validation</h2>
       <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
       <p>
-        Validate the trained machine learning model using validation data and
-        view evaluation metrics.
+        
+        Evaluation: Model evaluation is the process of using different evaluation metrics to understand a machine-learning
+         model’s performance, as well as its strengths and weaknesses.
+        Here we are using the following metrics: 1) ROOT MEAN SQUARED ERROR(RMSE) and 2) Accuracy Score.
+        Root Mean Squared Error(RMSE): Root Mean Squared error is a popular metric used in machine learning to measure the accuracy 
+        of a predictive model. It quantifies the difference between predicted values and actual values, squaring the errors, 
+        taking the mean, and then finding the square root.
+        ToDo: Equation should come here.
+        where N is the number of data points, y(i) is the i-th measurement, and y(i) is its corresponding prediction.
+        Accuracy score: Accuracy Score is one metric for evaluating classification models. Accuracy has the following definition:
+        Accuracy = Number of correct Predictions Total number of predictions
+        For binary classification, accuracy can also be calculated in terms of positives and negatives as follows:
+        Accuracy=TP+TN TP+TN+FP+FN
+        Where TP = True Positives, TN = True Negatives, FP = False Positives, and FN = False Negatives.
+        
       </p>
       <form method="POST" action="/validate_model">
         <label for="validation_metric">Select a Validation Metric:</label>

@@ -135,9 +135,20 @@
 
     <h2>Data Table</h2>
 
-    <!-- Render CSV table as HTML -->
-    
+    <div>
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <title>Data Table</title>
+        </head>
+        <body>
+          <h1>🤖 Machine Learning Workflow/Pipeline</h1>
+          <h2>Data Table</h2>
 
-    <div></div>
+          <div>{{ data_table | safe }}</div>
+        </body>
+      </html>
+    </div>
   </body>
 </html>

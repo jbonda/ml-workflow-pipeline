@@ -36,6 +36,8 @@ class DataModelManager:
         try:
             if file.filename.endswith('.csv'):
                 self.data = pd.read_csv(file)
+                global full_dataset
+                full_dataset = self.data
                 self.columns = list(self.data.columns)  # Store the column names
                 return True
             else:
@@ -213,7 +215,7 @@ def show_data_table():
     """Show to the CSV file as a table."""
 
     if data_manager.data is not None:
-        return render_template('data.html', data=data_manager.data.to_html())
+        return render_template('data.html', data_table=full_dataset.to_html())
     else:
         flash('Please upload a CSV file.', 'danger')
         return redirect(url_for('index'))

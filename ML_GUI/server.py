@@ -38,8 +38,9 @@ class DataModelManager:
         try:
             if file.filename.endswith(".csv"):
                 self.data = pd.read_csv(file)
-                global full_dataset
+                global full_dataset, first_five_rows
                 full_dataset = self.data
+                first_five_rows = self.data.head()
                 self.columns = list(self.data.columns)  # Store the column names
                 return True
             else:
@@ -202,7 +203,17 @@ def visualize_testing_data():
 
 @app.route("/scaling")
 def scaling():
-    return render_template("scaling.html")
+    """Display the first five rows of the dataset."""
+
+    if data_manager.data is not None:
+        return render_template(
+            "scaling.html",
+            columns=data_manager.columns,
+            first_five=first_five_rows.to_html(),
+        )
+    else:
+        flash("Please upload a CSV file.", "danger")
+        return redirect(url_for("index"))
 
 
 @app.route("/scale", methods=["POST"])

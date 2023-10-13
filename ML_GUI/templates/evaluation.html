@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Machine Learning-GUI Web Application - Validation</title>
+    <title>Machine Learning-GUI Web Application - Evaluation</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -97,24 +97,23 @@
   <body>
     <h1>Machine Learning-GUI Web Application</h1>
     <div class="container">
-      <h2>Model Validation</h2>
+      <h2>Model Evaluation</h2>
       <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
       <p>
-        Validate the trained machine learning model using validation data and
-        view evaluation metrics.
+        Evaluate the trained machine learning model using evaluation metrics.
       </p>
-      <form method="POST" action="/validate_model">
-        <label for="validation_metric">Select a Validation Metric:</label>
-        <select name="validation_metric" id="validation_metric">
+      <form method="POST" action="/evaluate_model">
+        <label for="evaluation_metric">Select a Validation Metric:</label>
+        <select name="evaluation_metric" id="evaluation_metric">
           <option value="mean_squared_error">Mean Squared Error</option>
           <option value="accuracy_score">Accuracy Score</option>
-          <!-- Add more validation metric options as needed -->
+          <!-- Add more evaluation metric options as needed -->
         </select>
 
-        <input type="submit" value="Validate Model" />
+        <input type="submit" value="Evaluate Model" />
       </form>
 
-      <!-- Display validation results here, if available -->
+      <!-- Display evaluation results here, if available -->
 
       <div class="page-navigation">
         <a href="/train" class="button">« Training</a>

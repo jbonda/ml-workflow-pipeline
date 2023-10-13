@@ -49,6 +49,9 @@ class DataModelManager:
             flash(f"Error: {str(e)}", "danger")
         return False
 
+    def clean_data():
+        return None
+
     def split_data(self, test_size):
         if (
             self.data is not None
@@ -128,6 +131,18 @@ class DataModelManager:
                 )
                 print(self.y_scaled[:5])
             flash("Data scaled successfully!", "success")
+
+    def train_model():
+        return None
+
+    def evaluate_model():
+        return None
+
+    def export_model():
+        return None
+
+    def download_code():
+        return None
 
 
 data_manager = DataModelManager()
@@ -247,13 +262,13 @@ def train_model():
     return redirect(url_for("training"))
 
 
-@app.route("/validation")
-def validation():
-    return render_template("validation.html")
+@app.route("/evaluation")
+def evaluation():
+    return render_template("evaluation.html")
 
 
-@app.route("/validate_model", methods=["POST"])
-def validate_model():
+@app.route("/evaluate_model", methods=["POST"])
+def evaluate_model():
     validation_metric = request.form["validation_metric"]
     # Validate the trained model using the selected validation metric and store the results
     # You can add your model validation logic here and flash validation results

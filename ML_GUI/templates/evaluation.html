@@ -99,9 +99,22 @@
     <div class="container">
       <h2>Model Evaluation</h2>
       <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
+
       <p>
         Evaluate the trained machine learning model using evaluation metrics.
       </p>
+
+      <p>
+        Model evaluation is the process of using different evaluation metrics to
+        understand a machine learning model's performance, as well as its
+        strengths and weaknesses. Here we are using the following metrics:
+      </p>
+
+      <ul>
+        <li><b>Root Mean Squared Error</b> (RMSE) → Description</li>
+        <li><b> Accuracy Score</b> → Description</li>
+      </ul>
+
       <form method="POST" action="/evaluate_model">
         <label for="evaluation_metric">Select a Validation Metric:</label>
         <select name="evaluation_metric" id="evaluation_metric">

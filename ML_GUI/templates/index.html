@@ -113,68 +113,89 @@
       }
     </style>
   </head>
-<body>
-  <h1>Machine Learning-GUI Web Application</h1>
-  <div class="container">
-    <h2>Data Uploading</h2>
-    <p>Welcome to our Machine Learning-GUI Web Application! This page allows you to upload a CSV 	data file, Pre_processing the data, Split the data into test set and train set, and lead 	to visualization.</p>
-    <form method="POST" action="/upload" enctype="multipart/form-data">
-      <label for="file">Upload your CSV file:</label>
-      <input type="file" name="file" id="file" />
-      <input type="submit" value="Upload" />
-    </form>
-  </div>
-
-  <div class="container">
-    <h2>Data Preprocessing</h2>
-    <p>In the Data Preprocessing step, you can remove the NaN values and the duplicated values from the uploaded file.</p>
-
-    <form method="POST" action="/clean" enctype="multipart/form-data">
-      <input type="submit" value="Remove NaN values" />
-    </form>
-    <form method="POST" action="/remove_duplicates" enctype="multipart/form-data">
-      <input type="submit" value="Remove Duplicates" />
-    </form>
-  </div>
-
-  <hr />
-
-  <div class="container">
-    <h2>Data Splitting</h2>
-    <p>Split the data file into a train data set and a test data set by choosing the test data value.</p>
-    <form method="POST" action="/split">
-      <label for="input_column">Select Input Columns for Data Splitting:</label>
-      <select name="input_column" id="input_column" multiple>
-        {% for column in columns %}
-        <option value="{{ column }}">{{ column }}</option>
-        {% endfor %}
-      </select>
-      <label for="target_column">Select Target Column:</label>
-      <select name="target_column" id="target_column">
-        {% for column in columns %}
-        <option value="{{ column }}">{{ column }}</option>
-        {% endfor %}
-      </select>
-      <p>Testing data should be less than training data for an optimum model.</p>
-      <label for="test_size">Test Size:</label>
-      <input type="text" name="test_size" id="test_size" placeholder="e.g., 0.2" />
-      <input type="submit" name="split_button" value="Split Data" />
-    </form>
-    <div class="status-bar">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class="flashes">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
+  <body>
+    <h1>Machine Learning-GUI Web Application</h1>
+    <div class="container">
+      <h2>Data Uploading</h2>
+      <p>
+        Welcome to the Machine Learning Web Application! This page allows for
+        uploading a CSV or zipped file, data preprocessing the data, splitting
+        it into testing/training sets, and generating a visualization preview.
+      </p>
+      <form method="POST" action="/upload" enctype="multipart/form-data">
+        <label for="file">Upload your CSV file:</label>
+        <input type="file" name="file" id="file" />
+        <input type="submit" value="Upload" />
+      </form>
     </div>
-  </div>
 
-  <div class="page-navigation">
-    •◦◦◦◦◦ <a href="/visualization" class="button">Visualization »</a>
-  </div>
-</body>
+    <div class="container">
+      <h2>Data Preprocessing</h2>
+      <p>
+        In the Data Preprocessing step, you can remove the NaN values and the
+        duplicated values from the uploaded file.
+      </p>
+
+      <form method="POST" action="/clean" enctype="multipart/form-data">
+        <input type="submit" value="Remove NaN values" />
+      </form>
+      <form
+        method="POST"
+        action="/remove_duplicates"
+        enctype="multipart/form-data"
+      >
+        <input type="submit" value="Remove Duplicates" />
+      </form>
+    </div>
+
+    <hr />
+
+    <div class="container">
+      <h2>Data Splitting</h2>
+      <p>
+        Split the data file into a train data set and a test data set by
+        choosing the test data value.
+      </p>
+      <form method="POST" action="/split">
+        <label for="input_column"
+          >Select Input Columns for Data Splitting:</label
+        >
+        <select name="input_column" id="input_column" multiple>
+          {% for column in columns %}
+          <option value="{{ column }}">{{ column }}</option>
+          {% endfor %}
+        </select>
+        <label for="target_column">Select Target Column:</label>
+        <select name="target_column" id="target_column">
+          {% for column in columns %}
+          <option value="{{ column }}">{{ column }}</option>
+          {% endfor %}
+        </select>
+        <p>
+          Testing data should be less than training data for an optimum model.
+        </p>
+        <label for="test_size">Test Size:</label>
+        <input
+          type="text"
+          name="test_size"
+          id="test_size"
+          placeholder="e.g., 0.2"
+        />
+        <input type="submit" name="split_button" value="Split Data" />
+      </form>
+      <div class="status-bar">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+      </div>
+    </div>
+
+    <div class="page-navigation">
+      •◦◦◦◦◦ <a href="/visualization" class="button">Visualization »</a>
+    </div>
+  </body>
 </html>

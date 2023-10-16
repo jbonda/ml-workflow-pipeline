@@ -12,6 +12,7 @@ from io import BytesIO
 import random
 import base64
 import matplotlib
+import zipfile
 
 matplotlib.use("Agg")
 
@@ -43,8 +44,19 @@ class DataModelManager:
                 first_five_rows = self.data.head()
                 self.columns = list(self.data.columns)  # Store the column names
                 return True
+            elif file.filename.endswith(".xlsx"):
+                return None
+            elif file.filename.endswith(".zip"):
+                # Unpack the zip file here.
+                with zipfile.ZipFile(file, 'r') as zip_ref:
+                    with zip_ref.open(zip_ref.namelist()[0]) as csv_file:
+                        self.data = pd.read_csv(csv_file)
+                        full_dataset = self.data
+                        first_five_rows = self.data.head()
+                        self.columns = list(self.data.columns)  # Store the column names
+                        return True
             else:
-                flash("Please upload a CSV file.", "danger")
+                flash("Please upload a CSV or ZIP file.", "danger")
         except Exception as e:
             flash(f"Error: {str(e)}", "danger")
         return False
@@ -62,7 +74,7 @@ class DataModelManager:
                 flash("Please upload a CSV file before cleaning the data.", "danger")
         else:
             flash("No NaN values present in the uploaded file!")
-    
+
     def remove_duplicates(self):
         if self.data.duplicated().any():
             if self.data is not None:
@@ -211,7 +223,7 @@ def split_data():
     data_manager.split_data(test_size)
     return redirect(url_for("index"))
 
-    
+
 
 @app.route("/visualization")
 def visualization():
@@ -331,4 +343,4 @@ def export():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8085)
+    app.run(host="127.0.0.1", port=8085, debug=True)

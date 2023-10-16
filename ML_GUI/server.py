@@ -44,8 +44,6 @@ class DataModelManager:
                 first_five_rows = self.data.head()
                 self.columns = list(self.data.columns)  # Store the column names
                 return True
-            elif file.filename.endswith(".xlsx"):
-                return None
             elif file.filename.endswith(".zip"):
                 # Unpack the zip file here.
                 with zipfile.ZipFile(file, 'r') as zip_ref:
@@ -74,6 +72,7 @@ class DataModelManager:
                 flash("Please upload a CSV file before cleaning the data.", "danger")
         else:
             flash("No NaN values present in the uploaded file!")
+        return
 
     def remove_duplicates(self):
         if self.data.duplicated().any():
@@ -82,13 +81,14 @@ class DataModelManager:
                     initial_shape = self.data.shape
                     self.data.drop_duplicates(inplace=True)
                     final_shape = self.data.shape
-                    flash(f"Removed {initial_shape[0] - final_shape[0]} duplicate rows.", "success")
+                    flash(f"Removed {initial_shape[0] - final_shape[0]} duplicate row(s).", "success")
                 except Exception as e:
                     flash(f"Error removing duplicates: {str(e)}", "danger")
             else:
                 flash("Please upload a CSV file before removing duplicates.", "danger")
         else:
             flash('No duplicate values present in the uploaded data file!')
+        return
 
     def split_data(self, test_size):
         if (
@@ -227,9 +227,12 @@ def split_data():
 
 @app.route("/visualization")
 def visualization():
-    return render_template(
-        "visualization.html", graphic=None, columns=data_manager.columns
-    )
+    # If no file is uploaded, redirect to the home page.
+    if data_manager.data is None:
+        flash("Please upload a file first!", "danger")
+        return redirect(url_for("index"))
+    else:
+        return render_template("visualization.html", columns=data_manager.columns)
 
 
 @app.route("/visualize_whole", methods=["POST"])

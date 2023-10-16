@@ -132,8 +132,8 @@
     <div class="container">
       <h2>Data Preprocessing</h2>
       <p>
-        In the Data Preprocessing step, you can remove the NaN values and the
-        duplicated values from the uploaded file.
+        This functionality removes duplicated and NaN (Not a Number) values from
+        the uploaded file.
       </p>
 
       <form method="POST" action="/clean" enctype="multipart/form-data">
@@ -153,8 +153,8 @@
     <div class="container">
       <h2>Data Splitting</h2>
       <p>
-        Split the data file into a train data set and a test data set by
-        choosing the test data value.
+        Split the data file into a train and test data set by choosing the test
+        data value.
       </p>
       <form method="POST" action="/split">
         <label for="input_column"

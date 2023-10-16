@@ -62,34 +62,34 @@ class DataModelManager:
         return False
 
     def remove_NaN_values(self):
-        if self.data.isnull().values.any():
-            if self.data is not None:
+        if self.data is not None:
+            if self.data.isnull().values.any():
                 try:
-                    # Your data cleaning logic here
-                    self.data = self.data.dropna()  # Example: dropping rows with missing values
-                    flash("Nan Values are removed successfully!", "success")
+                    self.data = self.data.dropna()
+                    flash("NaN Values are removed successfully!", "success")
                 except Exception as e:
                     flash(f"Error cleaning data: {str(e)}", "danger")
             else:
-                flash("Please upload a CSV file before cleaning the data.", "danger")
+                flash("No NaN values present in the uploaded file.")
         else:
-            flash("No NaN values present in the uploaded file!")
+            flash("Please upload a CSV file before using this function.", "danger")
+        return
 
     def remove_duplicates(self):
-        if self.data.duplicated().any():
-            if self.data is not None:
+        if self.data is not None:
+            if self.data.duplicated().any():
                 try:
                     initial_shape = self.data.shape
-                    self.data.drop_duplicates(inplace=True)
+                    self.data = self.data[~self.data.duplicated()]
                     final_shape = self.data.shape
                     flash(f"Removed {initial_shape[0] - final_shape[0]} duplicate rows.", "success")
                 except Exception as e:
                     flash(f"Error removing duplicates: {str(e)}", "danger")
             else:
-                flash("Please upload a CSV file before removing duplicates.", "danger")
+                flash('No duplicate values present in the uploaded data file.', "info")
         else:
-            flash('No duplicate values present in the uploaded data file!')
-
+            flash("Please upload a CSV file before using this function.", "danger")
+        return
     def split_data(self, test_size):
         if (
             self.data is not None

@@ -49,8 +49,34 @@ class DataModelManager:
             flash(f"Error: {str(e)}", "danger")
         return False
 
-    def clean_data():
-        return None
+    def remove_NaN_values(self):
+        if self.data.isnull().values.any():
+            if self.data is not None:
+                try:
+                    # Your data cleaning logic here
+                    self.data = self.data.dropna()  # Example: dropping rows with missing values
+                    flash("Nan Values are removed successfully!", "success")
+                except Exception as e:
+                    flash(f"Error cleaning data: {str(e)}", "danger")
+            else:
+                flash("Please upload a CSV file before cleaning the data.", "danger")
+        else:
+            flash("No NaN values present in the uploaded file!")
+    
+    def remove_duplicates(self):
+        if self.data.duplicated().any():
+            if self.data is not None:
+                try:
+                    initial_shape = self.data.shape
+                    self.data.drop_duplicates(inplace=True)
+                    final_shape = self.data.shape
+                    flash(f"Removed {initial_shape[0] - final_shape[0]} duplicate rows.", "success")
+                except Exception as e:
+                    flash(f"Error removing duplicates: {str(e)}", "danger")
+            else:
+                flash("Please upload a CSV file before removing duplicates.", "danger")
+        else:
+            flash('No duplicate values present in the uploaded data file!')
 
     def split_data(self, test_size):
         if (
@@ -165,6 +191,17 @@ def upload_file():
                 flash("File uploaded successfully!", "success")
     return redirect(url_for("index"))
 
+@app.route("/clean", methods=["POST"])
+def clean_data():
+    data_manager.remove_NaN_values()
+    return redirect(url_for("index"))
+
+@app.route("/remove_duplicates", methods=["POST"])
+def remove_duplicates():
+    data_manager.remove_duplicates()
+    return redirect(url_for("index"))
+
+
 
 @app.route("/split", methods=["POST"])
 def split_data():
@@ -174,6 +211,7 @@ def split_data():
     data_manager.split_data(test_size)
     return redirect(url_for("index"))
 
+    
 
 @app.route("/visualization")
 def visualization():
@@ -293,4 +331,4 @@ def export():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8085, debug=True)
+    app.run(host="127.0.0.1", port=8085)

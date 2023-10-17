@@ -12,174 +12,12 @@ from io import BytesIO
 import random
 import base64
 import matplotlib
-import zipfile
+from module.input import DataModelManager
 
 matplotlib.use("Agg")
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(24)
-
-
-class DataModelManager:
-    def __init__(self):
-        self.data = None
-        self.X = None
-        self.y = None
-        self.columns = []
-        self.selected_input_column = None
-        self.selected_target_column = None
-        self.X_train = None
-        self.X_test = None
-        self.y_train = None
-        self.y_test = None
-        self.X_scaled = None
-        self.y_scaled = None
-
-    def load_data(self, file):
-        try:
-            if file.filename.endswith(".csv"):
-                self.data = pd.read_csv(file)
-                global full_dataset, first_five_rows
-                full_dataset = self.data
-                first_five_rows = self.data.head()
-                self.columns = list(self.data.columns)  # Store the column names
-                return True
-            elif file.filename.endswith(".zip"):
-                # Unpack the zip file here.
-                with zipfile.ZipFile(file, 'r') as zip_ref:
-                    with zip_ref.open(zip_ref.namelist()[0]) as csv_file:
-                        self.data = pd.read_csv(csv_file)
-                        full_dataset = self.data
-                        first_five_rows = self.data.head()
-                        self.columns = list(self.data.columns)  # Store the column names
-                        return True
-            else:
-                flash("Please upload a CSV or ZIP file.", "danger")
-        except Exception as e:
-            flash(f"Error: {str(e)}", "danger")
-        return False
-
-    def remove_NaN_values(self):
-        if self.data is not None:
-            if self.data.isnull().values.any():
-                try:
-                    self.data = self.data.dropna()
-                    flash("NaN Values are removed successfully!", "success")
-                except Exception as e:
-                    flash(f"Error cleaning data: {str(e)}", "danger")
-            else:
-                flash("No NaN values present in the uploaded file.")
-        else:
-            flash("No NaN values present in the uploaded file!")
-        return
-
-    def remove_duplicates(self):
-        if self.data is not None:
-            if self.data.duplicated().any():
-                try:
-                    initial_shape = self.data.shape
-                    self.data = self.data[~self.data.duplicated()]
-                    final_shape = self.data.shape
-                    flash(f"Removed {initial_shape[0] - final_shape[0]} duplicate row(s).", "success")
-                except Exception as e:
-                    flash(f"Error removing duplicates: {str(e)}", "danger")
-            else:
-                flash('No duplicate values present in the uploaded data file.', "info")
-        else:
-            flash("Please upload a CSV file before using this function.", "danger")
-        return
-    def split_data(self, test_size):
-        if (
-            self.data is not None
-            and self.selected_input_column
-            and self.selected_target_column
-        ):
-            self.X = self.data[[self.selected_input_column]]
-            self.y = self.data[self.selected_target_column]
-            X_train, X_test, y_train, y_test = train_test_split(
-                self.X, self.y, test_size=test_size, random_state=42
-            )
-            self.X_train, self.X_test, self.y_train, self.y_test = (
-                X_train,
-                X_test,
-                y_train,
-                y_test,
-            )  # Store training and testing data
-            flash("Data split successfully!", "success")
-        else:
-            flash("Please select input and target columns and upload data.", "danger")
-
-    def visualize_data(self, X, y, title):
-        if X is not None and y is not None:
-            fig, axes = plt.subplots(figsize=(8, 6))
-            axes.scatter(X, y)
-            plt.show()
-            axes.set_title(f"Scatter Plot - {title}")
-            axes.set_xlabel(self.selected_input_column)
-            axes.set_ylabel(self.selected_target_column)
-            plt.tight_layout()
-
-            buffer = BytesIO()
-            plt.savefig(buffer, format="png")
-            buffer.seek(0)
-            image_png = buffer.getvalue()
-            buffer.close()
-
-            graphic = base64.b64encode(image_png).decode()
-            return graphic
-        else:
-            flash("Invalid data for visualization.", "danger")
-            return None
-
-    def scale_data(self, input_scaling_method, target_scaling_method):
-        if self.X is not None and self.y is not None:
-            # Perform scaling based on selected methods for input data
-            if input_scaling_method == "standard":
-                input_scaler = StandardScaler()
-                self.X_scaled = input_scaler.fit_transform(self.X)
-                print(self.X_scaled[:5])
-            elif input_scaling_method == "min_max":
-                input_scaler = MinMaxScaler()
-                self.X_scaled = input_scaler.fit_transform(self.X)
-                print(self.X_scaled[:5])
-            elif input_scaling_method == "robust":
-                input_scaler = RobustScaler()
-                self.X_scaled = input_scaler.fit_transform(self.X)
-                print(self.X_scaled[:5])
-
-            # Perform scaling based on selected methods for target data
-            if target_scaling_method == "standard":
-                target_scaler = StandardScaler()
-                self.y_scaled = target_scaler.fit_transform(
-                    self.y.values.reshape(-1, 1)
-                )
-                print(self.y_scaled[:5])
-            elif target_scaling_method == "min_max":
-                target_scaler = MinMaxScaler()
-                self.y_scaled = target_scaler.fit_transform(
-                    self.y.values.reshape(-1, 1)
-                )
-                print(self.y_scaled[:5])
-            elif target_scaling_method == "robust":
-                target_scaler = RobustScaler()
-                self.y_scaled = target_scaler.fit_transform(
-                    self.y.values.reshape(-1, 1)
-                )
-                print(self.y_scaled[:5])
-            flash("Data scaled successfully!", "success")
-
-    def train_model():
-        return None
-
-    def evaluate_model():
-        return None
-
-    def export_model():
-        return None
-
-    def download_code():
-        return None
-
 
 data_manager = DataModelManager()
 
@@ -211,8 +49,6 @@ def remove_duplicates():
     data_manager.remove_duplicates()
     return redirect(url_for("index"))
 
-
-
 @app.route("/split", methods=["POST"])
 def split_data():
     test_size = float(request.form["test_size"])
@@ -220,8 +56,6 @@ def split_data():
     data_manager.selected_target_column = request.form["target_column"]
     data_manager.split_data(test_size)
     return redirect(url_for("index"))
-
-
 
 @app.route("/visualization")
 def visualization():
@@ -232,7 +66,6 @@ def visualization():
     else:
         return render_template("visualization.html", columns=data_manager.columns)
 
-
 @app.route("/visualize_whole", methods=["POST"])
 def visualize_whole_data():
     graphic = data_manager.visualize_data(data_manager.X, data_manager.y, "Whole Data")
@@ -241,7 +74,6 @@ def visualize_whole_data():
     else:
         flash("Error visualizing whole data.", "danger")
         return redirect(url_for("visualization"))
-
 
 @app.route("/visualize_training", methods=["POST"])
 def visualize_training_data():
@@ -254,7 +86,6 @@ def visualize_training_data():
         flash("Error visualizing training data.", "danger")
         return redirect(url_for("visualization"))
 
-
 @app.route("/visualize_testing", methods=["POST"])
 def visualize_testing_data():
     graphic = data_manager.visualize_data(
@@ -266,7 +97,6 @@ def visualize_testing_data():
         flash("Error visualizing testing data.", "danger")
         return redirect(url_for("visualization"))
 
-
 @app.route("/scaling")
 def scaling():
     """Display the first five rows of the dataset."""
@@ -275,12 +105,11 @@ def scaling():
         return render_template(
             "scaling.html",
             columns=data_manager.columns,
-            first_five=first_five_rows.to_html(),
+            first_five=data_manager.data.head().to_html(),
         )
     else:
         flash("Please upload a CSV file.", "danger")
         return redirect(url_for("index"))
-
 
 @app.route("/scale", methods=["POST"])
 def scale_data():
@@ -299,11 +128,9 @@ def scale_data():
         first_5_columns_y_scaled=first_5_columns_y_scaled,
     )
 
-
 @app.route("/train")
 def training():
     return render_template("training.html")
-
 
 @app.route("/train_model", methods=["POST"])
 def train_model():
@@ -312,11 +139,9 @@ def train_model():
     flash(f"Model trained successfully: {model_name}", "success")
     return redirect(url_for("training"))
 
-
 @app.route("/evaluation")
 def evaluation():
     return render_template("evaluation.html")
-
 
 @app.route("/evaluate_model", methods=["POST"])
 def evaluate_model():
@@ -326,22 +151,19 @@ def evaluate_model():
     flash(f"Model validated using {validation_metric}", "success")
     return redirect(url_for("validation"))
 
-
 @app.route("/data")
 def show_data_table():
     """Show to the CSV file as a table."""
 
     if data_manager.data is not None:
-        return render_template("data.html", data_table=full_dataset.to_html())
+        return render_template("data.html", data_table=data_manager.data.to_html())
     else:
         flash("Please upload a CSV file.", "danger")
         return redirect(url_for("index"))
 
-
 @app.route("/export")
 def export():
     return render_template("export.html")
-
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8085, debug=True)

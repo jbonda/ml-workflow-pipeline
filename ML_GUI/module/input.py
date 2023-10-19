@@ -30,7 +30,7 @@ class DataModelManager:
     def load_data(self, file):
         try:
             if file.filename.endswith(".csv"):
-                self.data = pd.read_csv(file)
+                self.data = pd.read_csv(file, encoding='ISO-8859-1')
                 self.fill_empty_columns()
                 self.columns = list(self.data.columns)  # Store the column names
                 return True
@@ -40,12 +40,26 @@ class DataModelManager:
                     if len(csv_files) == 0:
                         flash("No CSV files found in the ZIP archive.", "danger")
                     elif len(csv_files) > 1:
-                        flash("Multiple files found in the ZIP archive. Only the first one will be used.", "warning")
-                    with zip_ref.open(csv_files[0]) as csv_file:
-                        self.data = pd.read_csv(csv_file)
+                        first_file = pd.read_csv(zip_ref.open(csv_files[0]), encoding='ISO-8859-1')
+                        self.data = first_file
+                        self.fill_empty_columns()
+                        self.columns = list(first_file.columns)  # Store the column names
+                        for csv_file in csv_files[1:]:
+                            data = pd.read_csv(zip_ref.open(csv_file), encoding='ISO-8859-1')
+                            if len(first_file.columns) != len(data.columns) or first_file.columns[0] != data.columns[0]:
+                                flash("Names/number of columns in the uploaded file(s) does not match in the ZIP archive.", "warning")
+                                break
+                            else:
+                                if not first_file.equals(data):
+                                    flash(f"File {csv_file} is different from the first file in the ZIP archive.", "warning")
+                                    break
+                        else:
+                            flash("All files in the ZIP archive are identical.", "success")
+                    else:
+                        self.data = pd.read_csv(zip_ref.open(csv_files[0]), encoding='ISO-8859-1')
                         self.fill_empty_columns()
                         self.columns = list(self.data.columns)  # Store the column names
-                        return True
+                return True
             else:
                 flash("Please upload a CSV or ZIP file.", "danger")
         except Exception as e:

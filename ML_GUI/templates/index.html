@@ -111,6 +111,12 @@
       .button:hover {
         background-color: #0056b3;
       }
+
+      #preprocessing {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
     </style>
   </head>
   <body>
@@ -119,8 +125,8 @@
       <h2>Data Uploading</h2>
       <p>
         Welcome to the Machine Learning Web Application! This page allows for
-        uploading a CSV or zipped file, data preprocessing the data, splitting
-        it into testing/training sets, and generating a visualization preview.
+        uploading a CSV or zipped file, preprocessing the data, splitting it
+        into testing/training sets, and generating a visualization preview.
       </p>
       <form method="POST" action="/upload" enctype="multipart/form-data">
         <label for="file">Upload your CSV file:</label>
@@ -136,16 +142,18 @@
         the uploaded file.
       </p>
 
-      <form method="POST" action="/clean" enctype="multipart/form-data">
-        <input type="submit" value="Remove NaN values" />
-      </form>
-      <form
-        method="POST"
-        action="/remove_duplicates"
-        enctype="multipart/form-data"
-      >
-        <input type="submit" value="Remove Duplicates" />
-      </form>
+      <div id="preprocessing">
+        <form
+          method="POST"
+          action="/remove_duplicates"
+          enctype="multipart/form-data"
+        >
+          <input type="submit" value="Remove Duplicates" />
+        </form>
+        <form method="POST" action="/clean" enctype="multipart/form-data">
+          <input type="submit" value="Remove NaN values" />
+        </form>
+      </div>
     </div>
 
     <div class="container">

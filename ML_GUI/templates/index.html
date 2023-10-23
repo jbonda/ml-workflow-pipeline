@@ -118,7 +118,7 @@
         gap: 20px;
       }
 
-      #status-bar {
+      /* #status-bar {
         background-color: #007bff;
         color: white;
         padding: 10px 20px;
@@ -126,7 +126,7 @@
         border-radius: 5px;
         width: 80%;
         text-align: center;
-      }
+      } */
     </style>
   </head>
   <body>
@@ -199,13 +199,27 @@
         <p>
           Testing data should be less than training data for an optimum model.
         </p>
-        <label for="test_size">Test Size:</label>
+        <label for="test_size">Test Size: </label>
         <input
-          type="text"
+          type="range"
           name="test_size"
           id="test_size"
-          placeholder="e.g., 0.2"
+          min="0"
+          max="1"
+          step="0.1"
+          value="0.2"
         />
+        <label for="test_size" id="test_size_label">0.2</label>
+        <script>
+          var slider = document.getElementById("test_size");
+          var output = document.getElementById("test_size_label");
+          output.innerHTML = slider.value;
+
+          slider.oninput = function () {
+            output.innerHTML = this.value;
+          };
+        </script>
+        <br />
         <input type="submit" name="split_button" value="Split Data" />
       </form>
     </div>

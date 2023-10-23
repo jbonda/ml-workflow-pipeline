@@ -36,6 +36,8 @@ def upload_file():
         file = request.files["file"]
         if file:
             if data_manager.load_data(file):
+                # Flush input columns on new file upload.
+                session.pop("input_columns", None)
                 flash("File uploaded successfully!", "success")
     return redirect(url_for("index"))
 
@@ -52,9 +54,17 @@ def remove_duplicates():
 @app.route("/split", methods=["POST"])
 def split_data():
     test_size = float(request.form["test_size"])
-    data_manager.selected_input_column = request.form["input_column"]
-    data_manager.selected_target_column = request.form["target_column"]
-    data_manager.split_data(test_size)
+    data_manager.selected_input_column = request.form.get("input_column")
+    data_manager.selected_target_column = request.form.get("target_column")
+    # Check if the required keys are present in the form data
+    if data_manager.selected_input_column is None or data_manager.selected_target_column is None:
+        flash("Please select input and target columns!", "danger")
+        return redirect(url_for("index"))
+    try:
+        data_manager.split_data(test_size)
+        flash("Data has been split successfully!", "success")
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
     return redirect(url_for("index"))
 
 @app.route("/visualization")

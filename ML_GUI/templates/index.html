@@ -117,10 +117,29 @@
         justify-content: center;
         gap: 20px;
       }
+
+      #status-bar {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        margin: 10px auto;
+        border-radius: 5px;
+        width: 80%;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
     <h1>Machine Learning-GUI Web Application</h1>
+    <div class="status-bar" id="status-bar">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
+    </div>
     <div class="container">
       <h2>Data Uploading</h2>
       <p>
@@ -189,15 +208,6 @@
         />
         <input type="submit" name="split_button" value="Split Data" />
       </form>
-      <div class="status-bar">
-        {% with messages = get_flashed_messages() %} {% if messages %}
-        <ul class="flashes">
-          {% for message in messages %}
-          <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %} {% endwith %}
-      </div>
     </div>
 
     <div class="page-navigation">

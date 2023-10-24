@@ -111,6 +111,13 @@
       .button:hover {
         background-color: #0056b3;
       }
+
+      table {
+        border-collapse: collapse;
+        border: 1px solid gray;
+        width: 30%;
+        margin: 10px;
+      }
     </style>
   </head>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -136,8 +143,8 @@
         include multiple dimensions. Feature standardization makes the values of
         each feature in the data have zero-mean (when subtracting the mean in
         the numerator) and unit-variance. $$ {x' = \frac{x - \bar{x}}{\sigma}}
-        $$Where \(x\) is the original feature vector, \(\bar{x}\) is the mean of
-        that feature vector, and \(\sigma\) is the standard deviation.
+        $$ ...where \(x\) is the original feature vector, \(\bar{x}\) is the
+        mean of that feature vector, and \(\sigma\) is the standard deviation.
       </p>
 
       <h3>Min-Max Scaler</h3>
@@ -165,15 +172,26 @@
         <input type="submit" value="Scale Data" />
       </form>
 
+      <br>
+
       {% if first_five_data %}
       <h2>First Five Rows of Data</h2>
-      {{ first_five_data | safe }} {% endif %} {% if first_five_X_scaled and
-      first_five_y_scaled %}
-      <h2>First Five Rows of Scaled Data (Input)</h2>
-      {{ first_five_X_scaled | safe }}
-      <br /><br />
-      <h2>First Five Rows of Scaled Data (Target)</h2>
-      {{ first_five_y_scaled | safe }} {% endif %}
+      {{ first_five_data | safe }} {% endif %}
+
+      <!-- Data Table -->
+      {% if first_five_X_scaled and first_five_y_scaled %}
+      <h2>First Five Rows of Scaled Data</h2>
+      <table>
+        <tr>
+          <th>Input (x)</th>
+          <th>Target (y)</th>
+        </tr>
+        <tr>
+          <td>{{ first_five_X_scaled | safe }}</td>
+          <td>{{ first_five_y_scaled | safe }}</td>
+        </tr>
+      </table>
+      {% endif %}
 
       <div class="page-navigation">
         <a href="/visualization" class="button">« Visualize</a>

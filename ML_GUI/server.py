@@ -110,33 +110,34 @@ def visualize_testing_data():
 @app.route("/scaling")
 def scaling():
     """Display the first five rows of the dataset."""
+    first_five_data = data_manager.data.head().to_html() if data_manager.data is not None else None
 
-    if data_manager.data is not None:
-        return render_template(
-            "scaling.html",
-            columns=data_manager.columns,
-            first_five=data_manager.data.head().to_html(),
-        )
-    else:
-        flash("Please upload a CSV file.", "danger")
-        return redirect(url_for("index"))
+    return render_template(
+        "scaling.html",
+        columns=data_manager.columns,
+        first_five_data=first_five_data,
+    )
 
 @app.route("/scale", methods=["POST"])
 def scale_data():
-    input_scaling_method = request.form["input_method"]
-    target_scaling_method = request.form["target_method"]
+    scaling_method = request.form["scaling_method"]
 
-    data_manager.scale_data(input_scaling_method, target_scaling_method)
+    data_manager.scale_data(scaling_method)
     flash("Data scaled successfully!", "success")
 
-    first_5_columns_X_scaled = data_manager.X_scaled[:, :5]
-    first_5_columns_y_scaled = data_manager.y_scaled[:, :5]
+    first_5_columns_X_scaled = pd.DataFrame(data_manager.X_train_scaled).head().to_html()
+    first_5_columns_y_scaled = pd.DataFrame(data_manager.y_train_scaled).head().to_html()
+
     return render_template(
-        "scaled_data.html",
+        "scaling.html",
         columns=data_manager.columns,
-        first_5_columns_X_scaled=first_5_columns_X_scaled,
-        first_5_columns_y_scaled=first_5_columns_y_scaled,
+        first_five_X_scaled=first_5_columns_X_scaled,
+        first_five_y_scaled=first_5_columns_y_scaled
     )
+
+
+
+
 
 @app.route("/train")
 def training():
@@ -177,3 +178,4 @@ def export():
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8085, debug=True)
+

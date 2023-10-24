@@ -145,39 +145,29 @@ class DataModelManager:
             flash("Invalid data for visualization.", "danger")
             return None
 
-    def scale_data(self, input_scaling_method, target_scaling_method):
+    def scale_data(self, scaling_method):
         if self.X is not None and self.y is not None:
-            # Perform scaling based on selected methods for input data
-            if input_scaling_method == "standard":
-                input_scaler = StandardScaler()
-                self.X_scaled = input_scaler.fit_transform(self.X)
-                print(self.X_scaled[:5])
-            elif input_scaling_method == "min_max":
-                input_scaler = MinMaxScaler()
-                self.X_scaled = input_scaler.fit_transform(self.X)
-                print(self.X_scaled[:5])
-            elif input_scaling_method == "robust":
-                input_scaler = RobustScaler()
-                self.X_scaled = input_scaler.fit_transform(self.X)
-                print(self.X_scaled[:5])
+            if scaling_method == "standard":
+                scaler = StandardScaler()
+            elif scaling_method == "min_max":
+                scaler = MinMaxScaler()
+            elif scaling_method == "robust":
+                scaler = RobustScaler()
+            else:
+                flash("Invalid scaling method specified.", "danger")
+                return
+            # Fit the scaler on the data
+            self.X_scaled = scaler.fit_transform(self.X)
+            self.y_scaled = scaler.fit_transform(self.y.values.reshape(-1, 1))
+        
+            # Scale training and testing data
+            self.X_train_scaled = scaler.transform(self.X_train)
+            self.X_test_scaled = scaler.transform(self.X_test)
+            self.y_train_scaled = scaler.transform(self.y_train.values.reshape(-1, 1))
+            self.y_test_scaled = scaler.transform(self.y_test.values.reshape(-1, 1))
+        
+            flash("Data scaled successfully!", "success")    
+        else:
+            flash("Please select input and target columns and upload data.", "danger")
 
-            # Perform scaling based on selected methods for target data
-            if target_scaling_method == "standard":
-                target_scaler = StandardScaler()
-                self.y_scaled = target_scaler.fit_transform(
-                    self.y.values.reshape(-1, 1)
-                )
-                print(self.y_scaled[:5])
-            elif target_scaling_method == "min_max":
-                target_scaler = MinMaxScaler()
-                self.y_scaled = target_scaler.fit_transform(
-                    self.y.values.reshape(-1, 1)
-                )
-                print(self.y_scaled[:5])
-            elif target_scaling_method == "robust":
-                target_scaler = RobustScaler()
-                self.y_scaled = target_scaler.fit_transform(
-                    self.y.values.reshape(-1, 1)
-                )
-                print(self.y_scaled[:5])
-            flash("Data scaled successfully!", "success")
+            

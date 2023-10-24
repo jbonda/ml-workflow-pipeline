@@ -2,79 +2,173 @@
 <html>
   <head>
     <title>Machine Learning-GUI Web Application - Scaling</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/styles.css') }}"
-    />
     <style>
-      table,
-      th,
-      td {
-        border: 1px solid black;
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        background-color: #007bff;
+        color: white;
+        padding: 20px;
+        margin: 0;
         text-align: center;
       }
-      td:first-child {
-        font-style: italic;
+
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
       }
-      #scaling {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
+
+      h2 {
+        margin-top: 0;
+        color: #007bff;
+      }
+
+      p {
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      form {
+        margin-top: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #007bff;
+      }
+
+      select,
+      input[type="text"],
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      .flashes {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+      }
+
+      .flashes li {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        margin: 10px auto;
+        border-radius: 5px;
+        width: 80%;
+        text-align: center;
+      }
+
+      .page-navigation {
+        text-align: center;
+      }
+
+      .button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        text-decoration: none;
+        margin-top: 20px;
+        display: inline-block;
+      }
+
+      .button:hover {
+        background-color: #0056b3;
       }
     </style>
   </head>
   <body>
     <h1>Machine Learning-GUI Web Application</h1>
     <div class="container">
+	<h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
       <h2>Data Scaling</h2>
-      <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
-      <p>Choose a scaling method to normalize your data.</p>
-      <form method="POST" action="/scale">
-        <label for="input_method">Select Input & Target Scaling Method:</label>
-        <select name="input_method" id="input_method">
+	<p>
+    	Scaling is a method used to normalize the range of independent variables or features of data. In data processing, it is also known as data normalization and is generally performed during the data  		preprocessing step. Here are two common scaling methods:
+  	</p>
+	<h3>Standard Scaling (Z-score Normalization)</h3>
+	<p>
+	In machine learning, we can handle various types of data. This data can include multiple dimensions. Feature standardization makes the values of each feature in the data have zero-mean (when subtracting the 	mean in the numerator) and unit-variance.
+	TODO:FORMULA
+
+	Where x is the original feature vector, x̄ is the mean of that feature vector and  is the standard deviation.
+  	</p>
+
+  	<h3>Min-Max Scaler</h3>
+  	<p>
+	min-max scaling is the simplest method and consists in rescaling the range of features to scale the range in [0, 1] or [−1, 1]. Selecting the target range depends on the nature of the data. The 	general formula for a min-max of [0, 1] is given as
+	TODO:FORMULA
+	where 
+	X  is an original value, 
+	X’  is the normalized value. 
+
+      <p>
+        Scale your data using different methods for better machine learning
+        performance.
+      </p>
+
+      <form action="/scale" method="post">
+        <label for="scaling_method">Select Scaling Method:</label>
+        <select name="scaling_method" id="scaling_method">
           <option value="standard">Standard Scaler</option>
           <option value="min_max">Min-Max Scaler</option>
-          <option value="robust">Robust Scaler</option>
         </select>
-
-        <button id="original">Original Data</button>
-
-        <button id="scaled">Scaled Data</button>
-
-        <br />
-
-        <br />
-
-        <details>
-          <summary>Display First Five Rows</summary>
-          <div id="row-output">
-            {{ first_five | safe }}
-
-            <br />
-
-            {{ first_five | safe }}
-          </div>
-        </details>
-
-        <br />
-
+        <br /><br />
         <input type="submit" value="Scale Data" />
       </form>
 
-      <div class="status-bar">
-        {% with messages = get_flashed_messages() %} {% if messages %}
-        <ul class="flashes">
-          {% for message in messages %}
-          <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %} {% endwith %}
-      </div>
+      {% if first_five_data %}
+      <h2>First Five Rows of Data</h2>
+      {{ first_five_data | safe }}
+      {% endif %}
+
+      {% if first_five_X_scaled and first_five_y_scaled %}
+      <h2>First Five Rows of Scaled Data (Input)</h2>
+      {{ first_five_X_scaled | safe }}
+      <br /><br />
+      <h2>First Five Rows of Scaled Data (Target)</h2>
+      {{ first_five_y_scaled | safe }}
+      {% endif %}
 
       <div class="page-navigation">
-        <a href="/visualization" class="button">« Visualization</a>
-        ◦◦•◦◦◦
-        <a href="/train" class="button">Training »</a>
+        <a href="/visualization" class="button">« Visualize</a>
+        ◦•◦◦◦◦
+        <a href="/train" class="button">Train »</a>
       </div>
     </div>
   </body>

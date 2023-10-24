@@ -135,10 +135,6 @@ def scale_data():
         first_five_y_scaled=first_5_columns_y_scaled
     )
 
-
-
-
-
 @app.route("/train")
 def training():
     return render_template("training.html")

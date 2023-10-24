@@ -113,29 +113,42 @@
       }
     </style>
   </head>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  ></script>
   <body>
     <h1>Machine Learning-GUI Web Application</h1>
     <div class="container">
-	<h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
+      <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
       <h2>Data Scaling</h2>
-	<p>
-    	Scaling is a method used to normalize the range of independent variables or features of data. In data processing, it is also known as data normalization and is generally performed during the data  		preprocessing step. Here are two common scaling methods:
-  	</p>
-	<h3>Standard Scaling (Z-score Normalization)</h3>
-	<p>
-	In machine learning, we can handle various types of data. This data can include multiple dimensions. Feature standardization makes the values of each feature in the data have zero-mean (when subtracting the 	mean in the numerator) and unit-variance.
-	TODO:FORMULA
+      <p>
+        Scaling is a method used to normalize the range of independent variables
+        or features of data. In data processing, it is also known as data
+        normalization and is generally performed during the data preprocessing
+        step. Here are two common scaling methods:
+      </p>
+      <h3>Standard Scaling (Z-score Normalization)</h3>
+      <p>
+        In machine learning, we can handle various types of data. This data can
+        include multiple dimensions. Feature standardization makes the values of
+        each feature in the data have zero-mean (when subtracting the mean in
+        the numerator) and unit-variance. $$ {x' = \frac{x - \bar{x}}{\sigma}}
+        $$Where \(x\) is the original feature vector, \(\bar{x}\) is the mean of
+        that feature vector, and \(\sigma\) is the standard deviation.
+      </p>
 
-	Where x is the original feature vector, x̄ is the mean of that feature vector and  is the standard deviation.
-  	</p>
-
-  	<h3>Min-Max Scaler</h3>
-  	<p>
-	min-max scaling is the simplest method and consists in rescaling the range of features to scale the range in [0, 1] or [−1, 1]. Selecting the target range depends on the nature of the data. The 	general formula for a min-max of [0, 1] is given as
-	TODO:FORMULA
-	where 
-	X  is an original value, 
-	X’  is the normalized value. 
+      <h3>Min-Max Scaler</h3>
+      <p>
+        min-max scaling is the simplest method and consists in rescaling the
+        range of features to scale the range in [0, 1] or [-1, 1]. Selecting the
+        target range depends on the nature of the data. The general formula for
+        a min-max of [0, 1] is given as: $$ {x' = \frac{x - min(x)}{max(x) -
+        min(x)}} $$ ...where \(x\) is an original value, \(x'\) is the
+        normalized value.
+      </p>
 
       <p>
         Scale your data using different methods for better machine learning
@@ -154,16 +167,13 @@
 
       {% if first_five_data %}
       <h2>First Five Rows of Data</h2>
-      {{ first_five_data | safe }}
-      {% endif %}
-
-      {% if first_five_X_scaled and first_five_y_scaled %}
+      {{ first_five_data | safe }} {% endif %} {% if first_five_X_scaled and
+      first_five_y_scaled %}
       <h2>First Five Rows of Scaled Data (Input)</h2>
       {{ first_five_X_scaled | safe }}
       <br /><br />
       <h2>First Five Rows of Scaled Data (Target)</h2>
-      {{ first_five_y_scaled | safe }}
-      {% endif %}
+      {{ first_five_y_scaled | safe }} {% endif %}
 
       <div class="page-navigation">
         <a href="/visualization" class="button">« Visualize</a>

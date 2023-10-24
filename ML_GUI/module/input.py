@@ -28,6 +28,7 @@ class DataModelManager:
         self.y_scaled = None
 
     def load_data(self, file):
+        """Uploads the corresponding data file with respective extension checking."""
         try:
             if file.filename.endswith(".csv"):
                 self.data = pd.read_csv(file, encoding='ISO-8859-1')
@@ -67,12 +68,14 @@ class DataModelManager:
         return False
 
     def fill_empty_columns(self):
+        """TODO"""
         if not self.data.columns[0].startswith("Unnamed"):
             self.data.columns = [
                         f"Column {i}" for i in range(1, len(self.data.columns) + 1)
                     ]
 
     def remove_NaN_values(self):
+        """TODO"""
         if self.data is not None:
             if self.data.isnull().values.any():
                 try:
@@ -87,6 +90,7 @@ class DataModelManager:
         return
 
     def remove_duplicates(self):
+        """TODO"""
         if self.data is not None:
             if self.data.duplicated().any():
                 try:
@@ -103,6 +107,7 @@ class DataModelManager:
         return
 
     def split_data(self, test_size):
+        """TODO"""
         if (
             self.data is not None
             and self.selected_input_column
@@ -124,6 +129,7 @@ class DataModelManager:
             flash("Please select input and target columns and upload data.", "danger")
 
     def visualize_data(self, X, y, title):
+        """TODO"""
         if X is not None and y is not None:
             fig, axes = plt.subplots(figsize=(8, 6))
             axes.scatter(X, y)
@@ -146,6 +152,7 @@ class DataModelManager:
             return None
 
     def scale_data(self, scaling_method):
+        """TODO"""
         if self.X is not None and self.y is not None:
             if scaling_method == "standard":
                 scaler = StandardScaler()
@@ -159,15 +166,15 @@ class DataModelManager:
             # Fit the scaler on the data
             self.X_scaled = scaler.fit_transform(self.X)
             self.y_scaled = scaler.fit_transform(self.y.values.reshape(-1, 1))
-        
+
             # Scale training and testing data
             self.X_train_scaled = scaler.transform(self.X_train)
             self.X_test_scaled = scaler.transform(self.X_test)
             self.y_train_scaled = scaler.transform(self.y_train.values.reshape(-1, 1))
             self.y_test_scaled = scaler.transform(self.y_test.values.reshape(-1, 1))
-        
-            flash("Data scaled successfully!", "success")    
+
+            flash("Data scaled successfully!", "success")
         else:
             flash("Please select input and target columns and upload data.", "danger")
 
-            
+

@@ -97,7 +97,7 @@
   <body>
     <h1>Machine Learning-GUI Web Application</h1>
     <div class="container">
-	<h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
+      <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
       <h2>Model Evaluation</h2>
       <p>
         Model evaluation is the process of using different evaluation metrics to
@@ -106,8 +106,23 @@
       </p>
 
       <ul>
-        <li><b>Root Mean Squared Error</b> (RMSE) → Root Mean Squared error is a popular metric used in machine learning to measure the accuracy of a predictive model.It quantifies the difference between predicted 	values and actual values, squaring the errors, take the mean, and then finding the square root. Todo: FORMULA where N is the number of data points, y(i) is the i-th measurement, and y(i) is its corresponding 	prediction.</li>
-        <li><b> Accuracy Score</b> → Accuracy Score is one metric for evaluating classification models. Accuracy has the following definition: TODO: FORMULA. For binary classification, accuracy can also be 		calculated in terms of positives and negatives as follows: TODO:FORMULA Where TP = True Positives, TN = True Negatives, FP = False Positives, and FN = False Negatives.</li>
+        <li>
+          <b>Root Mean Squared Error</b> (RMSE) → Root Mean Squared error is a
+          popular metric used in machine learning to measure the accuracy of a
+          predictive model.It quantifies the difference between predicted values
+          and actual values, squaring the errors, take the mean, and then
+          finding the square root. Todo: FORMULA where N is the number of data
+          points, y(i) is the i-th measurement, and y(i) is its corresponding
+          prediction.
+        </li>
+        <li>
+          <b> Accuracy Score</b> → Accuracy Score is one metric for evaluating
+          classification models. Accuracy has the following definition: TODO:
+          FORMULA. For binary classification, accuracy can also be calculated in
+          terms of positives and negatives as follows: TODO:FORMULA Where TP =
+          True Positives, TN = True Negatives, FP = False Positives, and FN =
+          False Negatives.
+        </li>
       </ul>
 
       <form method="POST" action="/evaluate_model">

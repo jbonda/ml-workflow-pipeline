@@ -62,7 +62,7 @@ def split_data():
         return redirect(url_for("index"))
     try:
         data_manager.split_data(test_size)
-        flash("Data has been split successfully!", "success")
+        # flash("Data has been split successfully!", "success")
     except Exception as e:
         flash(f"Error: {e}", "danger")
     return redirect(url_for("index"))

@@ -156,7 +156,6 @@ class DataModelManager:
             else:
                 flash("Invalid scaling method specified.", "danger")
                 return
-        
             # Fit the scaler on the data
             self.X_scaled = scaler.fit_transform(self.X)
             self.y_scaled = scaler.fit_transform(self.y.values.reshape(-1, 1))

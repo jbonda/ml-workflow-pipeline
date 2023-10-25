@@ -1,18 +1,23 @@
-Hi Everyone!
-Welcome to our Machine Learning-GUI Web Application!
+## Platform Features
+1. Uploading data from local file system.
+2. Splitting the data into testing / training sets.
+3. Visualizing gain insights via machine learning techniques.
+4. Training & validating of machine learning models.
 
-This platform allows you to do the following tasks.
-1. Uploading data,
-2. split the data into train and test sets
-3. visualize it to gain insights using machine learning techniques.
-4. Training and validation of machine learning models (Linear regression and Logistic Regression) will be implemented during the later stages.
-In this, we are using Python Flask for the Backend and HTML for the front end. We are also working with Node.js for the front end.
+## MathJax Support
+```html
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+```
 
-Here are the scikit learn links to understand Linear Regression and Logistic regression.
+## Architecture Diagram
+- Frontend
+- Middleware
+- Backend
 
-LogisticRegression:
-https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html
+## `scikit-learn`
 
-LinearRegression:
-https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html
+#### [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
+
+#### [Linear Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html)
 

@@ -1,4 +1,3 @@
-import os
 import secrets
 import numpy as np
 from flask import Flask, render_template, request, redirect, url_for, flash, session
@@ -62,7 +61,6 @@ def split_data():
         return redirect(url_for("index"))
     try:
         data_manager.split_data(test_size)
-        # flash("Data has been split successfully!", "success")
     except Exception as e:
         flash(f"Error: {e}", "danger")
     return redirect(url_for("index"))
@@ -123,7 +121,6 @@ def scale_data():
     scaling_method = request.form["scaling_method"]
 
     data_manager.scale_data(scaling_method)
-    flash("Data scaled successfully!", "success")
 
     first_5_columns_X_scaled = pd.DataFrame(data_manager.X_train_scaled).head().to_html()
     first_5_columns_y_scaled = pd.DataFrame(data_manager.y_train_scaled).head().to_html()

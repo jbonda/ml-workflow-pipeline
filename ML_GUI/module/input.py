@@ -1,7 +1,5 @@
 # Input Module
 
-import os
-import secrets
 import numpy as np
 from flask import flash, session
 import pandas as pd

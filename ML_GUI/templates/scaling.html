@@ -179,7 +179,7 @@
       {{ first_five_data | safe }} {% endif %}
 
       <!-- Data Table -->
-      {% if first_five_X_scaled and first_five_y_scaled %}
+      {% if first_five_x_scaled and first_five_y_scaled %}
       <h2>First Five Rows of Scaled Data</h2>
       <table>
         <tr>
@@ -187,7 +187,7 @@
           <th>Target (y)</th>
         </tr>
         <tr>
-          <td>{{ first_five_X_scaled | safe }}</td>
+          <td>{{ first_five_x_scaled | safe }}</td>
           <td>{{ first_five_y_scaled | safe }}</td>
         </tr>
       </table>

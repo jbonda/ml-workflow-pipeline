@@ -2,32 +2,28 @@
 
 from flask import flash, session
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
 import zipfile
+from module.processing import DMM
 
-class DataModelManager:
+class DataModelManager(DMM):
     """Class definition to manage the data model."""
     def __init__(self):
         """Class initialization attributes."""
         self.data = None  # Holds the dataset
-        self.X = None  # Input features
+        self.x = None  # Input features
         self.y = None  # Target variable
         self.columns = []  # List of column names
         self.selected_input_column = None  # Holds the name of the selected input column
         self.selected_target_column = None  # Holds the name of the selected target column
-        self.X_train = None  # Training input features
-        self.X_test = None  # Testing input features
+        self.x_train = None  # Training input features
+        self.x_test = None  # Testing input features
         self.y_train = None  # Training target variable
         self.y_test = None  # Testing target variable
-        self.X_scaled = None  # Scaled input features
+        self.x_scaled = None  # Scaled input features
         self.y_scaled = None  # Scaled target variable
-        self.X_train_scaled = None  # Scaled training input features
+        self.x_train_scaled = None  # Scaled training input features
         self.y_train_scaled = None  # Scaled training target variable
-        self.X_test_scaled = None  # Scaled testing input features
+        self.x_test_scaled = None  # Scaled testing input features
         self.y_test_scaled = None  # Scaled testing target variable
 
     def load_data(self, file):
@@ -120,82 +116,4 @@ class DataModelManager:
         else:
             flash("Please upload a CSV file before using this function.", "danger")
             # Flash a message if no data is uploaded
-
-    def split_data(self, test_size):
-        """Method to split the data into training and testing subsets.."""
-        if (self.data is not None):
-            self.X = self.data[[self.selected_input_column]]
-            self.y = self.data[self.selected_target_column]
-            # Select input and target columns
-            X_train, X_test, y_train, y_test = train_test_split(
-                self.X, self.y, test_size=test_size, random_state=42
-            )
-            # Split the data
-            self.X_train, self.X_test, self.y_train, self.y_test = (
-                pd.DataFrame(X_train),
-                pd.DataFrame(X_test),
-                pd.DataFrame(y_train),
-                pd.DataFrame(y_test),
-            )  # Store training and testing data
-            flash("Data split successfully!", "success")
-            # Flash a success message
-        else:
-            flash("Please select input and target columns and upload data.", "danger")
-            # Flash a message if no data is uploaded or columns are not selected
-
-    def visualize_data(self, X, y, title):
-        """Method to create a scatter plot for data visualization."""
-        if X is not None and y is not None:
-            fig, axes = plt.subplots(figsize=(8, 6))
-            axes.scatter(X, y)
-            plt.show()
-            axes.set_title(f"Scatter Plot - {title}")
-            axes.set_xlabel(self.selected_input_column)
-            axes.set_ylabel(self.selected_target_column)
-            plt.tight_layout()
-
-            buffer = BytesIO()
-            plt.savefig(buffer, format="png")
-            buffer.seek(0)
-            image_png = buffer.getvalue()
-            buffer.close()
-
-            graphic = base64.b64encode(image_png).decode()
-            return graphic
-            # Generate a scatter plot, convert to base64 format, and return it
-        else:
-            flash("Invalid data for visualization.", "danger")
-            return None
-            # Flash an error message if data is invalid and return None
-
-    def scale_data(self, scaling_method):
-        """Method to scale the data using different methods."""
-        if self.X is not None and self.y is not None:
-            if scaling_method == "standard":
-                scaler = StandardScaler()
-            elif scaling_method == "min_max":
-                scaler = MinMaxScaler()
-            else:
-                flash("Invalid scaling method specified.", "danger")
-                return
-            # Choose the appropriate scaler based on the specified method
-
-            # Scale training & testing data, target variables, and convert to DataFrames.
-            self.X_train_scaled = scaler.fit_transform(self.X_train)
-            self.X_test_scaled = scaler.transform(self.X_test)
-
-            self.y_train_scaled = scaler.fit_transform(self.y_train.values.reshape(-1,1))
-            self.y_test_scaled = scaler.transform(self.y_test.values.reshape(-1,1))
-
-            self.X_train_scaled = pd.DataFrame(self.X_train_scaled)
-            self.X_test_scaled = pd.DataFrame(self.X_test_scaled)
-            self.y_train_scaled = pd.DataFrame(self.y_train_scaled)
-            self.y_test_scaled = pd.DataFrame(self.y_test_scaled)
-
-            if scaling_method != "none":
-                flash("Data scaled successfully!", "success")
-                # Flash a success message if scaling is successful
-        else:
-            flash("Please select input and target columns and upload data.", "danger")
-            # Flash a message if no data is uploaded or columns are not selected
 

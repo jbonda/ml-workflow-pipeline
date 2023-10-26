@@ -67,7 +67,7 @@ def visualization():
 
 @app.route("/visualize_whole", methods=["POST"])
 def visualize_whole_data():
-    graphic = data_manager.visualize_data(data_manager.X, data_manager.y, "Whole Data")
+    graphic = data_manager.visualize_data(data_manager.x, data_manager.y, "Whole Data")
     if graphic:
         return render_template("visualization.html", graphic=graphic)
     else:
@@ -77,7 +77,7 @@ def visualize_whole_data():
 @app.route("/visualize_training", methods=["POST"])
 def visualize_training_data():
     graphic = data_manager.visualize_data(
-        data_manager.X_train, data_manager.y_train, "Training Data"
+        data_manager.x_train, data_manager.y_train, "Training Data"
     )
     if graphic:
         return render_template("visualization.html", graphic=graphic)
@@ -88,7 +88,7 @@ def visualize_training_data():
 @app.route("/visualize_testing", methods=["POST"])
 def visualize_testing_data():
     graphic = data_manager.visualize_data(
-        data_manager.X_test, data_manager.y_test, "Testing Data"
+        data_manager.x_test, data_manager.y_test, "Testing Data"
     )
     if graphic:
         return render_template("visualization.html", graphic=graphic)
@@ -113,14 +113,11 @@ def scale_data():
 
     data_manager.scale_data(scaling_method)
 
-    first_5_columns_X_scaled = pd.DataFrame(data_manager.X_train_scaled).head().to_html()
-    first_5_columns_y_scaled = pd.DataFrame(data_manager.y_train_scaled).head().to_html()
-
     return render_template(
         "scaling.html",
         columns=data_manager.columns,
-        first_five_X_scaled=first_5_columns_X_scaled,
-        first_five_y_scaled=first_5_columns_y_scaled
+        first_five_x_scaled=pd.DataFrame(data_manager.x_train_scaled).head().to_html(),
+        first_five_y_scaled=pd.DataFrame(data_manager.y_train_scaled).head().to_html()
     )
 
 @app.route("/train")
@@ -129,10 +126,7 @@ def training():
 
 @app.route("/train_model", methods=["POST"])
 def train_model():
-    example_X_train = pd.DataFrame(data_manager.X_train)
-    example_y_train = pd.DataFrame(data_manager.y_train)
-
-    graphic = generate_results(example_X_train, example_y_train)
+    graphic = generate_results(pd.DataFrame(data_manager.x_train), pd.DataFrame(data_manager.y_train))
 
     if graphic:
         return render_template("training.html", graphic=graphic)

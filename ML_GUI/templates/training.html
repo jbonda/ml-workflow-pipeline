@@ -51,21 +51,17 @@
       <h2>Model Training</h2>
       <h3>Graphical Output</h3>
 
-        <div id="visualizations">
-          <form method="POST" action="/train_sle">
-            <input type="submit" value="Visualize Data" />
-          </form>
-        </div>
+      <div id="visualizations">
+        <form method="POST" action="/train_model">
+          <input type="submit" value="Visualize Data" />
+        </form>
+      </div>
 
-        {% if graphic %}
-        <img
-          src="data:image/png;base64,{{ graphic }}"
-          alt="Data Visualization"
-        />
-        {% endif %}
+      {% if graphic %}
+      <img src="data:image/png;base64,{{ graphic }}" alt="Data Visualization" />
+      {% endif %}
 
       <h4>Model Selection</h4>
-
 
       <form method="POST" action="/train_model">
         <label for="simple_linear_regression"

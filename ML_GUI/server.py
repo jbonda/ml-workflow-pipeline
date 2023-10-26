@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import pandas as pd
 import matplotlib
 from module.input import DataModelManager
-from module.processing import train_model
+from module.processing import generate_results
 
 matplotlib.use("Agg")
 
@@ -19,7 +19,6 @@ def index():
         session["tab_id"] = secrets.token_hex(24)
         session.permanent = False
     return render_template("index.html", columns=data_manager.columns)
-
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
@@ -128,18 +127,19 @@ def scale_data():
 def training():
     return render_template("training.html")
 
-@app.route("/train_sle", methods=["POST"])
-def train_sle():
+@app.route("/train_model", methods=["POST"])
+def train_model():
     example_X_train = pd.DataFrame(data_manager.X_train)
     example_y_train = pd.DataFrame(data_manager.y_train)
 
-    graphic = train_model(example_X_train, example_y_train)
+    graphic = generate_results(example_X_train, example_y_train)
 
     if graphic:
         return render_template("training.html", graphic=graphic)
     else:
         flash("Error visualizing data for trained model.", "danger")
         return redirect(url_for("training"))
+
 @app.route("/evaluation")
 def evaluation():
     return render_template("evaluation.html")

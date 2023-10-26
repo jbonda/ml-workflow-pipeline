@@ -1,3 +1,5 @@
+# Input Module
+
 from flask import flash, session
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -8,9 +10,9 @@ import base64
 import zipfile
 
 class DataModelManager:
-    # Class definition for DataModelManager
+    """Class definition to manage the data model."""
     def __init__(self):
-        # Initializing the class with the below attributes
+        """Class initialization attributes."""
         self.data = None  # Holds the dataset
         self.X = None  # Input features
         self.y = None  # Target variable
@@ -29,7 +31,7 @@ class DataModelManager:
         self.y_test_scaled = None  # Scaled testing target variable
 
     def load_data(self, file):
-        # Method to load data from a file
+        """Method to load data from a file."""
         try:
             if file.filename.endswith(".csv"):
                 # If the uploaded file is a CSV
@@ -74,7 +76,7 @@ class DataModelManager:
         return False
 
     def fill_empty_columns(self):
-        # Method to fill empty column names
+        """Method to fill empty column names."""
         if not self.data.columns[0].startswith("Unnamed"):
             self.data.columns = [
                         f"Column {i}" for i in range(1, len(self.data.columns) + 1)
@@ -82,7 +84,7 @@ class DataModelManager:
             # If the column names don't start with "Unnamed", name them as "Column 1", "Column 2", etc.
 
     def remove_NaN_values(self):
-        # Method to remove rows with NaN values
+        """Method to remove rows with NaN values."""
         if self.data is not None:
             if self.data.isnull().values.any():
                 try:
@@ -100,7 +102,7 @@ class DataModelManager:
             # Flash a message if no data is uploaded
 
     def remove_duplicates(self):
-        # Method to remove duplicate rows
+        """Method to remove duplicate rows."""
         if self.data is not None:
             if self.data.duplicated().any():
                 try:
@@ -120,7 +122,7 @@ class DataModelManager:
             # Flash a message if no data is uploaded
 
     def split_data(self, test_size):
-        # Method to split the data into training and testing sets
+        """Method to split the data into training and testing subsets.."""
         if (self.data is not None):
             self.X = self.data[[self.selected_input_column]]
             self.y = self.data[self.selected_target_column]
@@ -142,7 +144,7 @@ class DataModelManager:
             # Flash a message if no data is uploaded or columns are not selected
 
     def visualize_data(self, X, y, title):
-        # Method to create a scatter plot for data visualization
+        """Method to create a scatter plot for data visualization."""
         if X is not None and y is not None:
             fig, axes = plt.subplots(figsize=(8, 6))
             axes.scatter(X, y)
@@ -167,7 +169,7 @@ class DataModelManager:
             # Flash an error message if data is invalid and return None
 
     def scale_data(self, scaling_method):
-        # Method to scale the data using different methods
+        """Method to scale the data using different methods."""
         if self.X is not None and self.y is not None:
             if scaling_method == "standard":
                 scaler = StandardScaler()
@@ -178,19 +180,17 @@ class DataModelManager:
                 return
             # Choose the appropriate scaler based on the specified method
 
-            # Scale training and testing data
+            # Scale training & testing data, target variables, and convert to DataFrames.
             self.X_train_scaled = scaler.fit_transform(self.X_train)
             self.X_test_scaled = scaler.transform(self.X_test)
 
             self.y_train_scaled = scaler.fit_transform(self.y_train.values.reshape(-1,1))
             self.y_test_scaled = scaler.transform(self.y_test.values.reshape(-1,1))
-            # Scale the target variables
 
             self.X_train_scaled = pd.DataFrame(self.X_train_scaled)
             self.X_test_scaled = pd.DataFrame(self.X_test_scaled)
             self.y_train_scaled = pd.DataFrame(self.y_train_scaled)
             self.y_test_scaled = pd.DataFrame(self.y_test_scaled)
-            # Convert scaled data to DataFrames
 
             if scaling_method != "none":
                 flash("Data scaled successfully!", "success")

@@ -81,7 +81,7 @@ class DMM():
             flash("Please select input and target columns and upload data.", "danger")
             # Flash a message if no data is uploaded or columns are not selected
 
-def generate_results(x_train, y_train):
+def model_training(x_train, y_train):
     """Train simple linear regression model, plot predictions, and the original data."""
 
     # Model Initialization

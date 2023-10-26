@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import pandas as pd
 import matplotlib
 from module.input import DataModelManager
-from module.processing import generate_results
+from module.processing import model_training
 
 matplotlib.use("Agg")
 
@@ -126,7 +126,7 @@ def training():
 
 @app.route("/train_model", methods=["POST"])
 def train_model():
-    graphic = generate_results(pd.DataFrame(data_manager.x_train), pd.DataFrame(data_manager.y_train))
+    graphic = model_training(pd.DataFrame(data_manager.x_train), pd.DataFrame(data_manager.y_train))
 
     if graphic:
         return render_template("training.html", graphic=graphic)

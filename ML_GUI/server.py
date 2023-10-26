@@ -1,17 +1,9 @@
 import secrets
-import numpy as np
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
-from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.metrics import mean_squared_error, accuracy_score
-import matplotlib.pyplot as plt
-from io import BytesIO
-import random
-import base64
 import matplotlib
 from module.input import DataModelManager
+from module.processing import train_model
 
 matplotlib.use("Agg")
 
@@ -136,13 +128,18 @@ def scale_data():
 def training():
     return render_template("training.html")
 
-@app.route("/train_model", methods=["POST"])
-def train_model():
-    model_name = request.form["model"]
+@app.route("/train_sle", methods=["POST"])
+def train_sle():
+    example_X_train = pd.DataFrame(data_manager.X_train)
+    example_y_train = pd.DataFrame(data_manager.y_train)
 
-    flash(f"Model trained successfully: {model_name}", "success")
-    return redirect(url_for("training"))
+    graphic = train_model(example_X_train, example_y_train)
 
+    if graphic:
+        return render_template("training.html", graphic=graphic)
+    else:
+        flash("Error visualizing data for trained model.", "danger")
+        return redirect(url_for("training"))
 @app.route("/evaluation")
 def evaluation():
     return render_template("evaluation.html")

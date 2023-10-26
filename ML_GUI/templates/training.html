@@ -29,6 +29,11 @@
       border-radius: 4px;
       background-color: #f1f1f1;
     }
+    #visualizations {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
   </style>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script
@@ -44,7 +49,24 @@
       <p>Choose a suitable machine learning model to train your data.</p>
 
       <h2>Model Training</h2>
+      <h3>Graphical Output</h3>
+
+        <div id="visualizations">
+          <form method="POST" action="/train_sle">
+            <input type="submit" value="Visualize Data" />
+          </form>
+        </div>
+
+        {% if graphic %}
+        <img
+          src="data:image/png;base64,{{ graphic }}"
+          alt="Data Visualization"
+        />
+        {% endif %}
+
       <h4>Model Selection</h4>
+
+
       <form method="POST" action="/train_model">
         <label for="simple_linear_regression"
           ><input
@@ -52,22 +74,25 @@
             id="simple_linear_regression"
             name="model"
             value="simple_linear_regression"
-            required
           />
           Simple Linear Regression</label
         >
 
         <p>
-            Simple linear regression is a type of regression analysis where the
-            number of independent variables is one and there is a linear
-            relationship between the independent(x) and dependent(y) variables. The
-            simple linear regression equation (<code>y=b0+b1.x</code>) is shown below.
+          Simple linear regression is a type of regression analysis where the
+          number of independent variables is one and there is a linear
+          relationship between the independent(x) and dependent(y) variables.
+          The simple linear regression equation (<code>y=b0+b1.x</code>) is
+          shown below.
 
-            <blockquote>Source: <a href="https://towardsdatascience.com/logistic-regression-explained-9ee73cede081">Towards Data Science</a></blockquote>
+          <!-- <blockquote>Source: <a href="https://towardsdatascience.com/logistic-regression-explained-9ee73cede081">Towards Data Science</a></blockquote> -->
         </p>
-          <img src="https://miro.medium.com/v2/resize:fit:1000/1*xz_haBuJRSI2DaveNk-3gw.gif" alt="Polynomial Regression" width="300" height="300">
-
-        <br />
+        <img
+          src="https://miro.medium.com/v2/resize:fit:1000/1*xz_haBuJRSI2DaveNk-3gw.gif"
+          alt="Polynomial Regression"
+          width="300"
+          height="300"
+        />
 
         <details>
           <summary>Hyperparameters</summary>
@@ -313,251 +338,256 @@
         >
 
         <p>
-            Polynomial Regression is a regression algorithm that models the
-            relationship between a dependent(y) and independent variable(x) as nth
-            degree polynomial. The Polynomial Regression equation is given below:
+          Polynomial Regression is a regression algorithm that models the
+          relationship between a dependent(y) and independent variable(x) as nth
+          degree polynomial. The Polynomial Regression equation is given below:
 
-            <br>
+          <br />
 
-            <code>y= b0+b1x1+ b2x1^2+ b2x1^3+...... bnx1^n</code>
+          <code>y= b0+b1x1+ b2x1^2+ b2x1^3+...... bnx1^n</code>
 
-            <blockquote>Source: <a href="https://towardsdatascience.com/logistic-regression-explained-9ee73cede081">Towards Data Science</a></blockquote>
+          <!-- <blockquote>Source: <a href="https://towardsdatascience.com/logistic-regression-explained-9ee73cede081">Towards Data Science</a></blockquote> -->
 
-            <img src="https://miro.medium.com/v2/resize:fit:1000/1*Cat1swI8xmNYui6w5AYp8A.gif" alt="Polynomial Regression" width="300" height="300">
+          <img
+            src="https://miro.medium.com/v2/resize:fit:1000/1*Cat1swI8xmNYui6w5AYp8A.gif"
+            alt="Polynomial Regression"
+            width="300"
+            height="300"
+          />
         </p>
 
         <br />
 
         <details>
-            <summary>Hyperparameters</summary>
+          <summary>Hyperparameters</summary>
 
-            <h4>
-              Source:
-              <a
-                href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html"
-                ><code>sklearn.linear_model.SGDRegressor</code></a
-              >
-            </h4>
+          <h4>
+            Source:
+            <a
+              href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html"
+              ><code>sklearn.linear_model.SGDRegressor</code></a
+            >
+          </h4>
 
-            <table>
-              <tr>
-                <th>Parameter</th>
-                <th>Value</th>
-              </tr>
-              <tr>
-                <td>loss</td>
-                <td>
-                  <select name="loss" id="loss">
-                    <option value="squared_loss">Squared Loss</option>
-                    <option value="huber">Huber</option>
-                    <option value="epsilon_insensitive">
-                      Epsilon Insensitive
-                    </option>
-                    <option value="squared_epsilon_insensitive">
-                      Squared Epsilon Insensitive
-                    </option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>penalty</td>
-                <td>
-                  <select name="penalty" id="penalty">
-                    <option value="l2">L2</option>
-                    <option value="l1">L1</option>
-                    <option value="elasticnet">Elastic Net</option>
-                    <option value="none">None</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>alpha</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.0001"
-                    placeholder="(default = 0.0001)"
-                    name="alpha"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>l1_ratio</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.15"
-                    placeholder="(default = 0.15)"
-                    name="l1_ratio"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>fit_intercept</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="fit_intercept"
-                    name="fit_intercept"
-                    value="true"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>max_iter</td>
-                <td>
-                  <input
-                    type="number"
-                    step="1000"
-                    placeholder="(default = 1000)"
-                    name="max_iter"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <abbr title="Tolerance">tol</abbr>
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    step="1e-3"
-                    placeholder="(default = 1e-3)"
-                    name="tol"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>shuffle</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="shuffle"
-                    name="shuffle"
-                    value="true"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>verbose</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="verbose"
-                    name="verbose"
-                    value="true"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>epsilon</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.1"
-                    placeholder="(default = 0.1)"
-                    name="epsilon"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>random_state</td>
-                <td>
-                  <input placeholder="(default = None)" name="random_state" />
-                </td>
-              </tr>
-              <tr>
-                <td>learning_rate</td>
-                <td>
-                  <select name="learning_rate" id="learning_rate">
-                    <option value="constant">Constant</option>
-                    <option value="optimal">Optimal</option>
-                    <option value="invscaling">Inverse Scaling</option>
-                    <option value="adaptive">Adaptive</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>eta0</td>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="(default = 0.01)"
-                    name="eta0"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>power_t</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.25"
-                    placeholder="(default = 0.25)"
-                    name="power_t"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>early_stopping</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="early_stopping"
-                    name="early_stopping"
-                    value="false"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>validation_fraction</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.1"
-                    placeholder="(default = 0.1)"
-                    name="validation_fraction"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <abbr
-                    title="Number of iterations with no improvement to wait before stopping fitting."
-                    >n_iter_no_change</abbr
-                  >
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="(default = 5)"
-                    name="n_iter_no_change"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>warm_start</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="warm_start"
-                    name="warm_start"
-                    value="false"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>average</td>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="(default = False) OR 10"
-                    name="average"
-                  />
-                </td>
-              </tr>
-            </table>
-          </details>
+          <table>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+            </tr>
+            <tr>
+              <td>loss</td>
+              <td>
+                <select name="loss" id="loss">
+                  <option value="squared_loss">Squared Loss</option>
+                  <option value="huber">Huber</option>
+                  <option value="epsilon_insensitive">
+                    Epsilon Insensitive
+                  </option>
+                  <option value="squared_epsilon_insensitive">
+                    Squared Epsilon Insensitive
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>penalty</td>
+              <td>
+                <select name="penalty" id="penalty">
+                  <option value="l2">L2</option>
+                  <option value="l1">L1</option>
+                  <option value="elasticnet">Elastic Net</option>
+                  <option value="none">None</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>alpha</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.0001"
+                  placeholder="(default = 0.0001)"
+                  name="alpha"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>l1_ratio</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.15"
+                  placeholder="(default = 0.15)"
+                  name="l1_ratio"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>fit_intercept</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="fit_intercept"
+                  name="fit_intercept"
+                  value="true"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>max_iter</td>
+              <td>
+                <input
+                  type="number"
+                  step="1000"
+                  placeholder="(default = 1000)"
+                  name="max_iter"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <abbr title="Tolerance">tol</abbr>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  step="1e-3"
+                  placeholder="(default = 1e-3)"
+                  name="tol"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>shuffle</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="shuffle"
+                  name="shuffle"
+                  value="true"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>verbose</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="verbose"
+                  name="verbose"
+                  value="true"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>epsilon</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.1"
+                  placeholder="(default = 0.1)"
+                  name="epsilon"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>random_state</td>
+              <td>
+                <input placeholder="(default = None)" name="random_state" />
+              </td>
+            </tr>
+            <tr>
+              <td>learning_rate</td>
+              <td>
+                <select name="learning_rate" id="learning_rate">
+                  <option value="constant">Constant</option>
+                  <option value="optimal">Optimal</option>
+                  <option value="invscaling">Inverse Scaling</option>
+                  <option value="adaptive">Adaptive</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>eta0</td>
+              <td>
+                <input
+                  type="number"
+                  placeholder="(default = 0.01)"
+                  name="eta0"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>power_t</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.25"
+                  placeholder="(default = 0.25)"
+                  name="power_t"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>early_stopping</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="early_stopping"
+                  name="early_stopping"
+                  value="false"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>validation_fraction</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.1"
+                  placeholder="(default = 0.1)"
+                  name="validation_fraction"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <abbr
+                  title="Number of iterations with no improvement to wait before stopping fitting."
+                  >n_iter_no_change</abbr
+                >
+              </td>
+              <td>
+                <input
+                  type="number"
+                  placeholder="(default = 5)"
+                  name="n_iter_no_change"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>warm_start</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="warm_start"
+                  name="warm_start"
+                  value="false"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>average</td>
+              <td>
+                <input
+                  type="number"
+                  placeholder="(default = False) OR 10"
+                  name="average"
+                />
+              </td>
+            </tr>
+          </table>
+        </details>
 
         <br />
 
@@ -582,243 +612,248 @@
           to determine if a person is likely to be infected with COVID-19 or
           not. <code>p(X) = e^(b0 + b1*X) / (1 + e^(b0 + b1*X))</code>
 
-          <img src="https://miro.medium.com/v2/resize:fit:1400/1*44qV8LhNzE5hPnta2PaaHw.png" alt="Logisitc Regression" width="300" height="300">
+          <img
+            src="https://miro.medium.com/v2/resize:fit:1400/1*44qV8LhNzE5hPnta2PaaHw.png"
+            alt="Logisitc Regression"
+            width="300"
+            height="300"
+          />
 
-          <blockquote>Source: <a href="https://towardsdatascience.com/logistic-regression-explained-9ee73cede081">Towards Data Science</a></blockquote>
+          <!-- <blockquote>Source: <a href="https://towardsdatascience.com/logistic-regression-explained-9ee73cede081">Towards Data Science</a></blockquote> -->
         </p>
 
         <br />
 
         <details>
-            <summary>Hyperparameters</summary>
+          <summary>Hyperparameters</summary>
 
-            <h4>
-              Source:
-              <a
-                href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html"
-                ><code>sklearn.linear_model.SGDRegressor</code></a
-              >
-            </h4>
+          <h4>
+            Source:
+            <a
+              href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html"
+              ><code>sklearn.linear_model.SGDRegressor</code></a
+            >
+          </h4>
 
-            <table>
-              <tr>
-                <th>Parameter</th>
-                <th>Value</th>
-              </tr>
-              <tr>
-                <td>loss</td>
-                <td>
-                  <select name="loss" id="loss">
-                    <option value="squared_loss">Squared Loss</option>
-                    <option value="huber">Huber</option>
-                    <option value="epsilon_insensitive">
-                      Epsilon Insensitive
-                    </option>
-                    <option value="squared_epsilon_insensitive">
-                      Squared Epsilon Insensitive
-                    </option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>penalty</td>
-                <td>
-                  <select name="penalty" id="penalty">
-                    <option value="l2">L2</option>
-                    <option value="l1">L1</option>
-                    <option value="elasticnet">Elastic Net</option>
-                    <option value="none">None</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>alpha</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.0001"
-                    placeholder="(default = 0.0001)"
-                    name="alpha"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>l1_ratio</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.15"
-                    placeholder="(default = 0.15)"
-                    name="l1_ratio"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>fit_intercept</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="fit_intercept"
-                    name="fit_intercept"
-                    value="true"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>max_iter</td>
-                <td>
-                  <input
-                    type="number"
-                    step="1000"
-                    placeholder="(default = 1000)"
-                    name="max_iter"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <abbr title="Tolerance">tol</abbr>
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    step="1e-3"
-                    placeholder="(default = 1e-3)"
-                    name="tol"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>shuffle</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="shuffle"
-                    name="shuffle"
-                    value="true"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>verbose</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="verbose"
-                    name="verbose"
-                    value="true"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>epsilon</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.1"
-                    placeholder="(default = 0.1)"
-                    name="epsilon"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>random_state</td>
-                <td>
-                  <input placeholder="(default = None)" name="random_state" />
-                </td>
-              </tr>
-              <tr>
-                <td>learning_rate</td>
-                <td>
-                  <select name="learning_rate" id="learning_rate">
-                    <option value="constant">Constant</option>
-                    <option value="optimal">Optimal</option>
-                    <option value="invscaling">Inverse Scaling</option>
-                    <option value="adaptive">Adaptive</option>
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td>eta0</td>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="(default = 0.01)"
-                    name="eta0"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>power_t</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.25"
-                    placeholder="(default = 0.25)"
-                    name="power_t"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>early_stopping</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="early_stopping"
-                    name="early_stopping"
-                    value="false"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>validation_fraction</td>
-                <td>
-                  <input
-                    type="number"
-                    step="0.1"
-                    placeholder="(default = 0.1)"
-                    name="validation_fraction"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <abbr
-                    title="Number of iterations with no improvement to wait before stopping fitting."
-                    >n_iter_no_change</abbr
-                  >
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="(default = 5)"
-                    name="n_iter_no_change"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>warm_start</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    placeholder="warm_start"
-                    name="warm_start"
-                    value="false"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>average</td>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="(default = False) OR 10"
-                    name="average"
-                  />
-                </td>
-              </tr>
-            </table>
-          </details>
+          <table>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+            </tr>
+            <tr>
+              <td>loss</td>
+              <td>
+                <select name="loss" id="loss">
+                  <option value="squared_loss">Squared Loss</option>
+                  <option value="huber">Huber</option>
+                  <option value="epsilon_insensitive">
+                    Epsilon Insensitive
+                  </option>
+                  <option value="squared_epsilon_insensitive">
+                    Squared Epsilon Insensitive
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>penalty</td>
+              <td>
+                <select name="penalty" id="penalty">
+                  <option value="l2">L2</option>
+                  <option value="l1">L1</option>
+                  <option value="elasticnet">Elastic Net</option>
+                  <option value="none">None</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>alpha</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.0001"
+                  placeholder="(default = 0.0001)"
+                  name="alpha"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>l1_ratio</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.15"
+                  placeholder="(default = 0.15)"
+                  name="l1_ratio"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>fit_intercept</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="fit_intercept"
+                  name="fit_intercept"
+                  value="true"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>max_iter</td>
+              <td>
+                <input
+                  type="number"
+                  step="1000"
+                  placeholder="(default = 1000)"
+                  name="max_iter"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <abbr title="Tolerance">tol</abbr>
+              </td>
+              <td>
+                <input
+                  type="number"
+                  step="1e-3"
+                  placeholder="(default = 1e-3)"
+                  name="tol"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>shuffle</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="shuffle"
+                  name="shuffle"
+                  value="true"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>verbose</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="verbose"
+                  name="verbose"
+                  value="true"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>epsilon</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.1"
+                  placeholder="(default = 0.1)"
+                  name="epsilon"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>random_state</td>
+              <td>
+                <input placeholder="(default = None)" name="random_state" />
+              </td>
+            </tr>
+            <tr>
+              <td>learning_rate</td>
+              <td>
+                <select name="learning_rate" id="learning_rate">
+                  <option value="constant">Constant</option>
+                  <option value="optimal">Optimal</option>
+                  <option value="invscaling">Inverse Scaling</option>
+                  <option value="adaptive">Adaptive</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>eta0</td>
+              <td>
+                <input
+                  type="number"
+                  placeholder="(default = 0.01)"
+                  name="eta0"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>power_t</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.25"
+                  placeholder="(default = 0.25)"
+                  name="power_t"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>early_stopping</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="early_stopping"
+                  name="early_stopping"
+                  value="false"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>validation_fraction</td>
+              <td>
+                <input
+                  type="number"
+                  step="0.1"
+                  placeholder="(default = 0.1)"
+                  name="validation_fraction"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <abbr
+                  title="Number of iterations with no improvement to wait before stopping fitting."
+                  >n_iter_no_change</abbr
+                >
+              </td>
+              <td>
+                <input
+                  type="number"
+                  placeholder="(default = 5)"
+                  name="n_iter_no_change"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>warm_start</td>
+              <td>
+                <input
+                  type="checkbox"
+                  placeholder="warm_start"
+                  name="warm_start"
+                  value="false"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>average</td>
+              <td>
+                <input
+                  type="number"
+                  placeholder="(default = False) OR 10"
+                  name="average"
+                />
+              </td>
+            </tr>
+          </table>
+        </details>
 
         <br />
       </form>

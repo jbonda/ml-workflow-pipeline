@@ -1,10 +1,7 @@
-import os
-import secrets
-import numpy as np
 from flask import flash, session
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
@@ -180,24 +177,25 @@ class DataModelManager:
                 flash("Invalid scaling method specified.", "danger")
                 return
             # Choose the appropriate scaler based on the specified method
-            
+
             # Scale training and testing data
             self.X_train_scaled = scaler.fit_transform(self.X_train)
             self.X_test_scaled = scaler.transform(self.X_test)
-            
+
             self.y_train_scaled = scaler.fit_transform(self.y_train.values.reshape(-1,1))
             self.y_test_scaled = scaler.transform(self.y_test.values.reshape(-1,1))
             # Scale the target variables
-            
+
             self.X_train_scaled = pd.DataFrame(self.X_train_scaled)
             self.X_test_scaled = pd.DataFrame(self.X_test_scaled)
             self.y_train_scaled = pd.DataFrame(self.y_train_scaled)
             self.y_test_scaled = pd.DataFrame(self.y_test_scaled)
             # Convert scaled data to DataFrames
-            
+
             if scaling_method != "none":
                 flash("Data scaled successfully!", "success")
                 # Flash a success message if scaling is successful
         else:
             flash("Please select input and target columns and upload data.", "danger")
             # Flash a message if no data is uploaded or columns are not selected
+

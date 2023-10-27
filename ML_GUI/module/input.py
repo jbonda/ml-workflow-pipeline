@@ -94,7 +94,7 @@ class DataModelManager(DMM):
                 flash("No NaN values present in the uploaded file.")
                 # Flash a message if no NaN values are found
         else:
-            flash("No NaN values present in the uploaded file!")
+            flash("Please upload a CSV file before using this function.", "danger")
             # Flash a message if no data is uploaded
 
     def remove_duplicates(self):

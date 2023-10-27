@@ -75,7 +75,6 @@ class DataModelManager(DMM):
                         self.fill_empty_columns()
                         self.columns = list(self.data.columns)  # Store the column names
 
-
     def fill_empty_columns(self):
         """Method to fill empty column names."""
         if not self.data.columns[0].startswith("Unnamed"):
@@ -84,27 +83,9 @@ class DataModelManager(DMM):
                     ]
             # If the column names don't start with "Unnamed", name them as "Column 1", "Column 2", etc.
 
-    def remove_NaN_values(self):
-        """Method to remove rows with NaN values."""
-        if self.data is not None:
-            if self.data.isnull().values.any():
-                try:
-                    self.data = self.data.dropna()
-                    flash("NaN Values are removed successfully!", "success")
-                    # Drop rows with NaN values and flash a success message
-                except Exception as e:
-                    flash(f"Error cleaning data: {str(e)}", "danger")
-                    # Flash an error message if an exception occurs
-            else:
-                flash("No NaN values present in the uploaded file.")
-                # Flash a message if no NaN values are found
-        else:
-            flash("Please upload a CSV file before using this function.", "danger")
-            # Flash a message if no data is uploaded
-
     def remove_duplicates(self):
         """Method to remove duplicate rows."""
-        if self.data is not None:
+        if self.upload_error_handler():
             if self.data.duplicated().any():
                 try:
                     initial_shape = self.data.shape
@@ -118,7 +99,28 @@ class DataModelManager(DMM):
             else:
                 flash('No duplicate values present in the uploaded data file.', "info")
                 # Flash a message if no duplicates are found
+
+    def remove_NaN_values(self):
+        """Method to remove rows with NaN values."""
+        if self.upload_error_handler():
+            if self.data.isnull().values.any():
+                try:
+                    self.data = self.data.dropna()
+                    flash("NaN Values are removed successfully!", "success")
+                    # Drop rows with NaN values and flash a success message
+                except Exception as e:
+                    flash(f"Error cleaning data: {str(e)}", "danger")
+                    # Flash an error message if an exception occurs
+            else:
+                flash("No NaN values present in the uploaded file.")
+            # Flash a message if no NaN values are found
+
+    def upload_error_handler(self):
+        """Check file upload status and log diagnostic information."""
+        if self.data is None:
+            flash("Please upload a CSV or ZIP file before using this function.", "danger")
+
         else:
-            flash("Please upload a CSV file before using this function.", "danger")
-            # Flash a message if no data is uploaded
+            flash("File uploaded successfully!", "success")
+            return True
 

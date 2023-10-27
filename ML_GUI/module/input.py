@@ -39,7 +39,17 @@ class DataModelManager(DMM):
                 return True  # Indicate successful loading
             elif file.filename.endswith(".zip"):
                 # If the uploaded file is a ZIP archive
-                with zipfile.ZipFile(file, 'r') as zip_ref:
+                self.unpack_zip_file(file)
+                return True  # Indicate successful loading
+            else:
+                flash("Please upload a CSV or ZIP file.", "danger")
+        except Exception as e:
+            flash(f"Error: {str(e)}", "danger")
+        return False
+
+    def unpack_zip_file(self, file):
+        """Helper function to unpack a ZIP archive."""
+        with zipfile.ZipFile(file, 'r') as zip_ref:
                     csv_files = [f for f in zip_ref.namelist() if f.endswith('.csv')]
                     # Get a list of all CSV files in the archive
                     if len(csv_files) == 0:
@@ -64,12 +74,7 @@ class DataModelManager(DMM):
                         self.data = pd.read_csv(zip_ref.open(csv_files[0]), encoding='ISO-8859-1')
                         self.fill_empty_columns()
                         self.columns = list(self.data.columns)  # Store the column names
-                return True  # Indicate successful loading
-            else:
-                flash("Please upload a CSV or ZIP file.", "danger")
-        except Exception as e:
-            flash(f"Error: {str(e)}", "danger")
-        return False
+
 
     def fill_empty_columns(self):
         """Method to fill empty column names."""

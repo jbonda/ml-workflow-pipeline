@@ -5,6 +5,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import LinearRegression, LogisticRegression, SGDRegressor
+from sklearn.metrics import mean_squared_error, accuracy_score
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
@@ -102,6 +103,23 @@ def generate_results(x_train, y_train):
     plt.show()
 
     return design_format()
+    
+def calculate_rmse(y_true, y_pred):
+    """Calculate Root Mean Squared Error."""
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    return rmse
+    rmse = calculate_rmse(y_train, y_pred)
+    print(f'Root Mean Squared Error: {rmse}')
+
+
+def calculate_accuracy(y_true, y_pred, threshold=0.5):
+    """Calculate Accuracy Score."""
+    y_pred_binary = (y_pred > threshold).astype(int)
+    accuracy = accuracy_score(y_true, y_pred_binary)
+    return accuracy
+    # Assuming y_train and y_pred are binary (for classification task)
+    accuracy = calculate_accuracy(y_train, y_pred)
+    print(f'Accuracy Score: {accuracy}')
 
 def design_format():
     """Plot formatting and conversion to base64 encoding."""

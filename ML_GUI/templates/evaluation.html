@@ -124,6 +124,7 @@
           ... where N is the number of data points, \(y_i\) is the i-th
           measurement, and \(ŷ_i\) is its corresponding prediction.
         </li>
+	<br>
         <li>
           <b> Accuracy Score</b> → Accuracy Score is one metric for evaluating
           classification models. Accuracy has the following definition:
@@ -140,13 +141,22 @@
           ... Where TP = True Positives, TN = True Negatives, FP = False
           Positives, and FN = False Negatives.
         </li>
+	<br>
+        
+	    <li>
+	      <b> Confusion Matrix<b/> → A Confusion matrix is an N x N matrix used for evaluating the performance of a classification model,
+	      where N is the total number of target classes. The matrix compares the actual target values with those predicted by the machine learning model.
+	    </li>
       </ul>
+          
+  <br>
 
       <form method="POST" action="/evaluate_model">
         <label for="evaluation_metric">Select a Validation Metric:</label>
         <select name="evaluation_metric" id="evaluation_metric">
           <option value="mean_squared_error">Mean Squared Error</option>
           <option value="accuracy_score">Accuracy Score</option>
+	  <option value="Confusion_Matrix">Confusion Matrix</option>
           <!-- Add more evaluation metric options as needed -->
         </select>
 

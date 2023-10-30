@@ -49,17 +49,6 @@
       <p>Choose a suitable machine learning model to train your data.</p>
 
       <h2>Model Training</h2>
-      <h3>Graphical Output</h3>
-
-      <div id="visualizations">
-        <form method="POST" action="/train_model">
-          <input type="submit" value="Visualize Data" />
-        </form>
-      </div>
-
-      {% if graphic %}
-      <img src="data:image/png;base64,{{ graphic }}" alt="Data Visualization" />
-      {% endif %}
 
       <h4>Model Selection</h4>
 
@@ -319,6 +308,25 @@
               </td>
             </tr>
           </table>
+        </details>
+
+        <br />
+
+        <div id="visualizations">
+          <form method="POST" action="/train_model">
+            <input type="submit" value="Visualize Data" />
+          </form>
+        </div>
+
+        <details>
+          <summary>Graphical Output</summary>
+
+          {% if graphic %}
+          <img
+            src="data:image/png;base64,{{ graphic }}"
+            alt="Data Visualization"
+          />
+          {% endif %}
         </details>
 
         <br />

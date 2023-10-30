@@ -2,6 +2,7 @@
 
 from flask import flash, session
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import LinearRegression, LogisticRegression, SGDRegressor
@@ -103,7 +104,7 @@ def model_training(x_train, y_train):
     plt.show()
 
     return design_format()
-    
+
 def calculate_rmse(y_true, y_pred):
     """Calculate Root Mean Squared Error."""
     rmse = np.sqrt(mean_squared_error(y_true, y_pred))

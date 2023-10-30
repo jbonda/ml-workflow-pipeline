@@ -1,3 +1,14 @@
+from flask import flash, session
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.linear_model import LinearRegression, LogisticRegression, SGDRegressor
+from sklearn.metrics import mean_squared_error, accuracy_score
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+
 def generate_results(x_train_scaled, y_train_scaled, x_test_scaled, y_test_scaled):
         # Model Initialization
         regressor = SGDRegressor()
@@ -7,7 +18,7 @@ def generate_results(x_train_scaled, y_train_scaled, x_test_scaled, y_test_scale
 
         # Create a figure with two subplots
         fig, axes = plt.subplots(2, 1, figsize=(8, 12))
-        
+
         axes[0].scatter(y_train_scaled, y_pred_train, 'bo', label='Predictions')
         axes[0].set_xlabel('True Values')
         axes[0].set_ylabel('Predictions')
@@ -23,7 +34,7 @@ def generate_results(x_train_scaled, y_train_scaled, x_test_scaled, y_test_scale
         plt.tight_layout()
         plt.show()
 
-        return design_format()
+        # return design_format()
 def calculate_rmse(y_true, y_pred):
         rmse = np.sqrt(mean_squared_error(y_true, y_pred))
         return rmse

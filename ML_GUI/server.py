@@ -99,6 +99,7 @@ def visualize_testing_data():
 @app.route("/scaling")
 def scaling():
     """Display the first five rows of the dataset."""
+
     first_five_data = data_manager.data.head().to_html() if data_manager.data is not None else None
 
     return render_template(
@@ -117,7 +118,9 @@ def scale_data():
         "scaling.html",
         columns=data_manager.columns,
         first_five_x_scaled=pd.DataFrame(data_manager.x_train_scaled).head().to_html(),
-        first_five_y_scaled=pd.DataFrame(data_manager.y_train_scaled).head().to_html()
+        first_five_y_scaled=pd.DataFrame(data_manager.y_train_scaled).head().to_html(),
+        input_column = data_manager.selected_input_column,
+        target_column = data_manager.selected_target_column
     )
 
 @app.route("/train")

@@ -4,6 +4,9 @@ import pandas as pd
 import matplotlib
 from module.input import DataModelManager
 from module.processing import model_training
+from module.processing import calculate_rmse
+from module.processing import ccalculate_accuracy
+
 
 matplotlib.use("Agg")
 

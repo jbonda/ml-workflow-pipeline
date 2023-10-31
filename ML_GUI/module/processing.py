@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.linear_model import SGDRegressor
-from sklearn.metrics import mean_squared_error, accuracy_score
+from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
@@ -111,9 +111,11 @@ class DMM():
         return design_format()
 
     def calculate_rmse(self, y_true, y_pred):
-        """Calculate Root Mean Squared Error."""
+        """Calculate generated evaluation metrics."""
+        mae = mean_absolute_error(y_true, y_pred)
+        mse = mean_squared_error(y_true, y_pred)
         rmse = np.sqrt(mean_squared_error(y_true, y_pred))
-        return rmse
+        return mae, mse, rmse
 
     def calculate_accuracy(self, y_true, y_pred, threshold=0.5):
         """Calculate Accuracy Score."""

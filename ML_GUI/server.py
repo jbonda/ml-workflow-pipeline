@@ -146,13 +146,11 @@ def evaluate_model():
     evaluation_metric = request.form["evaluation_metric"]
 
     if evaluation_metric == "mean_squared_error":
-        print("y_test: ", pd.DataFrame(data_manager.y_test).shape)
-        print("y_pred: ", pd.DataFrame(data_manager.y_pred).shape)
         result = data_manager.calculate_rmse(pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred))
-        flash(f"RMSE: {result}", "success")
+        flash(f"MAE: {result[0]}", "success")
+        flash(f"MSE: {result[1]}", "success")
+        flash(f"RMSE: {result[2]}", "success")
     elif evaluation_metric == "accuracy_score":
-        print("y_test: ", pd.DataFrame(data_manager.y_test).shape)
-        print("y_pred: ", pd.DataFrame(data_manager.y_pred).shape)
         result = data_manager.calculate_accuracy(pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred))
         flash(f"Accuracy Score: {result}", "success")
     else:

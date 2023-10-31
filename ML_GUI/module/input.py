@@ -40,7 +40,17 @@ class DataModelManager(DMM):
                 return True  # Indicate successful loading
             elif file.filename.endswith(".zip"):
                 # If the uploaded file is a ZIP archive
-                with zipfile.ZipFile(file, 'r') as zip_ref:
+                self.unpack_zip_file(file)
+                return True  # Indicate successful loading
+            else:
+                flash("Please upload a CSV or ZIP file.", "danger")
+        except Exception as e:
+            flash(f"Error: {str(e)}", "danger")
+        return False
+
+    def unpack_zip_file(self, file):
+        """Helper function to unpack a ZIP archive."""
+        with zipfile.ZipFile(file, 'r') as zip_ref:
                     csv_files = [f for f in zip_ref.namelist() if f.endswith('.csv')]
                     # Get a list of all CSV files in the archive
                     if len(csv_files) == 0:
@@ -65,12 +75,6 @@ class DataModelManager(DMM):
                         self.data = pd.read_csv(zip_ref.open(csv_files[0]), encoding='ISO-8859-1')
                         self.fill_empty_columns()
                         self.columns = list(self.data.columns)  # Store the column names
-                return True  # Indicate successful loading
-            else:
-                flash("Please upload a CSV or ZIP file.", "danger")
-        except Exception as e:
-            flash(f"Error: {str(e)}", "danger")
-        return False
 
     def fill_empty_columns(self):
         """Method to fill empty column names."""
@@ -80,27 +84,9 @@ class DataModelManager(DMM):
                     ]
             # If the column names don't start with "Unnamed", name them as "Column 1", "Column 2", etc.
 
-    def remove_NaN_values(self):
-        """Method to remove rows with NaN values."""
-        if self.data is not None:
-            if self.data.isnull().values.any():
-                try:
-                    self.data = self.data.dropna()
-                    flash("NaN Values are removed successfully!", "success")
-                    # Drop rows with NaN values and flash a success message
-                except Exception as e:
-                    flash(f"Error cleaning data: {str(e)}", "danger")
-                    # Flash an error message if an exception occurs
-            else:
-                flash("No NaN values present in the uploaded file.")
-                # Flash a message if no NaN values are found
-        else:
-            flash("Please upload a CSV file before using this function.", "danger")
-            # Flash a message if no data is uploaded
-
     def remove_duplicates(self):
         """Method to remove duplicate rows."""
-        if self.data is not None:
+        if self.upload_error_handler():
             if self.data.duplicated().any():
                 try:
                     initial_shape = self.data.shape
@@ -114,7 +100,28 @@ class DataModelManager(DMM):
             else:
                 flash('No duplicate values present in the uploaded data file.', "info")
                 # Flash a message if no duplicates are found
+
+    def remove_NaN_values(self):
+        """Method to remove rows with NaN values."""
+        if self.upload_error_handler():
+            if self.data.isnull().values.any():
+                try:
+                    self.data = self.data.dropna()
+                    flash("NaN Values are removed successfully!", "success")
+                    # Drop rows with NaN values and flash a success message
+                except Exception as e:
+                    flash(f"Error cleaning data: {str(e)}", "danger")
+                    # Flash an error message if an exception occurs
+            else:
+                flash("No NaN values present in the uploaded file.")
+            # Flash a message if no NaN values are found
+
+    def upload_error_handler(self):
+        """Check file upload status and log diagnostic information."""
+        if self.data is None:
+            flash("Please upload a CSV or ZIP file before using this function.", "danger")
+
         else:
-            flash("Please upload a CSV file before using this function.", "danger")
-            # Flash a message if no data is uploaded
+            flash("File uploaded successfully!", "success")
+            return True
 

@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import pandas as pd
 import matplotlib
 from module.input import DataModelManager
-from module.processing import model_training, calculate_rmse, calculate_accuracy
 
 
 matplotlib.use("Agg")
@@ -127,7 +126,7 @@ def training():
 
 @app.route("/train_model", methods=["POST"])
 def train_model():
-    graphic = model_training(pd.DataFrame(data_manager.x_train), pd.DataFrame(data_manager.y_train))
+    graphic = data_manager.model_training(pd.DataFrame(data_manager.x_train), pd.DataFrame(data_manager.y_train))
 
     if graphic:
         return render_template("training.html", graphic=graphic)
@@ -141,11 +140,22 @@ def evaluation():
 
 @app.route("/evaluate_model", methods=["POST"])
 def evaluate_model():
-    validation_metric = request.form["validation_metric"]
-    # Validate the trained model using the selected validation metric and store the results
-    # You can add your model validation logic here and flash validation results
-    flash(f"Model validated using {validation_metric}", "success")
-    return redirect(url_for("validation"))
+    evaluation_metric = request.form["evaluation_metric"]
+
+    if evaluation_metric == "mean_squared_error":
+        print("y_test: ", pd.DataFrame(data_manager.y_test).shape)
+        print("y_pred: ", pd.DataFrame(data_manager.y_pred).shape)
+        result = data_manager.calculate_rmse(pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred))
+        flash(f"RMSE: {result}", "success")
+    elif evaluation_metric == "accuracy_score":
+        print("y_test: ", pd.DataFrame(data_manager.y_test).shape)
+        print("y_pred: ", pd.DataFrame(data_manager.y_pred).shape)
+        result = data_manager.calculate_accuracy(pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred))
+        flash(f"Accuracy Score: {result}", "success")
+    else:
+        flash("Invalid validation metric selected", "danger")
+
+    return redirect(url_for("evaluation"))
 
 @app.route("/data")
 def show_data_table():

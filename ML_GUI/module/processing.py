@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.linear_model import LinearRegression, LogisticRegression, SGDRegressor
+from sklearn.linear_model import SGDRegressor
 from sklearn.metrics import mean_squared_error, accuracy_score
 import matplotlib.pyplot as plt
 from io import BytesIO
@@ -30,9 +30,11 @@ class DMM():
             )  # Store training and testing data
             flash("Data split successfully!", "success")
             # Flash a success message
+            return self.x_train, self.x_test, self.y_train, self.y_test
         else:
             flash("Please select input and target columns and upload data.", "danger")
             # Flash a message if no data is uploaded or columns are not selected
+            return None, None, None, None
 
     def visualize_data(self, x, y, title):
         """Method to create a scatter plot for data visualization."""
@@ -83,44 +85,41 @@ class DMM():
             flash("Please select input and target columns and upload data.", "danger")
             # Flash a message if no data is uploaded or columns are not selected
 
-def model_training(x_train, y_train):
-    """Train simple linear regression model, plot predictions, and the original data."""
+    def model_training(self, x_train, y_train):
+        """Train simple linear regression model, plot predictions, and the original data."""
 
-    # Model Initialization
-    regressor = SGDRegressor()
-    regressor.fit(x_train, y_train)
-    y_pred = regressor.predict(x_train)
+        # Model Initialization
+        regressor = SGDRegressor()
+        regressor.fit(x_train, y_train)
+        y_pred = regressor.predict(self.x_test)
+        self.y_pred = y_pred
+        print("y_pred: ", self.y_pred.shape)
+        print("x_test: ", self.x_test.shape)
 
-    # Plotting Results
-    plt.clf()
-    fig, axes = plt.subplots(figsize=(8, 6))
-    plt.plot(x_train, y_pred, '--', label='Predictions', alpha=0.5)
-    plt.plot(x_train, y_train, 'go', label='True data', alpha=0.5)
-    plt.xlabel('Independent Variable')
-    plt.ylabel('Dependent Variable')
-    plt.legend()
-    plt.title('Simple Linear Regression')
-    plt.scatter(x_train, y_train)
-    plt.show()
+        # Plotting Results
+        plt.clf()
+        fig, axes = plt.subplots(figsize=(8, 6))
+        plt.plot(self.x_test, self.y_test,  'go', label='True data', alpha=0.5)
+        plt.plot(self.x_test, self.y_pred, '--', label='Predictions', alpha=0.5)
 
-    return design_format()
+        plt.xlabel('Independent Variable')
+        plt.ylabel('Dependent Variable')
+        plt.title('Simple Linear Regression')
+        plt.legend()
+        plt.show()
 
-def calculate_rmse(y_true, y_pred):
-    """Calculate Root Mean Squared Error."""
-    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
-    return rmse
-    rmse = calculate_rmse(y_train, y_pred)
-    print(f'Root Mean Squared Error: {rmse}')
+        return design_format()
 
+    def calculate_rmse(self, y_true, y_pred):
+        """Calculate Root Mean Squared Error."""
+        rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+        return rmse
 
-def calculate_accuracy(y_true, y_pred, threshold=0.5):
-    """Calculate Accuracy Score."""
-    y_pred_binary = (y_pred > threshold).astype(int)
-    accuracy = accuracy_score(y_true, y_pred_binary)
-    return accuracy
-    # Assuming y_train and y_pred are binary (for classification task)
-    accuracy = calculate_accuracy(y_train, y_pred)
-    print(f'Accuracy Score: {accuracy}')
+    def calculate_accuracy(self, y_true, y_pred, threshold=0.5):
+        """Calculate Accuracy Score."""
+        y_pred_binary = (y_pred > threshold).astype(int)
+        accuracy = accuracy_score(y_true, y_pred_binary)
+        return accuracy
 
 def design_format():
     """Plot formatting and conversion to base64 encoding."""

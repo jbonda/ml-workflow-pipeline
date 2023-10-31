@@ -25,6 +25,7 @@ class DataModelManager(DMM):
         self.y_train_scaled = None  # Scaled training target variable
         self.x_test_scaled = None  # Scaled testing input features
         self.y_test_scaled = None  # Scaled testing target variable
+        self.y_pred = None # Sample prediction variable
 
     def load_data(self, file):
         """Method to load data from a file."""

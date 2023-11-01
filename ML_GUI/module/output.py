@@ -6,10 +6,6 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
 
-def evaluate_model():
-    """Method to evaluate the model."""
-    return None
-
 def calculate_rmse(y_true, y_pred):
     """Calculate generated evaluation metrics."""
     mae = mean_absolute_error(y_true, y_pred)
@@ -18,7 +14,7 @@ def calculate_rmse(y_true, y_pred):
     return mae, mse, rmse
 
 def calculate_accuracy(y_true, y_pred, threshold=0.5):
-    """Calculate Accuracy Score."""
+    """Calculate accuracy score."""
     y_pred_binary = (y_pred > threshold).astype(int)
     accuracy = accuracy_score(y_true, y_pred_binary)
     return accuracy

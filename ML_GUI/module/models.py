@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 import module.output as output
 
 class ModelSelection():
-    def simple_linear_regression(self, x_train, y_train):
+    def simple_linear_regression(self, x_train, y_train, alpha, iterations):
         """Train simple linear regression model, plot predictions, and the original data."""
 
         # Model Initialization
-        regressor = SGDRegressor()
+        regressor = SGDRegressor(alpha=alpha, max_iter=iterations)
         regressor.fit(x_train, y_train)
         y_pred = regressor.predict(self.x_test)
         self.y_pred = y_pred

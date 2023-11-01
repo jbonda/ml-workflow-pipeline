@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import pandas as pd
 import matplotlib
 from module.input import DataModelManager
+from module.output import calculate_rmse, calculate_accuracy
 
 
 matplotlib.use("Agg")
@@ -129,7 +130,7 @@ def training():
 
 @app.route("/train_model", methods=["POST"])
 def train_model():
-    graphic = data_manager.model_training(pd.DataFrame(data_manager.x_train), pd.DataFrame(data_manager.y_train))
+    graphic = data_manager.simple_linear_regression(pd.DataFrame(data_manager.x_train), pd.DataFrame(data_manager.y_train))
 
     if graphic:
         return render_template("training.html", graphic=graphic)
@@ -146,12 +147,12 @@ def evaluate_model():
     evaluation_metric = request.form["evaluation_metric"]
 
     if evaluation_metric == "mean_squared_error":
-        result = data_manager.calculate_rmse(pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred))
+        result = calculate_rmse(pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred))
         flash(f"MAE: {result[0]}", "success")
         flash(f"MSE: {result[1]}", "success")
         flash(f"RMSE: {result[2]}", "success")
     elif evaluation_metric == "accuracy_score":
-        result = data_manager.calculate_accuracy(pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred))
+        result = calculate_accuracy(pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred))
         flash(f"Accuracy Score: {result}", "success")
     else:
         flash("Invalid validation metric selected", "danger")

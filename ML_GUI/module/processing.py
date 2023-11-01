@@ -2,16 +2,13 @@
 
 from flask import flash, session
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.linear_model import SGDRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error, accuracy_score
+from module.models import ModelSelection
+from module.output import design_format
 import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
 
-class DMM():
+class DMM(ModelSelection):
     def split_data(self, test_size):
         """Method to split the data into training and testing subsets.."""
         if (self.data is not None):
@@ -84,53 +81,4 @@ class DMM():
         else:
             flash("Please select input and target columns and upload data.", "danger")
             # Flash a message if no data is uploaded or columns are not selected
-
-    def model_training(self, x_train, y_train):
-        """Train simple linear regression model, plot predictions, and the original data."""
-
-        # Model Initialization
-        regressor = SGDRegressor()
-        regressor.fit(x_train, y_train)
-        y_pred = regressor.predict(self.x_test)
-        self.y_pred = y_pred
-        print("y_pred: ", self.y_pred.shape)
-        print("x_test: ", self.x_test.shape)
-
-        # Plotting Results
-        plt.clf()
-        fig, axes = plt.subplots(figsize=(8, 6))
-        plt.plot(self.x_test, self.y_test,  'go', label='True data', alpha=0.5)
-        plt.plot(self.x_test, self.y_pred, '--', label='Predictions', alpha=0.5)
-
-        plt.xlabel('Independent Variable')
-        plt.ylabel('Dependent Variable')
-        plt.title('Simple Linear Regression')
-        plt.legend()
-        plt.show()
-
-        return design_format()
-
-    def calculate_rmse(self, y_true, y_pred):
-        """Calculate generated evaluation metrics."""
-        mae = mean_absolute_error(y_true, y_pred)
-        mse = mean_squared_error(y_true, y_pred)
-        rmse = np.sqrt(mean_squared_error(y_true, y_pred))
-        return mae, mse, rmse
-
-    def calculate_accuracy(self, y_true, y_pred, threshold=0.5):
-        """Calculate Accuracy Score."""
-        y_pred_binary = (y_pred > threshold).astype(int)
-        accuracy = accuracy_score(y_true, y_pred_binary)
-        return accuracy
-
-def design_format():
-    """Plot formatting and conversion to base64 encoding."""
-    buffer = BytesIO()
-    plt.savefig(buffer, format="png")
-    buffer.seek(0)
-    image_png = buffer.getvalue()
-    buffer.close()
-
-    graphic = base64.b64encode(image_png).decode()
-    return graphic
 

@@ -25,7 +25,11 @@ class DMM(ModelSelection):
                 pd.DataFrame(y_train),
                 pd.DataFrame(y_test),
             )  # Store training and testing data
+            print("x_train: ", self.x_train.shape)
+            print("x_test: ", self.x_test.shape)
             flash("Data split successfully!", "success")
+            flash("Train data shape: "+ str(self.x_train.shape))
+            flash("Test data shape: "+ str(self.x_test.shape))
             # Flash a success message
             return self.x_train, self.x_test, self.y_train, self.y_test
         else:

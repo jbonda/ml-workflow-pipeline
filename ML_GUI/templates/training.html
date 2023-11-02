@@ -107,7 +107,7 @@
               <td>loss</td>
               <td>
                 <select name="loss" id="loss">
-                  <option value="squared_loss">Squared Loss</option>
+                  <option value="squared_error">Squared Error</option>
                   <option value="huber">Huber</option>
                   <option value="epsilon_insensitive">
                     Epsilon Insensitive
@@ -154,12 +154,10 @@
             <tr>
               <td>fit_intercept</td>
               <td>
-                <input
-                  type="checkbox"
-                  placeholder="fit_intercept"
-                  name="fit_intercept"
-                  value="true"
-                />
+                <select name="fit_intercept" id="fit_intercept">
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+                </select>
               </td>
             </tr>
             <tr>
@@ -189,22 +187,20 @@
             <tr>
               <td>shuffle</td>
               <td>
-                <input
-                  type="checkbox"
-                  placeholder="shuffle"
-                  name="shuffle"
-                  value="true"
-                />
+                <select name="shuffle" id="shuffle">
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>verbose</td>
               <td>
                 <input
-                  type="checkbox"
-                  placeholder="verbose"
+                  type="number"
+                  step="0"
+                  placeholder="(default = 0)"
                   name="verbose"
-                  value="true"
                 />
               </td>
             </tr>
@@ -241,6 +237,7 @@
               <td>
                 <input
                   type="number"
+                  step="0.01"
                   placeholder="(default = 0.01)"
                   name="eta0"
                 />
@@ -260,12 +257,10 @@
             <tr>
               <td>early_stopping</td>
               <td>
-                <input
-                  type="checkbox"
-                  placeholder="early_stopping"
-                  name="early_stopping"
-                  value="false"
-                />
+                <select name="early_stopping" id="early_stopping">
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
             <tr>
@@ -289,6 +284,7 @@
               <td>
                 <input
                   type="number"
+                  step="5"
                   placeholder="(default = 5)"
                   name="n_iter_no_change"
                 />
@@ -297,33 +293,29 @@
             <tr>
               <td>warm_start</td>
               <td>
-                <input
-                  type="checkbox"
-                  placeholder="warm_start"
-                  name="warm_start"
-                  value="false"
-                />
+                <select name="warm_start" id="warm_start">
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>average</td>
               <td>
-                <input
-                  type="number"
-                  placeholder="(default = False) OR 10"
-                  name="average"
-                />
+                <select name="average" id="average">
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
           </table>
-          <!-- <input type="submit" value="Train Model" /> -->
         </details>
 
         <br />
 
         <div id="visualizations">
           <form method="POST" action="/train_model">
-            <input type="submit" value="Visualize Data" />
+            <input type="submit" value="Train Model & Visualize Data" />
           </form>
         </div>
 

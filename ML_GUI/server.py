@@ -154,12 +154,11 @@ def train_model():
         return redirect(url_for("training"))
     alpha = float(alpha)
     iterations = int(iterations)
-    graphic = data_manager.simple_linear_regression(
-        pd.DataFrame(data_manager.x_train),
-        pd.DataFrame(data_manager.y_train),
-        alpha,
-        iterations,
-    )
+    graphic = data_manager.simple_linear_regression(data_manager.x_train_scaled,
+                                                    data_manager.y_train_scaled,
+                                                    data_manager.x_test_scaled,
+                                                    data_manager.y_test_scaled,
+                                                    alpha, iterations,)
 
     if graphic:
         return render_template("training.html", graphic=graphic)
@@ -179,14 +178,14 @@ def evaluate_model():
 
     if evaluation_metric == "mean_squared_error":
         result = calculate_rmse(
-            pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred)
+            pd.DataFrame(data_manager.y_test_scaled), pd.DataFrame(data_manager.y_pred)
         )
         flash(f"MAE: {result[0]}", "success")
         flash(f"MSE: {result[1]}", "success")
         flash(f"RMSE: {result[2]}", "success")
     elif evaluation_metric == "accuracy_score":
         result = calculate_accuracy(
-            pd.DataFrame(data_manager.y_test), pd.DataFrame(data_manager.y_pred)
+            pd.DataFrame(data_manager.y_test_scaled), pd.DataFrame(data_manager.y_pred)
         )
         flash(f"Accuracy Score: {result}", "success")
     else:

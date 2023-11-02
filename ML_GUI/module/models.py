@@ -5,22 +5,22 @@ import matplotlib.pyplot as plt
 import module.output as output
 
 class ModelSelection():
-    def simple_linear_regression(self, x_train, y_train, alpha, iterations):
+    def simple_linear_regression(self, x_train_scaled, y_train_scaled, x_test_scaled, y_test_scaled, alpha, iterations):
         """Train simple linear regression model, plot predictions, and the original data."""
 
         # Model Initialization
         regressor = SGDRegressor(alpha=alpha, max_iter=iterations)
-        regressor.fit(x_train, y_train)
-        y_pred = regressor.predict(self.x_test)
+        regressor.fit(x_train_scaled, y_train_scaled)
+        y_pred = regressor.predict(self.x_test_scaled)
         self.y_pred = y_pred
-        print("y_pred: ", self.y_pred.shape)
-        print("x_test: ", self.x_test.shape)
-
+        # print("y_pred: ", self.y_pred.shape)
+        # print("x_test: ", self.x_test_scaled.shape)
+        # y_pred.flatten()
         # Plotting Results
         plt.clf()
         fig, axes = plt.subplots(figsize=(8, 6))
-        plt.plot(self.x_test, self.y_test,  'go', label='True data', alpha=0.5)
-        plt.plot(self.x_test, self.y_pred, '--', label='Predictions', alpha=0.5)
+        plt.plot(self.y_test_scaled, self.y_pred,  'go', label='True data', alpha=0.5)
+        plt.plot(self.x_test_scaled, self.y_pred, '--', label='Predictions', alpha=0.5)
 
         plt.xlabel('Independent Variable')
         plt.ylabel('Dependent Variable')

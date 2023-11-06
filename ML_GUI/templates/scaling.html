@@ -128,6 +128,15 @@
   ></script>
   <body>
     <h1>Machine Learning-GUI Web Application</h1>
+    <div class="status-bar" id="status-bar">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
+    </div>
     <div class="container">
       <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
       <h2>Data Scaling</h2>

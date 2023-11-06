@@ -187,7 +187,7 @@ def train_model():
     shuffle = bool(shuffle)
     verbose = int(verbose)
     epsilon = float(epsilon)
-    random_state = int(random_state)
+    random_state = None if random_state == "None" else int(random_state)
     learning_rate = str(learning_rate)
     eta0 = float(eta0)
     power_t = float(power_t)

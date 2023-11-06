@@ -92,6 +92,9 @@ def visualize_training_data():
     )
     if graphic:
         return render_template("visualization.html", graphic=graphic)
+    if data_manager.x_train or data_manager.y_train is None:
+        flash("Please split the data first!", "danger")
+        return redirect(url_for("visualization"))
     else:
         flash("Error visualizing training data.", "danger")
         return redirect(url_for("visualization"))
@@ -104,6 +107,9 @@ def visualize_testing_data():
     )
     if graphic:
         return render_template("visualization.html", graphic=graphic)
+    if data_manager.x_test is None or data_manager.y_test is None:
+        flash("Please split the data first!", "danger")
+        return redirect(url_for("visualization"))
     else:
         flash("Error visualizing testing data.", "danger")
         return redirect(url_for("visualization"))

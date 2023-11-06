@@ -8,12 +8,40 @@ from module.models import ModelSelection
 from module.output import design_format
 import matplotlib.pyplot as plt
 
+
 class DMM(ModelSelection):
     def split_data(self, test_size):
         """Method to split the data into training and testing subsets.."""
-        if (self.data is not None):
-            self.x = self.data[[self.selected_input_column]]
+        if self.data is not None:
+            # Take multiple and store them for the scaling method.
+            if isinstance(self.selected_input_column, list):
+                self.x = self.data[self.selected_input_column]
+            else:
+                self.x = self.data[[self.selected_input_column]]
             self.y = self.data[self.selected_target_column]
+
+            # Check if duplicates are removed and NaN values are successfully dealt with.
+            if (self.x.isnull().values.any() or self.y.isnull().values.any()) and (
+                self.x.duplicated().any() or self.y.duplicated().any()
+            ):
+                flash(
+                    "Please complete the preprocessing steps before splitting the data.",
+                    "danger",
+                )
+                return None, None, None, None
+            if self.x.isnull().values.any() or self.y.isnull().values.any():
+                flash("Please remove NaN values before splitting the data.", "danger")
+                return None, None, None, None
+            if self.x.duplicated().any() or self.y.duplicated().any():
+                flash(
+                    "Please remove duplicate values before splitting the data.",
+                    "danger",
+                )
+                return None, None, None, None
+            # If input column and target column names are the same, flash an error message.
+            if self.selected_input_column == self.selected_target_column:
+                flash("Input column and target column cannot be the same.", "danger")
+                return None, None, None, None
             # Select input and target columns
             x_train, x_test, y_train, y_test = train_test_split(
                 self.x, self.y, test_size=test_size, random_state=42
@@ -28,8 +56,8 @@ class DMM(ModelSelection):
             print("x_train: ", self.x_train.shape)
             print("x_test: ", self.x_test.shape)
             flash("Data split successfully!", "success")
-            flash("Train data shape: "+ str(self.x_train.shape))
-            flash("Test data shape: "+ str(self.x_test.shape))
+            flash("Train data shape: " + str(self.x_train.shape))
+            flash("Test data shape: " + str(self.x_test.shape))
             # Flash a success message
             return self.x_train, self.x_test, self.y_train, self.y_test
         else:
@@ -71,8 +99,10 @@ class DMM(ModelSelection):
             self.x_train_scaled = scaler.fit_transform(self.x_train)
             self.x_test_scaled = scaler.transform(self.x_test)
 
-            self.y_train_scaled = scaler.fit_transform(self.y_train.values.reshape(-1,1))
-            self.y_test_scaled = scaler.transform(self.y_test.values.reshape(-1,1))
+            self.y_train_scaled = scaler.fit_transform(
+                self.y_train.values.reshape(-1, 1)
+            )
+            self.y_test_scaled = scaler.transform(self.y_test.values.reshape(-1, 1))
 
             self.x_train_scaled = pd.DataFrame(self.x_train_scaled)
             self.x_test_scaled = pd.DataFrame(self.x_test_scaled)
@@ -85,4 +115,3 @@ class DMM(ModelSelection):
         else:
             flash("Please select input and target columns and upload data.", "danger")
             # Flash a message if no data is uploaded or columns are not selected
-

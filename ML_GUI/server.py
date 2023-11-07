@@ -92,6 +92,9 @@ def visualize_training_data():
     )
     if graphic:
         return render_template("visualization.html", graphic=graphic)
+    if data_manager.x_train or data_manager.y_train is None:
+        flash("Please split the data first!", "danger")
+        return redirect(url_for("visualization"))
     else:
         flash("Error visualizing training data.", "danger")
         return redirect(url_for("visualization"))
@@ -104,6 +107,9 @@ def visualize_testing_data():
     )
     if graphic:
         return render_template("visualization.html", graphic=graphic)
+    if data_manager.x_test is None or data_manager.y_test is None:
+        flash("Please split the data first!", "danger")
+        return redirect(url_for("visualization"))
     else:
         flash("Error visualizing testing data.", "danger")
         return redirect(url_for("visualization"))
@@ -147,18 +153,75 @@ def training():
 
 @app.route("/train_model", methods=["POST"])
 def train_model():
+    loss = request.form["loss"]
+    penalty = request.form["penalty"]
     alpha = request.form["alpha"]
+    l1_ratio = request.form["l1_ratio"]
+    fit_intercept = request.form["fit_intercept"]
     iterations = request.form["max_iter"]
+    tol = request.form["tol"]
+    shuffle = request.form["shuffle"]
+    verbose = request.form["verbose"]
+    epsilon = request.form["epsilon"]
+    random_state = request.form["random_state"]
+    learning_rate = request.form["learning_rate"]
+    eta0 = request.form["eta0"]
+    power_t = request.form["power_t"]
+    early_stopping = request.form["early_stopping"]
+    validation_fraction = request.form["validation_fraction"]
+    n_iter_no_change = request.form["n_iter_no_change"]
+    warm_start = request.form["warm_start"]
+    average = request.form["average"]
+
     if not alpha or not iterations:
         flash("Please enter a valid value for alpha and max_iter.", "danger")
         return redirect(url_for("training"))
+
+    loss = str(loss)
+    penalty = str(penalty)
     alpha = float(alpha)
+    l1_ratio = float(l1_ratio)
+    fit_intercept = bool(fit_intercept)
     iterations = int(iterations)
-    graphic = data_manager.simple_linear_regression(data_manager.x_train_scaled,
-                                                    data_manager.y_train_scaled,
-                                                    data_manager.x_test_scaled,
-                                                    data_manager.y_test_scaled,
-                                                    alpha, iterations,)
+    tol = float(tol)
+    shuffle = bool(shuffle)
+    verbose = int(verbose)
+    epsilon = float(epsilon)
+    random_state = None if random_state == "None" else int(random_state)
+    learning_rate = str(learning_rate)
+    eta0 = float(eta0)
+    power_t = float(power_t)
+    early_stopping = bool(early_stopping)
+    validation_fraction = float(validation_fraction)
+    n_iter_no_change = int(n_iter_no_change)
+    warm_start = bool(warm_start)
+    average = bool(average)
+
+    graphic = data_manager.simple_linear_regression(
+        data_manager.x_train_scaled,
+        data_manager.y_train_scaled,
+        data_manager.x_test_scaled,
+        data_manager.y_test_scaled,
+        loss,
+        penalty,
+        alpha,
+        l1_ratio,
+        fit_intercept,
+        iterations,
+        tol,
+        shuffle,
+        verbose,
+        epsilon,
+        random_state,
+        learning_rate,
+        eta0,
+        power_t,
+        early_stopping,
+        validation_fraction,
+        n_iter_no_change,
+        warm_start,
+        average,
+    )
 
     if graphic:
         return render_template("training.html", graphic=graphic)

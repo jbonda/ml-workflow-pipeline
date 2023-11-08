@@ -32,7 +32,7 @@ class DataModelManager(DMM):
         try:
             if file.filename.endswith(".csv"):
                 # If the uploaded file is a CSV
-                self.data = pd.read_csv(file, encoding='ISO-8859-1')
+                self.data = pd.read_csv(file, encoding='ISO-8859-1', error_bad_lines=True)
                 # Read the CSV into a DataFrame
                 self.fill_empty_columns()
                 # Fill empty column names if they start with "Unnamed"
@@ -45,7 +45,8 @@ class DataModelManager(DMM):
             else:
                 flash("Please upload a CSV or ZIP file.", "danger")
         except Exception as e:
-            flash(f"Error: {str(e)}", "danger")
+            # flash(f"Error: {str(e)}", "danger")
+            flash("Please check your dataset for proper CSV file formatting.", "danger")
         return False
 
     def unpack_zip_file(self, file):

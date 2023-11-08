@@ -1,6 +1,7 @@
 import secrets
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 import pandas as pd
+import pickle
 import matplotlib
 from module.input import DataModelManager
 from module.output import calculate_rmse, calculate_accuracy
@@ -272,6 +273,10 @@ def show_data_table():
 def export():
     return render_template("export.html")
 
+@app.route("/export_model", methods=["GET", "POST"])
+def export_model():
+    """Export the model as a downloaded file for the user."""
+    return send_file("model.pkl", as_attachment=True)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8085, debug=True)

@@ -15,6 +15,35 @@
 - Middleware
 - Backend
 
+## `ML_GUI`
+
+```
+ML_GUI
+├── Pipfile
+├── README.md
+├── module
+│   ├── __init__.py
+│   ├── input.py
+│   ├── models.py
+│   ├── output.py
+│   └── processing.py
+├── requirements.txt
+├── server.py
+├── static
+│   └── css
+│       └── styles.css
+└── templates
+    ├── data.html
+    ├── evaluation.html
+    ├── export.html
+    ├── index.html
+    ├── scaling.html
+    ├── training.html
+    └── visualization.html
+
+5 directories, 17 files
+```
+
 ## `scikit-learn`
 
 #### [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)

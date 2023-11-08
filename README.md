@@ -6,10 +6,13 @@ Professional software development project from the Fall 2023 semester at UAF.
 
 - Clone repository: `gh repo clone jbonda/ml-workflow-pipeline`
 
-#### Python
+#### Flask Application
+
+###### Python
 
 > [!NOTE]
-> This project utilizes [`Pipenv`](https://pipenv.pypa.io/en/latest/) for managing virtual environments. If you do not have `pipenv` installed, you can install it with `pip install --user pipenv`.
+> This project utilizes [`Pipenv`](https://pipenv.pypa.io/en/latest/) for managing virtual environments.
+> You can install it with `pip install --user pipenv`.
 
 - Navigate to the source directory: `cd ML_GUI`
 - Install dependencies: `pipenv shell` or via `requirements.txt`

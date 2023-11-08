@@ -32,7 +32,7 @@ class DataModelManager(DMM):
         try:
             if file.filename.endswith(".csv"):
                 # If the uploaded file is a CSV
-                self.data = pd.read_csv(file, encoding='ISO-8859-1', error_bad_lines=True)
+                self.data = pd.read_csv(file, encoding='ISO-8859-1', on_bad_lines='skip')
                 # Read the CSV into a DataFrame
                 self.fill_empty_columns()
                 # Fill empty column names if they start with "Unnamed"

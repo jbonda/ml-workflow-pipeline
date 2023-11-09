@@ -92,6 +92,17 @@
       .button:hover {
         background-color: #0056b3;
       }
+      .radio-container {
+        display: flex;
+        align-items: center;
+      }
+
+     .radio-button {
+        margin-right: 10px;
+      }
+     .orange-label {
+        color: orange;
+    }
     </style>
   </head>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -99,6 +110,14 @@
     id="MathJax-script"
     async
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  <script>
+    function handleRadioChange(selectedRadio) {
+        var radios = document.getElementsByName('evaluation_metric');
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].disabled = (radios[i] !== selectedRadio);
+        }
+    }
+  </script>  
   ></script>
   <body>
     <h1>Machine Learning-GUI Web Application</h1>
@@ -154,14 +173,27 @@
       <br />
 
       <form method="POST" action="/evaluate_model">
-        <label for="evaluation_metric">Select a Validation Metric:</label>
-        <select name="evaluation_metric" id="evaluation_metric">
-          <option value="mean_squared_error">Mean Squared Error</option>
-          <option value="accuracy_score">Accuracy Score</option>
-          <option value="confusion_matrix">Confusion Matrix</option>
-        </select>
+    <label>Select a Validation Metric:</label><br>
+    
+    <div class="radio-container">
+        <input type="radio" class="radio-button" name="evaluation_metric" id="mean_squared_error" value="mean_squared_error" onchange="handleRadioChange(this)">
+        <label for="mean_squared_error">Mean Squared Error <FONT COLOR="#FF0000"> (For Simple Linear Regression) </FONT></label><br>
+    </div>
 
-        <input type="submit" value="Evaluate Model" />
+    <div class="radio-container">
+        <input type="radio" class="radio-button" name="evaluation_metric" id="accuracy_score" value="accuracy_score" onchange="handleRadioChange(this)">
+        <label for="accuracy_score">Accuracy Score <FONT COLOR="#FF0000"> (For Polynomial Regression) </FONT> </label><br>
+    </div>
+
+    <div class="radio-container">
+        <input type="radio" class="radio-button" name="evaluation_metric" id="confusion_matrix" value="confusion_matrix" onchange="handleRadioChange(this)">
+        <label for="confusion_matrix">Confusion Matrix <FONT COLOR="#FF0000"> (For Logistic Regression) </FONT> </label><br>
+    </div>
+    <br>
+
+    <input type="submit" value="Evaluate Model" />
+
+    </br>
       </form>
 
       <div class="status-bar" id="status-bar">

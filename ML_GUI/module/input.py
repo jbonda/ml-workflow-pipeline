@@ -64,13 +64,12 @@ class DataModelManager(DMM):
                         for csv_file in csv_files[1:]:
                             data = pd.read_csv(zip_ref.open(csv_file), encoding='ISO-8859-1')
                             if len(first_file.columns) != len(data.columns) or first_file.columns[0] != data.columns[0]:
-                                flash("Names/number of columns in the uploaded file(s) does not match in the ZIP archive.", "warning")
+                                # flash("Names/number of columns in the uploaded file(s) does not match in the ZIP archive.", "warning")
                                 break
                             else:
                                 if not first_file.equals(data):
                                     flash(f"File {csv_file} is different from the first file in the ZIP archive.", "warning")
-                                    break
-                        else:
+                        if "warning" not in [msg[1] for msg in session.get("_flashes", [])]:
                             flash("All files in the ZIP archive are identical.", "success")
                     else:
                         self.data = pd.read_csv(zip_ref.open(csv_files[0]), encoding='ISO-8859-1')

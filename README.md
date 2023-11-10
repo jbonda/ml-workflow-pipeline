@@ -15,7 +15,7 @@ Professional software development project from the Fall 2023 semester at UAF.
 > You can install it with `pip install --user pipenv`.
 
 - Navigate to the source directory: `cd ML_GUI`
-- Install dependencies: `pipenv shell` or via `requirements.txt`
+- Install [dependencies](ML_GUI/Pipfile): `pipenv shell`
 - Run program: `pipenv run flask --app server.py --debug run`
 
 #### System Benchmarking

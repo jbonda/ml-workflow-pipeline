@@ -16,7 +16,7 @@ Professional software development project from the Fall 2023 semester at UAF.
 
 - Navigate to the source directory: `cd ML_GUI`
 - Install [dependencies](ML_GUI/Pipfile): `pipenv shell`
-- Run program: `pipenv run flask --app server.py --debug run`
+- Run program: `flask --app server.py --debug run`
 
 #### System Benchmarking
 

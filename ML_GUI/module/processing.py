@@ -32,12 +32,6 @@ class DMM(ModelSelection):
             if self.x.isnull().values.any() or self.y.isnull().values.any():
                 flash("Please remove NaN values before splitting the data.", "danger")
                 return None, None, None, None
-            if self.x.duplicated().any() or self.y.duplicated().any():
-                flash(
-                    "Please remove duplicate values before splitting the data.",
-                    "danger",
-                )
-                return None, None, None, None
             # If input column and target column names are the same, flash an error message.
             if self.selected_input_column == self.selected_target_column:
                 flash("Input column and target column cannot be the same.", "danger")

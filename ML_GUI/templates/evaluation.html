@@ -1,216 +1,224 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Machine Learning-GUI Web Application - Evaluation</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f7f7f7;
-        margin: 0;
-        padding: 0;
-      }
 
-      h1 {
-        background-color: #007bff;
-        color: white;
-        padding: 20px;
-        margin: 0;
-        text-align: center;
-      }
-
-      .container {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #f8f8f8;
-        border-radius: 5px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      h2 {
-        color: #007bff;
-      }
-
-      p {
-        margin-bottom: 20px;
-        color: #333;
-      }
-
-      form {
-        margin-top: 20px;
-      }
-
-      label {
-        display: block;
-        font-weight: bold;
-        margin-top: 10px;
-        color: #007bff;
-      }
-
-      select,
-      input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-      }
-
-      input[type="submit"] {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 5px;
-        font-size: 16px;
-      }
-
-      input[type="submit"]:hover {
-        background-color: #0056b3;
-      }
-
-      .page-navigation {
-        text-align: center;
-      }
-
-      .button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 5px;
-        font-size: 16px;
-        text-decoration: none;
-        margin-top: 20px;
-        display: inline-block;
-      }
-
-      .button:hover {
-        background-color: #0056b3;
-      }
-      .radio-container {
-        display: flex;
-        align-items: center;
-      }
-
-     .radio-button {
-        margin-right: 10px;
-      }
-     .orange-label {
-        color: orange;
+<head>
+  <title>Machine Learning-GUI Web Application - Evaluation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
     }
-    </style>
-  </head>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script
-    id="MathJax-script"
-    async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-  <script>
-    function handleRadioChange(selectedRadio) {
-        var radios = document.getElementsByName('evaluation_metric');
-        for (var i = 0; i < radios.length; i++) {
-            radios[i].disabled = (radios[i] !== selectedRadio);
-        }
+
+    h1 {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      margin: 0;
+      text-align: center;
     }
-  </script>  
-  ></script>
-  <body>
-    <h1>Machine Learning-GUI Web Application</h1>
-    <div class="container">
-      <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
-      <h2>Model Evaluation</h2>
-      <p>
-        Model evaluation is the process of using different evaluation metrics to
-        understand a machine learning model's performance, as well as its
-        strengths and weaknesses. Here we are using the following metrics:
-      </p>
 
-      <ul>
-        <li>
-          <b>Root Mean Squared Error</b> (RMSE) → Root Mean Squared error is a
-          popular metric used in machine learning to measure the accuracy of a
-          predictive model.It quantifies the difference between predicted values
-          and actual values, squaring the errors, take the mean, and then
-          finding the square root.
-          <br />
-          \[ RMSE = \sqrt{\frac{1}{N}\sum_{i=1}^{N} (y_i - \hat{y}_i)^2} \]
-          <br />
-          ... where N is the number of data points, \(y_i\) is the i-th
-          measurement, and \(ŷ_i\) is its corresponding prediction.
-        </li>
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f8f8f8;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #007bff;
+    }
+
+    p {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #007bff;
+    }
+
+    select,
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    input[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .page-navigation {
+      text-align: center;
+    }
+
+    .button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      text-decoration: none;
+      margin-top: 20px;
+      display: inline-block;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    .radio-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .radio-button {
+      margin-right: 10px;
+    }
+
+    .orange-label {
+      color: orange;
+    }
+  </style>
+</head>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<script>
+  function handleRadioChange(selectedRadio) {
+    var radios = document.getElementsByName('evaluation_metric');
+    for (var i = 0; i < radios.length; i++) {
+      radios[i].disabled = (radios[i] !== selectedRadio);
+    }
+  }
+</script>
+
+<body>
+  <h1>Machine Learning-GUI Web Application</h1>
+  <div class="container">
+    <h4>🔗 <a href="/data" target="_blank">CSV Source</a></h4>
+    <h2>Model Evaluation</h2>
+    <p>
+      Model evaluation is the process of using different evaluation metrics to
+      understand a machine learning model's performance, as well as its
+      strengths and weaknesses. Here we are using the following metrics:
+    </p>
+
+    <ul>
+      <li>
+        <b>Root Mean Squared Error</b> (RMSE) → Root Mean Squared error is a
+        popular metric used in machine learning to measure the accuracy of a
+        predictive model.It quantifies the difference between predicted values
+        and actual values, squaring the errors, take the mean, and then
+        finding the square root.
         <br />
-        <li>
-          <b> Accuracy Score</b> → Accuracy Score is one metric for evaluating
-          classification models. Accuracy has the following definition:
-          <br />
-          \[ \text{Accuracy} = \frac{\text{Total Number of
-          Predictions}}{\text{Number of Correct Predictions}} \]
-          <br />
-          For binary classification, accuracy can also be calculated in terms of
-          positives and negatives as follows:
-          <br />
-          \[ \text{Accuracy} = \frac{\text{TP + TN}}{\text{TP + TN + FP + FN}}
-          \]
-          <br />
-          ... Where TP = True Positives, TN = True Negatives, FP = False
-          Positives, and FN = False Negatives.
-        </li>
+        \[ RMSE = \sqrt{\frac{1}{N}\sum_{i=1}^{N} (y_i - \hat{y}_i)^2} \]
         <br />
-
-        <li>
-          <b> Confusion Matrix </b> → A Confusion matrix is an N x N matrix used
-          for evaluating the performance of a classification model, where N is
-          the total number of target classes. The matrix compares the actual
-          target values with those predicted by the machine learning model.
-        </li>
-      </ul>
-
+        ... where N is the number of data points, \(y_i\) is the i-th
+        measurement, and \(ŷ_i\) is its corresponding prediction.
+      </li>
+      <br />
+      <li>
+        <b> Accuracy Score</b> → Accuracy Score is one metric for evaluating
+        classification models. Accuracy has the following definition:
+        <br />
+        \[ \text{Accuracy} = \frac{\text{Total Number of
+        Predictions}}{\text{Number of Correct Predictions}} \]
+        <br />
+        For binary classification, accuracy can also be calculated in terms of
+        positives and negatives as follows:
+        <br />
+        \[ \text{Accuracy} = \frac{\text{TP + TN}}{\text{TP + TN + FP + FN}}
+        \]
+        <br />
+        ... Where TP = True Positives, TN = True Negatives, FP = False
+        Positives, and FN = False Negatives.
+      </li>
       <br />
 
-      <form method="POST" action="/evaluate_model">
-    <label>Select a Validation Metric:</label><br>
-    
-    <div class="radio-container">
-        <input type="radio" class="radio-button" name="evaluation_metric" id="mean_squared_error" value="mean_squared_error" onchange="handleRadioChange(this)">
-        <label for="mean_squared_error">Mean Squared Error <FONT COLOR="#FF0000"> (For Simple Linear Regression) </FONT></label><br>
-    </div>
+      <li>
+        <b> Confusion Matrix </b> → A Confusion matrix is an N x N matrix used
+        for evaluating the performance of a classification model, where N is
+        the total number of target classes. The matrix compares the actual
+        target values with those predicted by the machine learning model.
+      </li>
+    </ul>
 
-    <div class="radio-container">
-        <input type="radio" class="radio-button" name="evaluation_metric" id="accuracy_score" value="accuracy_score" onchange="handleRadioChange(this)">
-        <label for="accuracy_score">Accuracy Score <FONT COLOR="#FF0000"> (For Polynomial Regression) </FONT> </label><br>
-    </div>
+    <br />
 
-    <div class="radio-container">
-        <input type="radio" class="radio-button" name="evaluation_metric" id="confusion_matrix" value="confusion_matrix" onchange="handleRadioChange(this)">
-        <label for="confusion_matrix">Confusion Matrix <FONT COLOR="#FF0000"> (For Logistic Regression) </FONT> </label><br>
-    </div>
-    <br>
+    <form method="POST" action="/evaluate_model">
+      <label>Select a Validation Metric:</label><br>
 
-    <input type="submit" value="Evaluate Model" />
-
-    </br>
-      </form>
-
-      <div class="status-bar" id="status-bar">
-        {% with messages = get_flashed_messages() %} {% if messages %}
-        <ul class="flashes">
-          {% for message in messages %}
-          <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-        {% endif %} {% endwith %}
+      <div class="radio-container">
+        <input type="radio" class="radio-button" name="evaluation_metric" id="mean_squared_error"
+          value="mean_squared_error" onchange="handleRadioChange(this)">
+        <label for="mean_squared_error">Mean Squared Error <FONT COLOR="#FF0000"> (For Simple Linear Regression) </FONT>
+        </label><br>
       </div>
 
-      <div class="page-navigation">
-        <a href="/train" class="button">« Training</a>
-        ◦◦◦◦•◦
-        <a href="/export" class="button">Conclusion »</a>
+      <div class="radio-container">
+        <input type="radio" class="radio-button" name="evaluation_metric" id="accuracy_score" value="accuracy_score"
+          onchange="handleRadioChange(this)">
+        <label for="accuracy_score">Accuracy Score <FONT COLOR="#FF0000"> (For Polynomial Regression) </FONT>
+        </label><br>
       </div>
+
+      <div class="radio-container">
+        <input type="radio" class="radio-button" name="evaluation_metric" id="confusion_matrix" value="confusion_matrix"
+          onchange="handleRadioChange(this)">
+        <label for="confusion_matrix">Confusion Matrix <FONT COLOR="#FF0000"> (For Logistic Regression) </FONT>
+        </label><br>
+      </div>
+      <br>
+
+      <input type="submit" value="Evaluate Model" />
+
+      </br>
+    </form>
+
+    <div class="status-bar" id="status-bar">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
     </div>
-  </body>
+
+    <div class="page-navigation">
+      <a href="/train" class="button">« Training</a>
+      ◦◦◦◦•◦
+      <a href="/export" class="button">Conclusion »</a>
+    </div>
+  </div>
+</body>
+
 </html>

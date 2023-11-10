@@ -5,8 +5,10 @@ import pandas as pd
 import zipfile
 from module.processing import DMM
 
+
 class DataModelManager(DMM):
     """Class definition to manage the data model."""
+
     def __init__(self):
         """Class initialization attributes."""
         self.data = None  # Holds the dataset
@@ -25,14 +27,16 @@ class DataModelManager(DMM):
         self.y_train_scaled = None  # Scaled training target variable
         self.x_test_scaled = None  # Scaled testing input features
         self.y_test_scaled = None  # Scaled testing target variable
-        self.y_pred = None # Sample prediction variable
+        self.y_pred = None  # Sample prediction variable
 
     def load_data(self, file):
         """Method to load data from a file."""
         try:
             if file.filename.endswith(".csv"):
                 # If the uploaded file is a CSV
-                self.data = pd.read_csv(file, encoding='ISO-8859-1', on_bad_lines='skip')
+                self.data = pd.read_csv(
+                    file, encoding="ISO-8859-1", on_bad_lines="skip"
+                )
                 # Read the CSV into a DataFrame
                 self.fill_empty_columns()
                 # Fill empty column names if they start with "Unnamed"
@@ -44,44 +48,59 @@ class DataModelManager(DMM):
                 return True  # Indicate successful loading
             else:
                 flash("Please upload a CSV or ZIP file.", "danger")
+                session.clear()
         except Exception as e:
             # flash(f"Error: {str(e)}", "danger")
             flash("Please check your dataset for proper CSV file formatting.", "danger")
+            session.clear()
         return False
 
     def unpack_zip_file(self, file):
         """Helper function to unpack a ZIP archive."""
-        with zipfile.ZipFile(file, 'r') as zip_ref:
-                    csv_files = [f for f in zip_ref.namelist() if f.endswith('.csv')]
-                    # Get a list of all CSV files in the archive
-                    if len(csv_files) == 0:
-                        flash("No CSV files found in the ZIP archive.", "danger")
-                    elif len(csv_files) > 1:
-                        first_file = pd.read_csv(zip_ref.open(csv_files[0]), encoding='ISO-8859-1')
-                        self.data = first_file
-                        self.fill_empty_columns()
-                        self.columns = list(first_file.columns)  # Store the column names
-                        for csv_file in csv_files[1:]:
-                            data = pd.read_csv(zip_ref.open(csv_file), encoding='ISO-8859-1')
-                            if len(first_file.columns) != len(data.columns) or first_file.columns[0] != data.columns[0]:
-                                # flash("Names/number of columns in the uploaded file(s) does not match in the ZIP archive.", "warning")
-                                break
-                            else:
-                                if not first_file.equals(data):
-                                    flash(f"File {csv_file} is different from the first file in the ZIP archive.", "warning")
-                        if "warning" not in [msg[1] for msg in session.get("_flashes", [])]:
-                            flash("All files in the ZIP archive are identical.", "success")
+        with zipfile.ZipFile(file, "r") as zip_ref:
+            csv_files = [f for f in zip_ref.namelist() if f.endswith(".csv")]
+            # Get a list of all CSV files in the archive
+            if len(csv_files) == 0:
+                flash("No CSV files found in the ZIP archive.", "danger")
+            elif len(csv_files) > 1:
+                first_file = pd.read_csv(
+                    zip_ref.open(csv_files[0]), encoding="ISO-8859-1"
+                )
+                self.data = first_file
+                self.fill_empty_columns()
+                self.columns = list(first_file.columns)  # Store the column names
+                for csv_file in csv_files[1:]:
+                    data = pd.read_csv(zip_ref.open(csv_file), encoding="ISO-8859-1")
+                    if (
+                        len(first_file.columns) != len(data.columns)
+                        or first_file.columns[0] != data.columns[0]
+                    ):
+                        # flash("Names/number of columns in the uploaded file(s) does not match in the ZIP archive.", "warning")
+                        break
                     else:
-                        self.data = pd.read_csv(zip_ref.open(csv_files[0]), encoding='ISO-8859-1')
-                        self.fill_empty_columns()
-                        self.columns = list(self.data.columns)  # Store the column names
+                        if not first_file.equals(data):
+                            flash(
+                                f"File {csv_file} is different from the first file in the ZIP archive.",
+                                "warning",
+                            )
+                if "warning" not in [msg[1] for msg in session.get("_flashes", [])]:
+                    flash(
+                        "All files in the ZIP archive are of the same format.",
+                        "success",
+                    )
+            else:
+                self.data = pd.read_csv(
+                    zip_ref.open(csv_files[0]), encoding="ISO-8859-1"
+                )
+                self.fill_empty_columns()
+                self.columns = list(self.data.columns)  # Store the column names
 
     def fill_empty_columns(self):
         """Method to fill empty column names."""
         if not self.data.columns[0].startswith("Unnamed"):
             self.data.columns = [
-                        f"Column {i}" for i in range(1, len(self.data.columns) + 1)
-                    ]
+                f"Column {i}" for i in range(1, len(self.data.columns) + 1)
+            ]
             # If the column names don't start with "Unnamed", name them as "Column 1", "Column 2", etc.
 
     def remove_duplicates(self):
@@ -92,13 +111,16 @@ class DataModelManager(DMM):
                     initial_shape = self.data.shape
                     self.data = self.data[~self.data.duplicated()]
                     final_shape = self.data.shape
-                    flash(f"Removed {initial_shape[0] - final_shape[0]} duplicate row(s).", "success")
+                    flash(
+                        f"Removed {initial_shape[0] - final_shape[0]} duplicate row(s).",
+                        "success",
+                    )
                     # Remove duplicates and flash a success message with the count of removed rows
                 except Exception as e:
                     flash(f"Error removing duplicates: {str(e)}", "danger")
                     # Flash an error message if an exception occurs
             else:
-                flash('No duplicate values present in the uploaded data file.', "info")
+                flash("No duplicate values present in the uploaded data file.", "info")
                 # Flash a message if no duplicates are found
 
     def remove_NaN_values(self):
@@ -119,9 +141,10 @@ class DataModelManager(DMM):
     def upload_error_handler(self):
         """Check file upload status and log diagnostic information."""
         if self.data is None:
-            flash("Please upload a CSV or ZIP file before using this function.", "danger")
+            flash(
+                "Please upload a CSV or ZIP file before using this function.", "danger"
+            )
 
         else:
             flash("File uploaded successfully!", "success")
             return True
-

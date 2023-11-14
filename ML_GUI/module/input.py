@@ -48,11 +48,9 @@ class DataModelManager(DMM):
                 return True  # Indicate successful loading
             else:
                 flash("Please upload a CSV or ZIP file.", "danger")
-                session.clear()
         except Exception as e:
             # flash(f"Error: {str(e)}", "danger")
             flash("Please check your dataset for proper CSV file formatting.", "danger")
-            session.clear()
         return False
 
     def unpack_zip_file(self, file):

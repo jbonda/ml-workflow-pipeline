@@ -36,6 +36,12 @@ class DMM(ModelSelection):
             if self.selected_input_column == self.selected_target_column:
                 flash("Input column and target column cannot be the same.", "danger")
                 return None, None, None, None
+            if test_size == 0:
+                flash("For optimal models, please enter a non-zero test size.", "warning")
+                return None, None, None, None
+            if test_size >= 0.5:
+                flash("For optimal models, please enter a valid test size less than 0.5.", "warning")
+                return None, None, None, None
             # Select input and target columns
             x_train, x_test, y_train, y_test = train_test_split(
                 self.x, self.y, test_size=test_size, random_state=42
@@ -47,11 +53,7 @@ class DMM(ModelSelection):
                 pd.DataFrame(y_train),
                 pd.DataFrame(y_test),
             )  # Store training and testing data
-            print("x_train: ", self.x_train.shape)
-            print("x_test: ", self.x_test.shape)
             flash("Data split successfully!", "success")
-            flash("Train data shape: " + str(self.x_train.shape))
-            flash("Test data shape: " + str(self.x_test.shape))
             # Flash a success message
             return self.x_train, self.x_test, self.y_train, self.y_test
         else:

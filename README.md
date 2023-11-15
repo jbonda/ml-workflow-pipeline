@@ -19,7 +19,7 @@ Professional software development project from the Fall 2023 semester at UAF.
 
 ###### Production Environment
 
-- Prerequisites: [miniconda](https://docs.conda.io/projects/miniconda/en/latest/) → Linux
+- Prerequisites: [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/#quick-command-line-install) → **Linux**
 - Create virtual environment: `conda create --name {name} python={version}`
 - Activate virtual environment: `conda activate {name}`
 - Clone repository: `git clone https://github.com/jbonda/ml-workflow-pipeline.git`

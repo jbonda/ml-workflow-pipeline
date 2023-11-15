@@ -118,7 +118,30 @@
         width: 30%;
         margin: 10px;
       }
-    </style>
+  .data-table-container,
+  .scaled-table-container {
+    max-width: 100%;
+    overflow-x: scroll;
+    margin-top: 20px; /* Added margin for spacing */
+  }
+
+  .data-table,
+  .scaled-table {
+    width: max-content; /* Set table width to max content size */
+    border-collapse: collapse;
+    border: 1px solid gray;
+  }
+
+  .data-table,
+  .scaled-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid gray;
+  .table-wrapper {
+    overflow-x: auto; /* Add horizontal scrollbar */
+  }
+  
+</style>
   </head>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script
@@ -183,22 +206,31 @@
 
       <br />
 
-      {% if first_five_data %}
-      <h2>First Five Rows of Data</h2>
-      {{ first_five_data | safe }} {% endif %} {% if first_five_x_scaled and
-      first_five_y_scaled %}
-      <h2>First Five Rows of Scaled Data</h2>
-      <table>
-        <tr>
-          <th>Input (x): {{ input_column | safe }}</th>
-          <th>Target (y): {{ target_column | safe }}</th>
-        </tr>
-        <tr>
-          <td>{{ first_five_x_scaled | safe }}</td>
-          <td>{{ first_five_y_scaled | safe }}</td>
-        </tr>
-      </table>
-      {% endif %}
+{% if first_five_data %}
+  <h2>First Five Rows of Data</h2>
+  <div class="data-table-container">
+    <table class="data-table">
+      {{ first_five_data | safe }}
+    </table>
+  </div>
+  {% endif %}
+
+  {% if first_five_x_scaled and first_five_y_scaled %}
+  <h2>First Five Rows of Scaled Data</h2>
+  <div class="scaled-table-container">
+    <table class="scaled-table">
+      <tr>
+        <th>Input (x): {{ input_column | safe }}</th>
+        <th>Target (y): {{ target_column | safe }}</th>
+      </tr>
+      <tr>
+        <td>{{ first_five_x_scaled | safe }}</td>
+        <td>{{ first_five_y_scaled | safe }}</td>
+      </tr>
+    </table>
+  </div>
+    {% endif %}
+
 
       <div class="page-navigation">
         <a href="/visualization" class="button">« Visualize</a>

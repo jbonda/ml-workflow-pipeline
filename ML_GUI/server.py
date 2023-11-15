@@ -1,5 +1,14 @@
 import secrets
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    flash,
+    session,
+    send_file,
+)
 import pandas as pd
 import matplotlib
 from module.input import DataModelManager
@@ -28,8 +37,6 @@ def upload_file():
         file = request.files["file"]
         if file:
             if data_manager.load_data(file):
-                # Flush input columns on new file upload.
-                session.pop("input_columns", None)
                 flash("File uploaded successfully!", "success")
     return redirect(url_for("index"))
 
@@ -223,6 +230,10 @@ def train_model():
         average,
     )
 
+    selected_model = request.form.get("model")
+
+    session["selected_model"] = selected_model
+
     if graphic:
         return render_template("training.html", graphic=graphic)
     else:
@@ -239,20 +250,67 @@ def evaluation():
 def evaluate_model():
     evaluation_metric = request.form["evaluation_metric"]
 
-    if evaluation_metric == "mean_squared_error":
-        result = calculate_rmse(
-            pd.DataFrame(data_manager.y_test_scaled), pd.DataFrame(data_manager.y_pred)
-        )
-        flash(f"MAE: {result[0]}", "success")
-        flash(f"MSE: {result[1]}", "success")
-        flash(f"RMSE: {result[2]}", "success")
-    elif evaluation_metric == "accuracy_score":
-        result = calculate_accuracy(
-            pd.DataFrame(data_manager.y_test_scaled), pd.DataFrame(data_manager.y_pred)
-        )
-        flash(f"Accuracy Score: {result}", "success")
+    selected_model = session.get("selected_model")
+
+    if selected_model == "simple_linear_regression":
+        if evaluation_metric == "mean_squared_error":
+            result = calculate_rmse(
+                pd.DataFrame(data_manager.y_test_scaled),
+                pd.DataFrame(data_manager.y_pred),
+            )
+            flash(f"MAE: {result[0]}", "success")
+            flash(f"MSE: {result[1]}", "success")
+            flash(f"RMSE: {result[2]}", "success")
+        elif evaluation_metric == "accuracy_score":
+            flash(
+                "Accuracy Score is not a valid metric to train Simple Linear Regression.",
+                "danger",
+            )
+        elif evaluation_metric == "confusion_matrix":
+            flash(
+                "Confusion Matrix is not a valid metric to train Simple Linear Regression.",
+                "danger",
+            )
+        else:
+            flash("Invalid validation metric selected", "danger")
+    elif selected_model == "polynomial_linear_regression":
+        if evaluation_metric == "mean_squared_error":
+            flash(
+                "Mean Squared Error is not a valid metric to train Polynomial Linear Regression.",
+                "danger",
+            )
+        elif evaluation_metric == "accuracy_score":
+            flash(
+                "[Accuracy Score]",
+                "success",
+            )
+        elif evaluation_metric == "confusion_matrix":
+            flash(
+                "Confusion Matrix is not a valid metric to train Polynomial Linear Regression.",
+                "danger",
+            )
+        else:
+            flash("Invalid validation metric selected", "danger")
+    elif selected_model == "logistic_regression":
+        if evaluation_metric == "mean_squared_error":
+            flash(
+                "Mean Squared Error is not a valid metric to train Logistic Regression.",
+                "danger",
+            )
+        elif evaluation_metric == "accuracy_score":
+            flash(
+                "Accuracy Score is not a valid metric to train Logistic Regression.",
+                "danger",
+            )
+        elif evaluation_metric == "confusion_matrix":
+            flash(
+                "[Confusion Matrix]",
+                "success",
+            )
+        else:
+            flash("Invalid validation metric selected", "danger")
     else:
-        flash("Invalid validation metric selected", "danger")
+        flash("Please select a model first!", "danger")
 
     return redirect(url_for("evaluation"))
 
@@ -271,6 +329,12 @@ def show_data_table():
 @app.route("/export")
 def export():
     return render_template("export.html")
+
+
+@app.route("/export_model", methods=["GET", "POST"])
+def export_model():
+    """Export the model as a downloaded file for the user."""
+    return send_file("model.pkl", as_attachment=True)
 
 
 if __name__ == "__main__":

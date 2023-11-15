@@ -2,31 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Data Viewing</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/styles.css') }}"
     />
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        text-align: center;
+      }
+      td:first-child {
+        font-style: italic;
+      }
+
+      .table-container {
+        max-height: 400px; /* Adjust the maximum height as needed */
+        overflow-y: auto;
+      }
+    </style>
   </head>
-  <style>
-    table,
-    th,
-    td {
-      border: 1px solid black;
-      text-align: center;
-    }
-    td:first-child {
-      font-style: italic;
-    }
-  </style>
   <body>
     <h1>🤖 Machine Learning Workflow/Pipeline</h1>
 
     <div class="container">
       <h2>Full Data Table</h2>
-      <div>
+      <div class="table-container">
         <div>{{ data_table | safe }}</div>
       </div>
     </div>

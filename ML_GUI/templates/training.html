@@ -263,14 +263,6 @@
         </form>
       </div>
 
-      <details open="true">
-        <summary>Graphical Output</summary>
-
-        {% if graphic %}
-        <img src="data:image/png;base64,{{ graphic }}" alt="Data Visualization" />
-        {% endif %}
-      </details>
-
       <br />
 
       <label for="polynomial_linear_regression"><input type="radio" id="polynomial_linear_regression" name="model"
@@ -317,6 +309,18 @@
 
       <br />
     </form>
+
+    <br>
+
+    <br>
+
+    <details open="true">
+      <summary>Graphical Output</summary>
+
+      {% if graphic %}
+      <img src="data:image/png;base64,{{ graphic }}" alt="Data Visualization" />
+      {% endif %}
+    </details>
 
     <div class="page-navigation">
       <a href="/scaling" class="button">« Scaling</a>

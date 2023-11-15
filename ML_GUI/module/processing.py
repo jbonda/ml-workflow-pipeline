@@ -35,9 +35,10 @@ class DMM(ModelSelection):
                 return None, None, None, None
             
             # Check if selected columns are numeric for both self.x and self.y
-            if not self.x.applymap(np.isreal).all().all() or not self.y.applymap(np.isreal).all().all():
+            if not self.x.apply(np.isreal).all().all() or not self.y.apply(np.isreal).all().all():
                 flash("Selected input and/or target column(s) must be numeric.", "danger")
                 return None, None, None, None
+
             
             # If input column and target column names are the same, flash an error message.
             if self.selected_input_column == self.selected_target_column:

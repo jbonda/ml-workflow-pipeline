@@ -13,7 +13,7 @@ Professional software development project from the Fall 2023 semester at UAF.
 > You can install it with `pip install --user pipenv`.
 
 - Clone repository: `gh repo clone jbonda/ml-workflow-pipeline`
-- Navigate to the source directory: `cd ML_GUI`
+- Navigate to the source directory: `cd ml-workflow-pipeline/ML_GUI`
 - Install [dependencies](ML_GUI/Pipfile): `pipenv shell`
 - Run program: `flask --app server.py --debug run`
 
@@ -23,7 +23,7 @@ Professional software development project from the Fall 2023 semester at UAF.
 - Create virtual environment: `conda create --name {name} python={version}`
 - Activate virtual environment: `conda activate {name}`
 - Clone repository: `git clone https://github.com/jbonda/ml-workflow-pipeline.git`
-- Navigate to the source directory: `cd ML_GUI`
+- Navigate to the source directory: `cd ml-workflow-pipeline/ML_GUI`
 - Install [dependencies](ML_GUI/Pipfile): `conda install -c anaconda {package}`
 - Run program: `gunicorn --config gunicorn_config.py app:app`
 

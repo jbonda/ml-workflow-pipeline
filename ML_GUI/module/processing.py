@@ -2,6 +2,7 @@
 
 from flask import flash, session
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from module.models import ModelSelection
@@ -18,7 +19,7 @@ class DMM(ModelSelection):
                 self.x = self.data[self.selected_input_column]
             else:
                 self.x = self.data[[self.selected_input_column]]
-            self.y = self.data[self.selected_target_column]
+                self.y = self.data[self.selected_target_column]
 
             # Check if duplicates are removed and NaN values are successfully dealt with.
             if (self.x.isnull().values.any() or self.y.isnull().values.any()) and (
@@ -32,6 +33,12 @@ class DMM(ModelSelection):
             if self.x.isnull().values.any() or self.y.isnull().values.any():
                 flash("Please remove NaN values before splitting the data.", "danger")
                 return None, None, None, None
+            
+            # Check if selected columns are numeric for both self.x and self.y
+            if not self.x.applymap(np.isreal).all().all() or not self.y.applymap(np.isreal).all().all():
+                flash("Selected input and/or target column(s) must be numeric.", "danger")
+                return None, None, None, None
+            
             # If input column and target column names are the same, flash an error message.
             if self.selected_input_column == self.selected_target_column:
                 flash("Input column and target column cannot be the same.", "danger")

@@ -15,7 +15,7 @@ Professional software development project from the Fall 2023 semester at UAF.
 - Clone repository: `gh repo clone jbonda/ml-workflow-pipeline`
 - Navigate to the source directory: `cd ml-workflow-pipeline/ML_GUI`
 - Install [dependencies](ML_GUI/Pipfile): `pipenv shell`
-- Run program: `flask --app server.py --debug run`
+- Run program: `flask --app app.py --debug run`
 
 ###### Production Environment
 

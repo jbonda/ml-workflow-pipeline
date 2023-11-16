@@ -8,17 +8,20 @@ from flask import (
     flash,
     session,
     send_file,
+    jsonify,
 )
 import pandas as pd
 import matplotlib
 from module.input import DataModelManager
-from module.output import calculate_rmse, calculate_accuracy
+from module.output import calculate_rmse
+from werkzeug.exceptions import RequestEntityTooLarge
 
 
 matplotlib.use("Agg")
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(24)
+app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024  # 5 MB
 
 data_manager = DataModelManager()
 
@@ -27,17 +30,29 @@ data_manager = DataModelManager()
 def index():
     if "tab_id" not in session:
         session["tab_id"] = secrets.token_hex(24)
-        session.permanent = False
+    print(session["tab_id"])
     return render_template("index.html", columns=data_manager.columns)
 
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
-    if request.method == "POST":
-        file = request.files["file"]
-        if file:
-            if data_manager.load_data(file):
-                flash("File uploaded successfully!", "success")
+    if "tab_id" not in session:
+        session["tab_id"] = secrets.token_hex(24)
+    files = request.files.getlist("file")
+    if files:
+        for file in files:
+            try:
+                if data_manager.load_data(file):
+                    flash("✅ File uploaded successfully!", "success")
+            except RequestEntityTooLarge:
+                flash(
+                    "❌ File size limit exceeded! Please upload a smaller file.",
+                    "danger",
+                )
+            except Exception as e:
+                flash(f"⛔️ Error: {e}", "danger")
+    else:
+        flash("⬆️ No file uploaded! Please upload a file and try again.", "danger")
     return redirect(url_for("index"))
 
 

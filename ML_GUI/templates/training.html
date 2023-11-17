@@ -36,7 +36,19 @@
     justify-content: center;
     gap: 20px;
   }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .blinking-message {
+      animation: blink 1s infinite; /* Adjust the duration as needed */
+    }
+  </style>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
@@ -64,11 +76,20 @@
       3. Choose Logistic Regression when there is a classification problem -
       predicting a categorical outcome.<br />
     </p>
+    
+    
+  
+
 
     <h2>Model Training</h2>
 
     <fieldset>
       <legend>Model Selection</legend>
+      <marquee direction="right"
+             behavior="alternate"
+             style="border:BLUE 2px SOLID">
+        <FONT COLOR=Green>Trained model will be visualized at the bottom of the page.
+      </marquee>
 
       <form method="POST" action="/train_model">
         <div>
@@ -91,12 +112,13 @@
 
         <details>
           <summary>Hyperparameters</summary>
-
+          
           <h4>
             Source:
             <a
               href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html"><code>sklearn.linear_model.SGDRegressor</code></a>
           </h4>
+          
 
           <table>
             <tr>
@@ -132,14 +154,78 @@
             <tr>
               <td>alpha</td>
               <td>
-                <input type="number" step="0.0001" placeholder="(default = 0.0001)" name="alpha" required />
+               <input type="number" step="0.0001" placeholder="" name="alpha" oninput="checkAlphaValue(this)" required />
+               <span id="alphaRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('alpha')[0];
+                inputElement.value = 0.0001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkAlphaValue(input) {
+              // If the input value is empty, set it to the default value (0.0001)
+              input.value = input.value.trim() === '' ? 0.0001 : input.value;
+
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+
+              // Check if the entered value is within the desired range
+              var alphaValue = parseFloat(input.value);
+              var minValue = 0.0001;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('alphaRangeMessage');
+
+             if (isNaN(alphaValue) || alphaValue < minValue || alphaValue > maxValue) {
+               messageElement.textContent = 'Alpha must be between ' + minValue + ' and ' + maxValue;
+               input.value = 0.0001; // Set to default value
+             } else {
+               messageElement.textContent = ''; // Clear the message if the value is within range
+             }
+            }
+           </script>
+
+
+
             </tr>
             <tr>
-              <td>l1_ratio</td>
-              <td>
-                <input type="number" step="0.15" placeholder="(default = 0.15)" name="l1_ratio" />
-              </td>
+              <td>L1 Ratio</td>
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.15)" name="l1_ratio" oninput="checkL1RatioValue(this)" required />
+                <span id="l1RatioRangeMessage" style="color: red; font-size: 12px;"></span>
+             </td>
+
+             <script>
+		// Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('L1 Ratio')[0];
+                inputElement.value = 0.5; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkL1RatioValue(input) {
+                // If the input value is empty, set it to the default value (0.5)
+               input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.5 : input.value;
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+	      // Check if the entered value is within the desired range
+              var l1RatioValue = parseFloat(input.value);
+              var minValue = 0.0;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('l1RatioRangeMessage');
+
+          if (isNaN(l1RatioValue) || l1RatioValue < minValue || l1RatioValue > maxValue) {
+           messageElement.textContent = 'L1 Ratio must be between ' + minValue + ' and ' + maxValue ;
+           input.value = 0.5; // Set to default value
+          } else {
+            messageElement.textContent = ''; // Clear the message if the value is within range
+         }
+        }
+        </script>
+
+
             </tr>
             <tr>
               <td>fit_intercept</td>
@@ -153,16 +239,75 @@
             <tr>
               <td>max_iter</td>
               <td>
-                <input type="number" step="1000" placeholder="(default = 1000)" name="max_iter" required />
+    	        <input type="number" step="1" placeholder="" name="max_iter" oninput="checkMaxIterValue(this)" required />
+                <span id="maxIterRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('max_iter')[0];
+                inputElement.value = 1000; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkMaxIterValue(input) {
+               // If the input value is empty, set it to the default value (1000)
+               input.value = input.value.trim() === '' ? 1000 : input.value;
+
+               // Update the placeholder dynamically
+               input.placeholder = "(default = " + input.value + ")";
+
+               // Check if the entered value is within the desired range
+               var maxIterValue = parseInt(input.value);
+               var minValue = 1;
+               var maxValue = 5000; // Adjust the maximum value as needed
+               var messageElement = document.getElementById('maxIterRangeMessage');
+
+             if (isNaN(maxIterValue) || maxIterValue < minValue || maxIterValue > maxValue) {
+               messageElement.textContent = 'max_iter must be between ' + minValue + ' and ' + maxValue;
+               input.value = 1000; // Set to default value
+             } else {
+             messageElement.textContent = ''; // Clear the message if the value is within range
+            }
+          }
+          </script>
+
+
             </tr>
             <tr>
+              <td>tol</td>
               <td>
-                <abbr title="Tolerance">tol</abbr>
+                 <input type="number" step="0.01" placeholder="(default = 1e-4)" name="tol" oninput="checkTolValue(this)" />
+                 <span id="tolRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
-              <td>
-                <input type="number" step="1e-3" placeholder="(default = 1e-3)" name="tol" />
-              </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('tol')[0];
+                inputElement.value = 0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkTolValue(input) {
+                // If the input value is empty, set it to the default value (1e-4)
+                input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? (1e-4) : input.value;
+                // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var tolValue = parseFloat(input.value);
+                var minValue = 0.0; // You can adjust this minimum value as needed
+                var messageElement = document.getElementById('tolRangeMessage');
+
+                if (isNaN(tolValue) || tolValue < minValue) {
+                  messageElement.textContent = 'tol must be greater than or equal to ' + minValue;
+                  input.value = 1e-4; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+               }
+            </script>
+
             </tr>
             <tr>
               <td>shuffle</td>
@@ -176,20 +321,88 @@
             <tr>
               <td>verbose</td>
               <td>
-                <input type="number" step="0" placeholder="(default = 0)" name="verbose" required />
+               <input type="number" step="0.0001" placeholder="" name="verbose" oninput="checkverboseValue(this)" required />
+               <span id="verboseRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('verbose')[0];
+                inputElement.value = 0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkverboseValue(input) {
+              // If the input value is empty, set it to the default value (0.0001)
+              input.value = input.value.trim() === '' ? 0.0001 : input.value;
+
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+
+              // Check if the entered value is within the desired range
+              var alphaValue = parseFloat(input.value);
+              var minValue = 0;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('verboseRangeMessage');
+
+             if (isNaN(verboseValue) || verboseValue < minValue || verboseValue > maxValue) {
+               messageElement.textContent = 'verbose must be between ' + minValue + ' and ' + maxValue;
+               input.value = 0; // Set to default value
+             } else {
+               messageElement.textContent = ''; // Clear the message if the value is within range
+             }
+            }
+           </script>
             </tr>
             <tr>
               <td>epsilon</td>
-              <td>
-                <input type="number" step="0.1" placeholder="(default = 0.1)" name="epsilon" required />
+	      <td>
+                 <input type="number" step="0.001" placeholder="(default = 0.1)" name="epsilon" oninput="checkEpsilonValue(this)" required />
+                 <span id="epsilonRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('epsilon')[0];
+                inputElement.value = 0.001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkEpsilonValue(input) {
+                 // If the input value is empty, set it to the default value (0.01)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.01 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var epsilonValue = parseFloat(input.value);
+                var minValue = 0.001; // Adjust this minimum value as needed
+                var maxValue = 0.1;   // Adjust this maximum value as needed
+                var messageElement = document.getElementById('epsilonRangeMessage');
+
+               if (isNaN(epsilonValue) || epsilonValue < minValue || epsilonValue > maxValue) {
+                 messageElement.textContent = 'Epsilon must be between ' + minValue + ' and ' + maxValue;
+                 input.value = 0.01; // Set to default value
+               } else {
+                 messageElement.textContent = ''; // Clear the message if the value is within range
+               }
+              }
+            </script>
+
             </tr>
             <tr>
               <td>random_state</td>
               <td>
+		<script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('random state')[0];
+                inputElement.value = None; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+	      </script>
                 <input placeholder="(default = None)" name="random_state" required />
-              </td>
+             </td>
             </tr>
             <tr>
               <td>learning_rate</td>
@@ -204,15 +417,74 @@
             </tr>
             <tr>
               <td>eta0</td>
-              <td>
-                <input type="number" step="0.01" placeholder="(default = 0.01)" name="eta0" required />
+	      <td>
+                <input type="number" step="0.001" placeholder="(default = 0.001)" name="eta0" oninput="checkEta0Value(this)" required />
+                <span id="eta0RangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('eta0')[0];
+                inputElement.value = 0.001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+                });
+
+		 function checkEta0Value(input) {
+                 // If the input value is empty, set it to the default value (0.001)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.001 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var eta0Value = parseFloat(input.value);
+                var minValue = 0.001; // You can adjust this minimum value as needed
+                var maxValue = 1.0;   // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('eta0RangeMessage');
+
+                if (isNaN(eta0Value) || eta0Value < minValue || eta0Value > maxValue) {
+                  messageElement.textContent = 'eta0 must be between ' + minValue + ' and ' + maxValue;
+                  input.value = 0.001; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+              }
+             </script>
+
             </tr>
             <tr>
               <td>power_t</td>
-              <td>
-                <input type="number" step="0.25" placeholder="(default = 0.25)" name="power_t" />
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.5)" name="power_t" oninput="checkPowerTValue(this)" />
+                <span id="powerTRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('power_t')[0];
+                inputElement.value = 0.0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkPowerTValue(input) {
+                 // If the input value is empty, set it to the default value (0.5)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.5 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var powerTValue = parseFloat(input.value);
+                var minValue = 0.0;
+                var maxValue = 1.0; // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('powerTRangeMessage');
+
+                if (isNaN(powerTValue) || powerTValue < minValue || powerTValue > maxValue) {
+                   messageElement.textContent = 'Power_t must be between ' + minValue + ' and ' + maxValue;
+                   input.value = 0.5; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                } 
+               }
+             </script>
+
             </tr>
             <tr>
               <td>early_stopping</td>
@@ -225,18 +497,73 @@
             </tr>
             <tr>
               <td>validation_fraction</td>
-              <td>
-                <input type="number" step="0.1" placeholder="(default = 0.1)" name="validation_fraction" required />
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.1)" name="validation_fraction" oninput="checkValidationFractionValue(this)" />
+                <span id="validationFractionRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		
+		// Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('validation_fraction')[0];
+                inputElement.value = 0.0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkValidationFractionValue(input) {
+                // If the input value is empty, set it to the default value (0.1)
+                input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.1 : input.value;
+                // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var validationFractionValue = parseFloat(input.value);
+                var minValue = 0.0;
+                var maxValue = 1.0; // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('validationFractionRangeMessage');
+
+                if (isNaN(validationFractionValue) || validationFractionValue < minValue || validationFractionValue > maxValue) {
+                   messageElement.textContent = 'Validation_fraction must be between ' + minValue + ' and ' + maxValue;
+                   input.value = 0.1; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+               }
+             </script>
+
             </tr>
             <tr>
+              <td>n_iter_no_change</td>
               <td>
-                <abbr
-                  title="Number of iterations with no improvement to wait before stopping fitting.">n_iter_no_change</abbr>
+                <input type="number" step="1" placeholder="(default = None)" name="n_iter_no_change" oninput="checkNIterNoChangeValue(this)" />
+                <span id="nIterNoChangeRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
-              <td>
-                <input type="number" step="5" placeholder="(default = 5)" name="n_iter_no_change" required />
-              </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('n_iter_no_change')[0];
+                inputElement.value = 1; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkNIterNoChangeValue(input) {
+                 // If the input value is empty, set it to the default value (None)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? None : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                 // Check if the entered value is within the desired range
+                 var nIterNoChangeValue = parseInt(input.value);
+                 var minValue = 1; // You can adjust this minimum value as needed
+                 var messageElement = document.getElementById('nIterNoChangeRangeMessage');
+
+                 if (isNaN(nIterNoChangeValue) || nIterNoChangeValue < minValue) {
+                    messageElement.textContent = 'n_iter_no_change must be greater than or equal to ' + minValue;
+                    input.value = 'None'; // Set to default value
+                 } else {
+                   messageElement.textContent = ''; // Clear the message if the value is within range
+                 }
+               }
+              </script>
+
             </tr>
             <tr>
               <td>warm_start</td>
@@ -301,8 +628,8 @@
             <tr>
               <td>loss</td>
               <td>
-                <select name="loss" id="loss">
-                  <option value="squared_loss">Squared Loss</option>
+                <select name="loss" id="loss" required>
+                  <option value="squared_error">Squared Error</option>
                   <option value="huber">Huber</option>
                   <option value="epsilon_insensitive">
                     Epsilon Insensitive
@@ -316,7 +643,7 @@
             <tr>
               <td>penalty</td>
               <td>
-                <select name="penalty" id="penalty">
+                <select name="penalty" id="penalty" required>
                   <option value="l2">L2</option>
                   <option value="l1">L1</option>
                   <option value="elasticnet">Elastic Net</option>
@@ -327,58 +654,255 @@
             <tr>
               <td>alpha</td>
               <td>
-                <input type="number" step="0.0001" placeholder="(default = 0.0001)" name="alpha" />
+               <input type="number" step="0.0001" placeholder="" name="alpha" oninput="checkAlphaValue(this)" required />
+               <span id="alphaRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('alpha')[0];
+                inputElement.value = 0.0001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkAlphaValue(input) {
+              // If the input value is empty, set it to the default value (0.0001)
+              input.value = input.value.trim() === '' ? 0.0001 : input.value;
+
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+
+              // Check if the entered value is within the desired range
+              var alphaValue = parseFloat(input.value);
+              var minValue = 0.0001;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('alphaRangeMessage');
+
+             if (isNaN(alphaValue) || alphaValue < minValue || alphaValue > maxValue) {
+               messageElement.textContent = 'Alpha must be between ' + minValue + ' and ' + maxValue;
+               input.value = 0.0001; // Set to default value
+             } else {
+               messageElement.textContent = ''; // Clear the message if the value is within range
+             }
+            }
+           </script>
+
+
+
             </tr>
             <tr>
-              <td>l1_ratio</td>
-              <td>
-                <input type="number" step="0.15" placeholder="(default = 0.15)" name="l1_ratio" />
-              </td>
+              <td>L1 Ratio</td>
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.15)" name="l1_ratio" oninput="checkL1RatioValue(this)" required />
+                <span id="l1RatioRangeMessage" style="color: red; font-size: 12px;"></span>
+             </td>
+
+             <script>
+		// Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('L1 Ratio')[0];
+                inputElement.value = 0.5; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkL1RatioValue(input) {
+                // If the input value is empty, set it to the default value (0.5)
+               input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.5 : input.value;
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+	      // Check if the entered value is within the desired range
+              var l1RatioValue = parseFloat(input.value);
+              var minValue = 0.0;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('l1RatioRangeMessage');
+
+          if (isNaN(l1RatioValue) || l1RatioValue < minValue || l1RatioValue > maxValue) {
+           messageElement.textContent = 'L1 Ratio must be between ' + minValue + ' and ' + maxValue ;
+           input.value = 0.5; // Set to default value
+          } else {
+            messageElement.textContent = ''; // Clear the message if the value is within range
+         }
+        }
+        </script>
+
+
             </tr>
             <tr>
               <td>fit_intercept</td>
               <td>
-                <input type="checkbox" placeholder="fit_intercept" name="fit_intercept" value="true" />
+                <select name="fit_intercept" id="fit_intercept required">
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>max_iter</td>
               <td>
-                <input type="number" step="1000" placeholder="(default = 1000)" name="max_iter" />
+    	        <input type="number" step="1" placeholder="" name="max_iter" oninput="checkMaxIterValue(this)" required />
+                <span id="maxIterRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('max_iter')[0];
+                inputElement.value = 1000; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkMaxIterValue(input) {
+               // If the input value is empty, set it to the default value (1000)
+               input.value = input.value.trim() === '' ? 1000 : input.value;
+
+               // Update the placeholder dynamically
+               input.placeholder = "(default = " + input.value + ")";
+
+               // Check if the entered value is within the desired range
+               var maxIterValue = parseInt(input.value);
+               var minValue = 1;
+               var maxValue = 5000; // Adjust the maximum value as needed
+               var messageElement = document.getElementById('maxIterRangeMessage');
+
+             if (isNaN(maxIterValue) || maxIterValue < minValue || maxIterValue > maxValue) {
+               messageElement.textContent = 'max_iter must be between ' + minValue + ' and ' + maxValue;
+               input.value = 1000; // Set to default value
+             } else {
+             messageElement.textContent = ''; // Clear the message if the value is within range
+            }
+          }
+          </script>
+
+
             </tr>
             <tr>
+              <td>tol</td>
               <td>
-                <abbr title="Tolerance">tol</abbr>
+                 <input type="number" step="0.01" placeholder="(default = 1e-4)" name="tol" oninput="checkTolValue(this)" />
+                 <span id="tolRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
-              <td>
-                <input type="number" step="1e-3" placeholder="(default = 1e-3)" name="tol" />
-              </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('tol')[0];
+                inputElement.value = 0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkTolValue(input) {
+                // If the input value is empty, set it to the default value (1e-4)
+                input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? (1e-4) : input.value;
+                // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var tolValue = parseFloat(input.value);
+                var minValue = 0.0; // You can adjust this minimum value as needed
+                var messageElement = document.getElementById('tolRangeMessage');
+
+                if (isNaN(tolValue) || tolValue < minValue) {
+                  messageElement.textContent = 'tol must be greater than or equal to ' + minValue;
+                  input.value = 1e-4; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+               }
+            </script>
+
             </tr>
             <tr>
               <td>shuffle</td>
               <td>
-                <input type="checkbox" placeholder="shuffle" name="shuffle" value="true" />
+                <select name="shuffle" id="shuffle" required>
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>verbose</td>
               <td>
-                <input type="checkbox" placeholder="verbose" name="verbose" value="true" />
+               <input type="number" step="0.0001" placeholder="" name="verbose" oninput="checkverboseValue(this)" required />
+               <span id="verboseRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('verbose')[0];
+                inputElement.value = 0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkverboseValue(input) {
+              // If the input value is empty, set it to the default value (0.0001)
+              input.value = input.value.trim() === '' ? 0.0001 : input.value;
+
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+
+              // Check if the entered value is within the desired range
+              var alphaValue = parseFloat(input.value);
+              var minValue = 0;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('verboseRangeMessage');
+
+             if (isNaN(verboseValue) || verboseValue < minValue || verboseValue > maxValue) {
+               messageElement.textContent = 'verbose must be between ' + minValue + ' and ' + maxValue;
+               input.value = 0; // Set to default value
+             } else {
+               messageElement.textContent = ''; // Clear the message if the value is within range
+             }
+            }
+           </script>
             </tr>
             <tr>
               <td>epsilon</td>
-              <td>
-                <input type="number" step="0.1" placeholder="(default = 0.1)" name="epsilon" />
+	      <td>
+                 <input type="number" step="0.001" placeholder="(default = 0.1)" name="epsilon" oninput="checkEpsilonValue(this)" required />
+                 <span id="epsilonRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('epsilon')[0];
+                inputElement.value = 0.001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkEpsilonValue(input) {
+                 // If the input value is empty, set it to the default value (0.01)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.01 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var epsilonValue = parseFloat(input.value);
+                var minValue = 0.001; // Adjust this minimum value as needed
+                var maxValue = 0.1;   // Adjust this maximum value as needed
+                var messageElement = document.getElementById('epsilonRangeMessage');
+
+               if (isNaN(epsilonValue) || epsilonValue < minValue || epsilonValue > maxValue) {
+                 messageElement.textContent = 'Epsilon must be between ' + minValue + ' and ' + maxValue;
+                 input.value = 0.01; // Set to default value
+               } else {
+                 messageElement.textContent = ''; // Clear the message if the value is within range
+               }
+              }
+            </script>
+
             </tr>
             <tr>
               <td>random_state</td>
               <td>
-                <input placeholder="(default = None)" name="random_state" />
-              </td>
+		<script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('random state')[0];
+                inputElement.value = None; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+	      </script>
+                <input placeholder="(default = None)" name="random_state" required />
+             </td>
             </tr>
             <tr>
               <td>learning_rate</td>
@@ -393,52 +917,174 @@
             </tr>
             <tr>
               <td>eta0</td>
-              <td>
-                <input type="number" placeholder="(default = 0.01)" name="eta0" />
+	      <td>
+                <input type="number" step="0.001" placeholder="(default = 0.001)" name="eta0" oninput="checkEta0Value(this)" required />
+                <span id="eta0RangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('eta0')[0];
+                inputElement.value = 0.001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+                });
+
+		 function checkEta0Value(input) {
+                 // If the input value is empty, set it to the default value (0.001)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.001 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var eta0Value = parseFloat(input.value);
+                var minValue = 0.001; // You can adjust this minimum value as needed
+                var maxValue = 1.0;   // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('eta0RangeMessage');
+
+                if (isNaN(eta0Value) || eta0Value < minValue || eta0Value > maxValue) {
+                  messageElement.textContent = 'eta0 must be between ' + minValue + ' and ' + maxValue;
+                  input.value = 0.001; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+              }
+             </script>
+
             </tr>
             <tr>
               <td>power_t</td>
-              <td>
-                <input type="number" step="0.25" placeholder="(default = 0.25)" name="power_t" />
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.5)" name="power_t" oninput="checkPowerTValue(this)" />
+                <span id="powerTRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('power_t')[0];
+                inputElement.value = 0.0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkPowerTValue(input) {
+                 // If the input value is empty, set it to the default value (0.5)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.5 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var powerTValue = parseFloat(input.value);
+                var minValue = 0.0;
+                var maxValue = 1.0; // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('powerTRangeMessage');
+
+                if (isNaN(powerTValue) || powerTValue < minValue || powerTValue > maxValue) {
+                   messageElement.textContent = 'Power_t must be between ' + minValue + ' and ' + maxValue;
+                   input.value = 0.5; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                } 
+               }
+             </script>
+
             </tr>
             <tr>
               <td>early_stopping</td>
               <td>
-                <input type="checkbox" placeholder="early_stopping" name="early_stopping" value="false" />
+                <select name="early_stopping" id="early_stopping" required>
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>validation_fraction</td>
-              <td>
-                <input type="number" step="0.1" placeholder="(default = 0.1)" name="validation_fraction" />
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.1)" name="validation_fraction" oninput="checkValidationFractionValue(this)" />
+                <span id="validationFractionRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		
+		// Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('validation_fraction')[0];
+                inputElement.value = 0.0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkValidationFractionValue(input) {
+                // If the input value is empty, set it to the default value (0.1)
+                input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.1 : input.value;
+                // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var validationFractionValue = parseFloat(input.value);
+                var minValue = 0.0;
+                var maxValue = 1.0; // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('validationFractionRangeMessage');
+
+                if (isNaN(validationFractionValue) || validationFractionValue < minValue || validationFractionValue > maxValue) {
+                   messageElement.textContent = 'Validation_fraction must be between ' + minValue + ' and ' + maxValue;
+                   input.value = 0.1; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+               }
+             </script>
+
             </tr>
             <tr>
+              <td>n_iter_no_change</td>
               <td>
-                <abbr
-                  title="Number of iterations with no improvement to wait before stopping fitting.">n_iter_no_change</abbr>
+                <input type="number" step="1" placeholder="(default = None)" name="n_iter_no_change" oninput="checkNIterNoChangeValue(this)" />
+                <span id="nIterNoChangeRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
-              <td>
-                <input type="number" placeholder="(default = 5)" name="n_iter_no_change" />
-              </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('n_iter_no_change')[0];
+                inputElement.value = 1; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkNIterNoChangeValue(input) {
+                 // If the input value is empty, set it to the default value (None)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? None : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                 // Check if the entered value is within the desired range
+                 var nIterNoChangeValue = parseInt(input.value);
+                 var minValue = 1; // You can adjust this minimum value as needed
+                 var messageElement = document.getElementById('nIterNoChangeRangeMessage');
+
+                 if (isNaN(nIterNoChangeValue) || nIterNoChangeValue < minValue) {
+                    messageElement.textContent = 'n_iter_no_change must be greater than or equal to ' + minValue;
+                    input.value = 'None'; // Set to default value
+                 } else {
+                   messageElement.textContent = ''; // Clear the message if the value is within range
+                 }
+               }
+              </script>
+
             </tr>
             <tr>
               <td>warm_start</td>
               <td>
-                <input type="checkbox" placeholder="warm_start" name="warm_start" value="false" />
+                <select name="warm_start" id="warm_start" required>
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>average</td>
               <td>
-                <input type="number" placeholder="(default = False) OR 10" name="average" />
+                <select name="average" id="average" required>
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
           </table>
         </details>
-
         <br />
 
         <div>
@@ -466,6 +1112,7 @@
 
         <br />
 
+
         <details>
           <summary>Hyperparameters</summary>
 
@@ -483,8 +1130,8 @@
             <tr>
               <td>loss</td>
               <td>
-                <select name="loss" id="loss">
-                  <option value="squared_loss">Squared Loss</option>
+                <select name="loss" id="loss" required>
+                  <option value="squared_error">Squared Error</option>
                   <option value="huber">Huber</option>
                   <option value="epsilon_insensitive">
                     Epsilon Insensitive
@@ -498,7 +1145,7 @@
             <tr>
               <td>penalty</td>
               <td>
-                <select name="penalty" id="penalty">
+                <select name="penalty" id="penalty" required>
                   <option value="l2">L2</option>
                   <option value="l1">L1</option>
                   <option value="elasticnet">Elastic Net</option>
@@ -509,58 +1156,255 @@
             <tr>
               <td>alpha</td>
               <td>
-                <input type="number" step="0.0001" placeholder="(default = 0.0001)" name="alpha" />
+               <input type="number" step="0.0001" placeholder="" name="alpha" oninput="checkAlphaValue(this)" required />
+               <span id="alphaRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('alpha')[0];
+                inputElement.value = 0.0001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkAlphaValue(input) {
+              // If the input value is empty, set it to the default value (0.0001)
+              input.value = input.value.trim() === '' ? 0.0001 : input.value;
+
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+
+              // Check if the entered value is within the desired range
+              var alphaValue = parseFloat(input.value);
+              var minValue = 0.0001;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('alphaRangeMessage');
+
+             if (isNaN(alphaValue) || alphaValue < minValue || alphaValue > maxValue) {
+               messageElement.textContent = 'Alpha must be between ' + minValue + ' and ' + maxValue;
+               input.value = 0.0001; // Set to default value
+             } else {
+               messageElement.textContent = ''; // Clear the message if the value is within range
+             }
+            }
+           </script>
+
+
+
             </tr>
             <tr>
-              <td>l1_ratio</td>
-              <td>
-                <input type="number" step="0.15" placeholder="(default = 0.15)" name="l1_ratio" />
-              </td>
+              <td>L1 Ratio</td>
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.15)" name="l1_ratio" oninput="checkL1RatioValue(this)" required />
+                <span id="l1RatioRangeMessage" style="color: red; font-size: 12px;"></span>
+             </td>
+
+             <script>
+		// Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('L1 Ratio')[0];
+                inputElement.value = 0.5; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkL1RatioValue(input) {
+                // If the input value is empty, set it to the default value (0.5)
+               input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.5 : input.value;
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+	      // Check if the entered value is within the desired range
+              var l1RatioValue = parseFloat(input.value);
+              var minValue = 0.0;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('l1RatioRangeMessage');
+
+          if (isNaN(l1RatioValue) || l1RatioValue < minValue || l1RatioValue > maxValue) {
+           messageElement.textContent = 'L1 Ratio must be between ' + minValue + ' and ' + maxValue ;
+           input.value = 0.5; // Set to default value
+          } else {
+            messageElement.textContent = ''; // Clear the message if the value is within range
+         }
+        }
+        </script>
+
+
             </tr>
             <tr>
               <td>fit_intercept</td>
               <td>
-                <input type="checkbox" placeholder="fit_intercept" name="fit_intercept" value="true" />
+                <select name="fit_intercept" id="fit_intercept required">
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>max_iter</td>
               <td>
-                <input type="number" step="1000" placeholder="(default = 1000)" name="max_iter" />
+    	        <input type="number" step="1" placeholder="" name="max_iter" oninput="checkMaxIterValue(this)" required />
+                <span id="maxIterRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('max_iter')[0];
+                inputElement.value = 1000; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkMaxIterValue(input) {
+               // If the input value is empty, set it to the default value (1000)
+               input.value = input.value.trim() === '' ? 1000 : input.value;
+
+               // Update the placeholder dynamically
+               input.placeholder = "(default = " + input.value + ")";
+
+               // Check if the entered value is within the desired range
+               var maxIterValue = parseInt(input.value);
+               var minValue = 1;
+               var maxValue = 5000; // Adjust the maximum value as needed
+               var messageElement = document.getElementById('maxIterRangeMessage');
+
+             if (isNaN(maxIterValue) || maxIterValue < minValue || maxIterValue > maxValue) {
+               messageElement.textContent = 'max_iter must be between ' + minValue + ' and ' + maxValue;
+               input.value = 1000; // Set to default value
+             } else {
+             messageElement.textContent = ''; // Clear the message if the value is within range
+            }
+          }
+          </script>
+
+
             </tr>
             <tr>
+              <td>tol</td>
               <td>
-                <abbr title="Tolerance">tol</abbr>
+                 <input type="number" step="0.01" placeholder="(default = 1e-4)" name="tol" oninput="checkTolValue(this)" />
+                 <span id="tolRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
-              <td>
-                <input type="number" step="1e-3" placeholder="(default = 1e-3)" name="tol" />
-              </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('tol')[0];
+                inputElement.value = 0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkTolValue(input) {
+                // If the input value is empty, set it to the default value (1e-4)
+                input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? (1e-4) : input.value;
+                // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var tolValue = parseFloat(input.value);
+                var minValue = 0.0; // You can adjust this minimum value as needed
+                var messageElement = document.getElementById('tolRangeMessage');
+
+                if (isNaN(tolValue) || tolValue < minValue) {
+                  messageElement.textContent = 'tol must be greater than or equal to ' + minValue;
+                  input.value = 1e-4; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+               }
+            </script>
+
             </tr>
             <tr>
               <td>shuffle</td>
               <td>
-                <input type="checkbox" placeholder="shuffle" name="shuffle" value="true" />
+                <select name="shuffle" id="shuffle" required>
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>verbose</td>
               <td>
-                <input type="checkbox" placeholder="verbose" name="verbose" value="true" />
+               <input type="number" step="0.0001" placeholder="" name="verbose" oninput="checkverboseValue(this)" required />
+               <span id="verboseRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('verbose')[0];
+                inputElement.value = 0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+
+               function checkverboseValue(input) {
+              // If the input value is empty, set it to the default value (0.0001)
+              input.value = input.value.trim() === '' ? 0.0001 : input.value;
+
+              // Update the placeholder dynamically
+              input.placeholder = "(default = " + input.value + ")";
+
+              // Check if the entered value is within the desired range
+              var alphaValue = parseFloat(input.value);
+              var minValue = 0;
+              var maxValue = 1.0;
+              var messageElement = document.getElementById('verboseRangeMessage');
+
+             if (isNaN(verboseValue) || verboseValue < minValue || verboseValue > maxValue) {
+               messageElement.textContent = 'verbose must be between ' + minValue + ' and ' + maxValue;
+               input.value = 0; // Set to default value
+             } else {
+               messageElement.textContent = ''; // Clear the message if the value is within range
+             }
+            }
+           </script>
             </tr>
             <tr>
               <td>epsilon</td>
-              <td>
-                <input type="number" step="0.1" placeholder="(default = 0.1)" name="epsilon" />
+	      <td>
+                 <input type="number" step="0.001" placeholder="(default = 0.1)" name="epsilon" oninput="checkEpsilonValue(this)" required />
+                 <span id="epsilonRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('epsilon')[0];
+                inputElement.value = 0.001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkEpsilonValue(input) {
+                 // If the input value is empty, set it to the default value (0.01)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.01 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var epsilonValue = parseFloat(input.value);
+                var minValue = 0.001; // Adjust this minimum value as needed
+                var maxValue = 0.1;   // Adjust this maximum value as needed
+                var messageElement = document.getElementById('epsilonRangeMessage');
+
+               if (isNaN(epsilonValue) || epsilonValue < minValue || epsilonValue > maxValue) {
+                 messageElement.textContent = 'Epsilon must be between ' + minValue + ' and ' + maxValue;
+                 input.value = 0.01; // Set to default value
+               } else {
+                 messageElement.textContent = ''; // Clear the message if the value is within range
+               }
+              }
+            </script>
+
             </tr>
             <tr>
               <td>random_state</td>
               <td>
-                <input placeholder="(default = None)" name="random_state" />
-              </td>
+		<script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('random state')[0];
+                inputElement.value = None; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+	      </script>
+                <input placeholder="(default = None)" name="random_state" required />
+             </td>
             </tr>
             <tr>
               <td>learning_rate</td>
@@ -575,47 +1419,170 @@
             </tr>
             <tr>
               <td>eta0</td>
-              <td>
-                <input type="number" placeholder="(default = 0.01)" name="eta0" />
+	      <td>
+                <input type="number" step="0.001" placeholder="(default = 0.001)" name="eta0" oninput="checkEta0Value(this)" required />
+                <span id="eta0RangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+                 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('eta0')[0];
+                inputElement.value = 0.001; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+                });
+
+		 function checkEta0Value(input) {
+                 // If the input value is empty, set it to the default value (0.001)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.001 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var eta0Value = parseFloat(input.value);
+                var minValue = 0.001; // You can adjust this minimum value as needed
+                var maxValue = 1.0;   // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('eta0RangeMessage');
+
+                if (isNaN(eta0Value) || eta0Value < minValue || eta0Value > maxValue) {
+                  messageElement.textContent = 'eta0 must be between ' + minValue + ' and ' + maxValue;
+                  input.value = 0.001; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+              }
+             </script>
+
             </tr>
             <tr>
               <td>power_t</td>
-              <td>
-                <input type="number" step="0.25" placeholder="(default = 0.25)" name="power_t" />
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.5)" name="power_t" oninput="checkPowerTValue(this)" />
+                <span id="powerTRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('power_t')[0];
+                inputElement.value = 0.0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkPowerTValue(input) {
+                 // If the input value is empty, set it to the default value (0.5)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.5 : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var powerTValue = parseFloat(input.value);
+                var minValue = 0.0;
+                var maxValue = 1.0; // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('powerTRangeMessage');
+
+                if (isNaN(powerTValue) || powerTValue < minValue || powerTValue > maxValue) {
+                   messageElement.textContent = 'Power_t must be between ' + minValue + ' and ' + maxValue;
+                   input.value = 0.5; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                } 
+               }
+             </script>
+
             </tr>
             <tr>
               <td>early_stopping</td>
               <td>
-                <input type="checkbox" placeholder="early_stopping" name="early_stopping" value="false" />
+                <select name="early_stopping" id="early_stopping" required>
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>validation_fraction</td>
-              <td>
-                <input type="number" step="0.1" placeholder="(default = 0.1)" name="validation_fraction" />
+	      <td>
+                <input type="number" step="0.01" placeholder="(default = 0.1)" name="validation_fraction" oninput="checkValidationFractionValue(this)" />
+                <span id="validationFractionRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
+
+              <script>
+		
+		// Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('validation_fraction')[0];
+                inputElement.value = 0.0; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                function checkValidationFractionValue(input) {
+                // If the input value is empty, set it to the default value (0.1)
+                input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? 0.1 : input.value;
+                // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                // Check if the entered value is within the desired range
+                var validationFractionValue = parseFloat(input.value);
+                var minValue = 0.0;
+                var maxValue = 1.0; // You can adjust this maximum value as needed
+                var messageElement = document.getElementById('validationFractionRangeMessage');
+
+                if (isNaN(validationFractionValue) || validationFractionValue < minValue || validationFractionValue > maxValue) {
+                   messageElement.textContent = 'Validation_fraction must be between ' + minValue + ' and ' + maxValue;
+                   input.value = 0.1; // Set to default value
+                } else {
+                  messageElement.textContent = ''; // Clear the message if the value is within range
+                }
+               }
+             </script>
+
             </tr>
             <tr>
+              <td>n_iter_no_change</td>
               <td>
-                <abbr
-                  title="Number of iterations with no improvement to wait before stopping fitting.">n_iter_no_change</abbr>
+                <input type="number" step="1" placeholder="(default = None)" name="n_iter_no_change" oninput="checkNIterNoChangeValue(this)" />
+                <span id="nIterNoChangeRangeMessage" style="color: red; font-size: 12px;"></span>
               </td>
-              <td>
-                <input type="number" placeholder="(default = 5)" name="n_iter_no_change" />
-              </td>
+
+              <script>
+		 // Set the default value and placeholder when the page loads
+                document.addEventListener('DOMContentLoaded', function () {
+                var inputElement = document.getElementsByName('n_iter_no_change')[0];
+                inputElement.value = 1; // Set default value
+                inputElement.placeholder = "(default = " + inputElement.value + ")";
+               });
+                 function checkNIterNoChangeValue(input) {
+                 // If the input value is empty, set it to the default value (None)
+                 input.value = (input.value.trim() === '' || isNaN(parseFloat(input.value))) ? None : input.value;
+                 // Update the placeholder dynamically
+                 input.placeholder = "(default = " + input.value + ")";
+                 // Check if the entered value is within the desired range
+                 var nIterNoChangeValue = parseInt(input.value);
+                 var minValue = 1; // You can adjust this minimum value as needed
+                 var messageElement = document.getElementById('nIterNoChangeRangeMessage');
+
+                 if (isNaN(nIterNoChangeValue) || nIterNoChangeValue < minValue) {
+                    messageElement.textContent = 'n_iter_no_change must be greater than or equal to ' + minValue;
+                    input.value = 'None'; // Set to default value
+                 } else {
+                   messageElement.textContent = ''; // Clear the message if the value is within range
+                 }
+               }
+              </script>
+
             </tr>
             <tr>
               <td>warm_start</td>
               <td>
-                <input type="checkbox" placeholder="warm_start" name="warm_start" value="false" />
+                <select name="warm_start" id="warm_start" required>
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
             <tr>
               <td>average</td>
               <td>
-                <input type="number" placeholder="(default = False) OR 10" name="average" />
+                <select name="average" id="average" required>
+                  <option value="False">False</option>
+                  <option value="True">True</option>
+                </select>
               </td>
             </tr>
           </table>

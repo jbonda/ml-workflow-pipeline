@@ -29,7 +29,12 @@ class DataModelManager(DMM):
         self.y_test_scaled = None  # Scaled testing target variable
         self.y_pred = None  # Sample prediction variable
 
-    def load_data(self, file):
+    def reset(self):
+        """Method to reset the data model."""
+        self.__init__()
+
+
+    def load_data(self, file, tab_id):
         """Method to load data from a file."""
         try:
             if file.filename.endswith(".csv"):
@@ -48,7 +53,7 @@ class DataModelManager(DMM):
                 return True  # Indicate successful loading
             else:
                 flash("Please upload a CSV or ZIP file.", "danger")
-        except Exception as e:
+        except Exception:
             flash("Please check your dataset for proper CSV file formatting.", "danger")
         return False
 

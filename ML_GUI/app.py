@@ -8,7 +8,6 @@ from flask import (
     flash,
     session,
     send_file,
-    jsonify,
 )
 import pandas as pd
 import matplotlib
@@ -30,19 +29,18 @@ data_manager = DataModelManager()
 def index():
     if "tab_id" not in session:
         session["tab_id"] = secrets.token_hex(24)
-    print(session["tab_id"])
+        data_manager.reset()
+        return render_template("index.html")
     return render_template("index.html", columns=data_manager.columns)
 
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
-    if "tab_id" not in session:
-        session["tab_id"] = secrets.token_hex(24)
     files = request.files.getlist("file")
     if files:
         for file in files:
             try:
-                if data_manager.load_data(file):
+                if data_manager.load_data(file, session["tab_id"]):
                     flash("✅ File uploaded successfully!", "success")
             except RequestEntityTooLarge:
                 flash(
@@ -353,4 +351,4 @@ def export_model():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8085, debug=True)
+    app.run(host="127.0.0.1", port=8085, debug=False)

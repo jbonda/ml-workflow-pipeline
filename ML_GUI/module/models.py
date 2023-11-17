@@ -67,11 +67,11 @@ class ModelSelection:
         # Plotting Results
         plt.clf()
         fig, axes = plt.subplots(figsize=(8, 6))
-        plt.plot(y_test_scaled, y_pred, "go", label="True data", alpha=0.5)
-        plt.plot(x_test_scaled, y_pred, "--", label="Predictions", alpha=0.5)
+        plt.plot(y_pred, y_test_scaled, "go", label="True data", alpha=0.5)
+        plt.plot(y_pred, x_test_scaled, "--", label="Predictions", alpha=0.5)
 
-        plt.xlabel("Independent Variable")
-        plt.ylabel("Dependent Variable")
+        plt.xlabel("Dependent Variable")
+        plt.ylabel("Independent Variable")
         plt.title("Simple Linear Regression")
         plt.legend()
         plt.show()

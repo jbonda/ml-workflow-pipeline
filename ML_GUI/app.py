@@ -28,7 +28,7 @@ data_manager = DataModelManager()
 @app.route("/")
 def index():
     if "tab_id" not in session:
-        session["tab_id"] = secrets.token_hex(24)
+        session["tab_id"] = app.secret_key
         data_manager.reset()
         return render_template("index.html")
     return render_template("index.html", columns=data_manager.columns)

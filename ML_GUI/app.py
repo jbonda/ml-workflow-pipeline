@@ -36,6 +36,9 @@ def index():
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
+    if "tab_id" not in session:
+        session["tab_id"] = app.secret_key
+        # data_manager.reset()
     files = request.files.getlist("file")
     if files:
         for file in files:
@@ -47,8 +50,8 @@ def upload_file():
                     "❌ File size limit exceeded! Please upload a smaller file.",
                     "danger",
                 )
-            except Exception as e:
-                flash(f"⛔️ Error: {e}", "danger")
+            # except Exception as e:
+            # flash(f"⛔️ Error: {e}", "danger")
     else:
         flash("⬆️ No file uploaded! Please upload a file and try again.", "danger")
     return redirect(url_for("index"))

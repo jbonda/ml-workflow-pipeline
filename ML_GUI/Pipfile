@@ -10,9 +10,10 @@ numpy = "*"
 pandas = "*"
 scikit-learn = "*"
 requests = "*"
+gunicorn = "*"
 
 [dev-packages]
 black = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.11"
